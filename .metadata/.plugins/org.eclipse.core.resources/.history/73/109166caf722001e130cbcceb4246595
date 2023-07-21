@@ -1,0 +1,27 @@
+package Observer20.Model;
+
+import java.util.List;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.Table;
+@Entity
+@Table(name="questions_response")
+public class Submit {
+	private Long formId;
+    private List<Response> response;
+	public Long getFormId() {
+		return formId;
+	}
+	public void setFormId(Long formId) {
+		this.formId = formId;
+	}
+	public List<Response> getResponse() {
+		return response;
+	}
+	public void setResponse(List<Response> response) {
+		this.response = response;
+	}
+    
+    
+}

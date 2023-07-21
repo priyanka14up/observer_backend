@@ -1,0 +1,20 @@
+
+package Observer20.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import Observer20.Model.Form;
+import Observer20.Model.Question;
+import Observer20.Model.SubForm;
+
+@Repository
+public interface SubFormRepo1 extends JpaRepository<SubForm1, Long>{
+	
+	//List<Question> findAllByfid(Long fid);
+	
+	List<SubForm> findSubFormsByFormId(Long id);
+	//List<Question> findQuestionsBySubformSid(Long sid);
+}

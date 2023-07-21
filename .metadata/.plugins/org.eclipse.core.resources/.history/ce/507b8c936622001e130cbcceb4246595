@@ -1,0 +1,102 @@
+package Observer20.Model;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+@Entity
+@Table(name="Observer_forms1")
+@EntityListeners(AuditingEntityListener.class)
+public class Form1 {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "Form_Id", updatable = false, nullable = false)
+    private Long id;
+	
+	@NotBlank(message = "Form Name is mandatory")
+	@Column(name = "Form_Name",nullable=false)
+    private String name;
+	
+	@NotBlank(message = "Observer Type is mandatory")
+	@Column(name = "Obs_Type",nullable=false)
+    private  String obsType;
+	
+//	@OneToMany(cascade=CascadeType.ALL)
+//	private SubForm subform;
+	
+	
+	
+//	@ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(
+//        name = "form_subform",
+//        joinColumns = @JoinColumn(name = "form_id"),
+//        inverseJoinColumns = @JoinColumn(name = "subform_id")
+//    )
+//    private List<SubForm> subforms;
+	
+	
+//	@ManyToOne(fetch = FetchType.LAZY)
+//	   @JoinColumn(name = "s_id")
+//	    private List<SubForm1> subForms;
+
+	
+	 @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
+	    private List<SubForm> subforms = new ArrayList<>();
+	
+	
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getObsType() {
+		return obsType;
+	}
+
+	public void setObsType(String obsType) {
+		this.obsType = obsType;
+	}
+
+	public List<SubForm1> getSubForms() {
+		return subForms;
+	}
+
+	public void setSubForms(List<SubForm1> subForms) {
+		this.subForms = subForms;
+	}
+
+	@Override
+	public String toString() {
+		return "Form1 [id=" + id + ", name=" + name + ", obsType=" + obsType + ", subForms=" + subForms + "]";
+	}
+
+	
+	
+}
+	
+
+	
+	
+	
+
+
+
+
+
+	
+

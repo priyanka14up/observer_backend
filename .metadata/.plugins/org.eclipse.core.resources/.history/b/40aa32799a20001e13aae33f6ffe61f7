@@ -1,0 +1,24 @@
+package Observer20.Dto;
+
+
+public class QuestionRequest {
+    private String qname;
+    private String inputType;
+   
+	public String getQname() {
+		return qname;
+	}
+	public void setQname(String qname) {
+		this.qname = qname;
+	}
+	public String getInputType() {
+		return inputType;
+	}
+	public void setInputType(String inputType) {
+		this.inputType = inputType;
+	}
+    
+
+    // Constructors, getters, and setters
+    // ...
+}

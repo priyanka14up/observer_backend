@@ -1,0 +1,33 @@
+package Observer20.Model;
+@Entity
+@Table(name="questions_response")
+@EntityListeners(AuditingEntityListener.class)
+public class Response {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "form_id", updatable = false, nullable = false)
+    private Long id;
+	
+	@NotBlank(message = "Form Name is mandatory")
+	@Column(name = "form_name",nullable=false)
+    private String name;
+	
+	@NotBlank(message = "Observer Type is mandatory")
+	@Column(name = "obs_type",nullable=false)
+    private  String obsType;
+}
+
+	
+	
+	
+	
+	
+	}
+
+
+
+
+
+	
+

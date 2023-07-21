@@ -1,0 +1,297 @@
+package Observer20.Controller;
+import java.util.*;
+
+import org.json.JSONArray;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Observer20.Dto.QuestionRequest;
+import Observer20.Exception.HandledException;
+import Observer20.Model.Form;
+import Observer20.Model.Question;
+import Observer20.Model.Response;
+import Observer20.Model.SubForm;
+import Observer20.Services.FormService;
+import Observer20.errors.ResponseHandler;
+import Observer20.repository.FormServiceRepo;
+import Observer20.repository.SubFormRepo;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
+@RestController
+@RequestMapping("/api/v2")
+public class FormController {
+
+	@Autowired
+	public FormService formService;
+	
+	@Autowired
+	public FormServiceRepo formServiceRepo;
+	
+	@Autowired 
+	public SubFormRepo subFormRepo;
+
+	@GetMapping("/form")
+	public ResponseEntity<Object> getAllForms() throws HandledException {
+
+		try {
+
+			List formData = (List) formService.allForms();
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	@GetMapping("/forms/{obsType}")
+	public ResponseEntity<Object> getAllFormsByObsType(@PathVariable("obsType") String obsType) throws HandledException {
+
+		try {
+
+			List formData = (List) formService.allFormsByObsType(obsType);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	
+	@PostMapping("/createform")
+	public ResponseEntity<Object> createForm(HttpServletRequest request, @Valid @RequestBody Form form) throws HandledException {
+		try {
+
+			Object obj = null;
+			//formService.createForm(request,form,subForm,question);
+			
+			formService.createForm(request,form);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, obj);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
+	/*getting questions by subform id*/
+	@GetMapping("/questions/{sid}")
+	public ResponseEntity<Object> getAllQuestionsBySid(@PathVariable("sid") Long sid) throws HandledException {
+
+		try {
+			System.out.println("starting controller");
+			List<Question> formData =formService.allQuestionsBySid(sid);
+			List<Object> data = new ArrayList<Object>();
+			JSONArray array = new JSONArray();
+			for(Question q: formData) {
+				data.add(q.getQid());
+				data.add(q.getQname());
+				data.add(q.getInputType());
+				array.put(data);
+				data = new ArrayList<Object>();
+			}
+			ObjectMapper obj = new ObjectMapper();
+			String str = obj.writeValueAsString(array.toString());
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,array.toString());
+			//return new ResponseEntity<String>(str, HttpStatus.OK);
+		} catch (Exception e) {
+			System.out.println(e);
+			//return new ResponseEntity<String>(e.toString(),HttpStatus.BAD_REQUEST);
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
+
+		}
+
+	}
+	
+	/*Getting subforms by form id*/
+	
+	@GetMapping("/subforms/{id}")
+		public ResponseEntity<Object> getAllSubFormsByFid(@PathVariable("id") Long id) throws HandledException, JsonProcessingException {
+		try {
+			System.out.println("starting controller");
+			List<SubForm> formData =formService.allSubformsByfid(id);
+			List<Object> data = new ArrayList<Object>();
+			JSONArray array = new JSONArray();
+			for(SubForm s: formData) {
+				data.add(s.getSid());
+				data.add(s.getHeading());
+				array.put(data);
+				data = new ArrayList<Object>();
+			}
+			//ObjectMapper obj = new ObjectMapper();
+			//String str = obj.writeValueAsString(array.toString());
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,array.toString());
+		} 
+		catch(HandledException e)
+		{
+			System.out.println(e);
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
+
+		}
+
+	}
+	
+	@GetMapping("/subformid/{qid}")
+	public ResponseEntity<Object> getSubFormIdByQid(@PathVariable("qid") Long qid) throws HandledException {
+
+		try {
+			System.out.println("before");
+			Long sid = formService.getSubFormIdByQid(qid);
+			System.out.println("after");
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, sid);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	@GetMapping("/formid/{sid}")
+	public ResponseEntity<Object> getFormIdBySid(@PathVariable("sid") Long sid) throws HandledException {
+
+		try {
+			System.out.println("before");
+			Long fid = formService.getFormIdBySid(sid);
+			System.out.println("after");
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, fid);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	@PostMapping("/createform")
+	public ResponseEntity<Object> createResponse(HttpServletRequest request, @Valid @RequestBody List<Response> responses) throws HandledException {
+		try {
+
+			Object obj = null;
+			//formService.createForm(request,form,subForm,question);
+			
+			formService.createResponses(request,responses);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, obj);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
+	
+	
+	
+//	@PostMapping("/createsubform")
+//	public ResponseEntity<Object> createSubForm(HttpServletRequest request, @Valid @RequestBody SubForm subFormDetails) throws HandledException {
+//
+//		try {
+//
+//			Object obj = null;
+//			formService.createSubForm(request,subFormDetails);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK, obj);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
+	
+	
+	
+//	@PostMapping("/subform")
+//	public ResponseEntity<Object> createSubForm(HttpServletRequest request, @Valid @RequestBody SubForm subForm) throws HandledException {
+//
+//		try {
+//
+//			SubForm subFormData = formService.postFile(request,subForm);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK, subFormData);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
+	
+//	@GetMapping("/forms/{sid}")
+//	public ResponseEntity<Object> createQuestionBySid(HttpServletRequest request,@Valid @RequestBody Question question) throws HandledException {
+//
+//		try {
+//
+//			HashMap<String, Object> postDetail = formService.createQuestion(request, question);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK, postDetail);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//
+//	}
+	
+//	public FormController(FormServiceRepo formServiceRepo, SubFormRepo subFormRepo) {
+//        this.formServiceRepo = formServiceRepo;
+//        this.subFormRepo = subFormRepo;
+//    }
+	
+	
+//	@PostMapping("/create/forms")
+//    public ResponseEntity<Form> createForm(@RequestBody Form form) {
+//        Form savedForm = formServiceRepo.save(form);
+//        return ResponseEntity.status(HttpStatus.CREATED).body(savedForm); 
+//    }
+	
+	
+//	 @PostMapping
+//	    public ResponseEntity<Form> createForm(@RequestBody Form formRequest) {
+//	        Form form = new Form();
+//	        form.setName(formRequest.getName());
+//	        
+//	        Set<SubForm> subforms = new HashSet<>();
+//	        for (Long subformId : formRequest.getSubforms().get(0).getSid()) {
+//	            Subform subform = subformRepository.findById(subformId).orElse(null);
+//	            if (subform != null) {
+//	                subforms.add(subform);
+//	            }
+//	        }
+//	        form.setSubforms(subforms);
+//
+//	        Form savedForm = formRepository.save(form);
+//	        return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
+//	    }
+	
+	
+	@PostMapping("/create/subforms")
+    public ResponseEntity<SubForm> createSubForm(@RequestBody SubForm subform) {
+		SubForm savedForm = subFormRepo.save(subform);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedForm);
+    }
+	
+	/*@GetMapping("/question/{form_Id}")
+	public ResponseEntity<Object> getAllQuestionsByFormId(@PathVariable(value = "form_Id") Long fid) throws HandledException {
+
+		try {
+
+			FormDetails forms = formService.getAllQuestionsByFormId(fid);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, forms);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+
+	}*/
+	
+	
+	
+	
+}

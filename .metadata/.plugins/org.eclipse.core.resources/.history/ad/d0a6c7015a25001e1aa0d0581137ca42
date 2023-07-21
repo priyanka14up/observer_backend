@@ -1,0 +1,423 @@
+package Observer20.Services;
+
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
+
+import org.hibernate.bytecode.spi.ReflectionOptimizer.AccessOptimizer;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import Observer20.Dto.QuestionRequest;
+import Observer20.Exception.HandledException;
+import Observer20.Model.Form;
+import Observer20.Model.Question;
+import Observer20.Model.Response;
+import Observer20.Model.SubForm;
+//import Observer20.repository.FormDetailsRepo;
+import Observer20.repository.FormServiceRepo;
+import Observer20.repository.QuestionRepo;
+import Observer20.repository.ResponseRepo;
+import Observer20.repository.SubFormRepo;
+
+@Service
+public class FormServiceBean implements FormService {
+
+	@Autowired
+	public FormServiceRepo formServiceRepo;
+	
+	@Autowired
+	public QuestionRepo questionRepo;
+	
+	@Autowired
+	public SubFormRepo subFormRepo;
+	
+	@Autowired
+	public ResponseRepo responseRepo;
+	
+	@Autowired
+//	public FormDetailsRepo formDetailsRepo;
+	
+	
+	@Override
+	public List allForms() throws HandledException {
+		// TODO Auto-generated method stub
+	
+		List<Form> formData=new ArrayList<Form>();
+		try{
+			
+			formData = formServiceRepo.findAll();
+			
+		}catch(Exception e) {
+			
+			 System.out.println(e);
+		return null;
+	}	
+		List formList = new ArrayList<>() ;
+		
+		for (int i = 0; i < formData.size(); i++){  
+			
+			formList.add(customResponseForm(formData.get(i)));  
+		}  
+		
+		return formList;
+		
+		
+}
+
+	//custom response
+		private HashMap<String, Object> customResponseForm( Form formData) {
+			
+			HashMap<String, Object> formMap =  new HashMap<>();
+			
+			formMap.put("id", formData.getId());
+			formMap.put("FormName", formData.getName());
+			formMap.put("ObserverType", formData.getObsType());
+
+			return formMap;
+			
+		}
+		
+
+		
+		//custom response
+				private HashMap<String, Object> customResponseQuestion( Question questionData) {
+					
+					HashMap<String, Object> questionMap =  new HashMap<>();
+					
+					questionMap.put("id", questionData.getQid());
+					questionMap.put("questionName", questionData.getQname());
+					questionMap.put("inputType", questionData.getQname());
+					//questionMap.put("subForm", questionData.getSubform());
+
+					return questionMap;
+					
+				}
+		
+
+	/*private HashMap<String, Object> customResponseFormDetails( FormDetails formDetails) {
+			
+			HashMap<String, Object> formMap =  new HashMap<>();
+			
+//			formMap.put("formId",formDetails.getId());
+//			formMap.put("SubFormId", formDetails.getSubForm_Id());
+//			formMap.put("Heading", formDetails.getHeading());
+//			formMap.put("QuestionIds", formDetails.getQids());
+
+			return formMap;
+			
+		}*/
+
+		@Override
+		public List allFormsByObsType(String obsType) throws HandledException {
+			// TODO Auto-generated method stub
+			
+			List<Form> FormForGeneral=new ArrayList<Form>();
+			try{
+				
+				 FormForGeneral=formServiceRepo.findAllByObsType(obsType);
+				
+			}catch(Exception e) {
+				
+				 System.out.println(e);
+			return null;
+		}	
+			List formList = new ArrayList<>() ;
+			
+			for (int i = 0; i < FormForGeneral.size(); i++){  
+				
+				formList.add(customResponseForm(FormForGeneral.get(i)));  
+			}  
+			
+			return formList;
+		
+		}
+
+		
+
+		@Override
+		public Form createForm(HttpServletRequest request, @Valid Form form)throws HandledException
+		{
+			
+//			 Form form1=formServiceRepo.save(form);
+//			 System.out.println(form1);
+//			return form1;
+			
+			
+			
+		        // Set the form reference in subforms
+		        form.getSubforms().forEach(subform -> subform.setForm(form));
+
+		        // Set the subform reference in questions
+		        form.getSubforms().forEach(subform -> {
+		            subform.getQuestions().forEach(question -> question.setSubform(subform));
+		        });
+
+		        // Save the form to the database
+		        return formServiceRepo.save(form);
+		    
+		}
+
+		@Override
+		public List<Question> allQuestionsBySid(Long sid) throws HandledException {
+			List<Question> questions=questionRepo.findQuestionsBySubformSid(sid);
+			if(questions.size()!=0)
+			{
+				return questions;
+			}
+			else
+			{
+			throw new HandledException("CHECK_PARAMETERS", "Questions does not exist for this form id.");
+			}
+	        
+			
+			
+	      
+			
+			
+		}
+		public List<SubForm> allSubformsByfid(Long fid) throws HandledException {
+			
+			List<SubForm> subforms=subFormRepo.findSubFormsByFormId(fid);
+			
+			if(subforms.size()!=0)
+			{
+				return subforms;
+			}
+			else
+			{
+			throw new HandledException("CHECK_PARAMETERS", "Subform does not exist for this form id.");
+			}
+	        
+			
+		}
+
+		@Override
+		public Long getSubFormIdByQid(Long qid) throws HandledException {
+			Long sid=questionRepo.findSubformSidByQid(qid);
+			
+			if (sid != null) {
+		        return sid;
+		    } else {
+		    	throw new HandledException("CHECK_PARAMETERS", "Subform does not exist for this question id.");
+		    }
+			
+		}
+
+		@Override
+		public Long getFormIdBySid(Long sid) throws HandledException {
+			Long fid=subFormRepo.findFormIdBySid(sid);
+			
+			if (fid != null) {
+		        return fid;
+		    } else {
+		    	throw new HandledException("CHECK_PARAMETERS", "form does not exist for this subform id.");
+		    }
+		}
+
+		@Override
+		public List<Response> createResponses(HttpServletRequest request, @Valid List<Response> responses) throws HandledException {
+		
+			List<Response> resultResponses = new ArrayList<Response>();
+			try {
+			
+			for(int i=0;i<responses.size();i++)
+			{
+				
+				responses.get(i).setQid(responses.get(i).getQid());
+				responses.get(i).setAnswer(responses.get(i).getAnswer());
+				if((responses.get(i).getAnswer().equals("no"))||(responses.get(i).getAnswer().equals("NO"))||(responses.get(i).getAnswer().equals("No")))
+				{
+					responses.get(i).setRemarks(responses.get(i).getRemarks());
+					
+				}
+				else
+				{
+					responses.get(i).setRemarks(null);
+					
+				}
+				responses.get(i).setSubmittedBy(responses.get(i).getSubmittedBy());
+			
+				Long sid=questionRepo.findSubformSidByQid(responses.get(i).getQid());
+				responses.get(i).setSid(sid);
+				Long fid=subFormRepo.findFormIdBySid(sid);
+				responses.get(i).setFid(fid);
+				responseRepo.save(responses.get(i));
+				resultResponses.add(responses.get(i));
+				
+			}
+			return resultResponses;
+				}catch(Exception e)
+				{
+					throw new HandledException("exception in adding response", e.getMessage());
+				}
+				
+		
+		}
+
+		@Override
+		public List<Response> getResponses(String submittedBy) throws HandledException {
+		
+			List<Response> responses=new ArrayList<Response>();
+			List responsesList = new ArrayList<>() ;
+			try{
+				responses=responseRepo.findAllBySubmittedBy(submittedBy);
+				if(responses.size()>0)
+				{
+					
+					
+					for (int i = 0; i < responses.size(); i++){  
+						
+						responsesList.add(customResponseSubmitResponse(responses.get(i)));  
+					} 
+					
+				}
+				else
+				{
+					throw new HandledException("CHECK_PARAMETERS", "Responses do not exist for this form");
+					
+				}
+				
+		
+				 //FormForGeneral=formServiceRepo.findAllBySubmittedBy(submittedBy);
+				
+			}catch(Exception e) {
+				
+				 System.out.println(e);
+		}
+			return responsesList;
+			
+			
+		}
+
+		private Object customResponseSubmitResponse(Response response) {
+HashMap<String, Object> ResponseMap =  new HashMap<>();
+			
+ResponseMap.put("qid",response.getQid());
+ResponseMap.put("fid",response.getFid());
+ResponseMap.put("sid", response.getSid());
+ResponseMap.put("answer",response.getAnswer());
+ResponseMap.put("remarks",response.getRemarks());
+
+
+			return ResponseMap;
+			
+		}
+
+		//@Override
+		//public SubForm postFile(HttpServletRequest request, SubForm subForm) throws HandledException {
+			
+			
+			//SubForm subFormData = subFormRepo.getById(subForm.getSid());
+//			Form existedForm=formServiceRepo.getById(subForm.getFid());
+//
+//			if((existedForm!=null)&&(existedForm.getId()==subForm.getFid()))
+//			{
+//				if(subForm.getSid()==null)
+//				{
+//				subForm.setHeading(subForm.getHeading());
+//				subForm.setFid(subForm.getFid());
+//				subFormRepo.save(subForm);
+//				return subForm;
+//				}
+//				else
+//				{SubForm subFormData = subFormRepo.getById(subForm.getSid());
+////					subFormData.setFid(subForm.getFid());
+////					subFormData.setHeading(subForm.getHeading());
+////					
+////					subFormRepo.save(subFormData);
+////					return subFormData;
+//					throw new HandledException("CHECK_PARAMETERS", "SubForm exists in Database for " +subForm.getSid());
+//				}
+//			}
+//			else
+//			{
+//				throw new HandledException("CHECK_PARAMETERS", "Form does not exist in Database for " +subForm.getFid());
+//			}
+//			
+//			
+//			
+//		}
+
+//		@Override
+//		public HashMap<String, Object> createQuestion(HttpServletRequest request, Question question)
+//				throws HandledException {
+//			Question QuestionInDb =  (Question) questionRepo.findByQid(question.getQid());
+//			HashMap<String, Object> msgMap = new HashMap<>();
+//			
+//			if (QuestionInDb == null) {
+//				
+//				questionRepo.save(question);
+//				msgMap = customResponseQuestion(question);
+//				
+//			}else {
+//				
+//				 Optional<Question> ques = questionRepo.findById(QuestionInDb.getQid());
+//				 
+//				 ques.get().setQname(question.getQname());
+//				 ques.get().setSubform();
+//				 msg.get().setDisplayBoard(message.getDisplayBoard());
+//				 msg.get().setDisplayStatus(message.getDisplayStatus());
+//				 msg.get().setMessageEnglish(message.getMessageEnglish());
+//				 msg.get().setMessageHindi(message.getMessageHindi());
+//				 msg.get().setMessageRegional(message.getMessageRegional());
+//				 msg.get().setMessageEffect(message.getMessageEffect());
+//				 msg.get().setSpeed(message.getSpeed());
+//				 msg.get().setLetterSize(message.getLetterSize());
+//				 msg.get().setCharacterGap(message.getCharacterGap());
+//				 msg.get().setPageChangeTime(message.getPageChangeTime());	 
+//				 msg.get().setDisplayStatus(message.getDisplayStatus());
+//				 msg.get().setUpdatedBy(String.valueOf(customUtil.getIdFromToken()));
+//				 commonUtil.updateActivities("Message updated ", String.valueOf(customUtil.getIdFromToken()));
+//				 messageRepository.save(msg.get());
+//				 msgMap = customResponseMsg(msg.get());
+//				
+//			}
+//			
+//			return msgMap;
+//			return null;
+//		}
+//
+//		
+		
+		
+
+		/*@Override
+		public FormDetails getAllQuestionsByFormId(Long fId) throws HandledException {
+			
+			
+			FormDetails formDetail = formDetailsRepo.findByid(fId);
+					
+					
+		         return formDetail;
+			
+		    //return customResponseFormDetails(formDetail);
+			
+			//List<Question> FormForGeneral=new ArrayList<Form>();
+			//List forms=formServiceRepo.findAllByFormId(fId);
+		
+//			List<Question> forms=new ArrayList<Question>();
+//			try{
+//				
+//				forms=formServiceRepo.findAllByFormId(fId);
+//				
+//			}catch(Exception e) {
+//				
+//				 System.out.println(e);
+//			return null;
+//		}	
+//			List formList = new ArrayList<>() ;
+//			
+//			for (int i = 0; i < FormForGeneral.size(); i++){  
+//				
+//				formList.add(customResponseForm(FormForGeneral.get(i)));  
+//			}  
+//			
+//			return formList;
+			
+		}*/
+
+}

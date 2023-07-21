@@ -1,0 +1,20 @@
+package Observer20;
+
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+
+import Observer20.Exception.HandledException;
+
+@SpringBootApplication
+class ObserverApplicationTests {
+
+	
+
+	
+	
+}
+
+
+

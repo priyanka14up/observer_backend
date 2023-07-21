@@ -1,0 +1,14 @@
+
+package Observer20.repository;
+import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import Observer20.Model.Response;
+@Repository
+public interface ResponseRepo extends JpaRepository<Response, Long>{
+
+	
+	List<Response> findAllBySubmittedBy(String submittedBy);
+	Response findBySubmittedBy(String submittedBy);
+	
+}

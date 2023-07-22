@@ -8,7 +8,7 @@ spring.datasource.url = jdbc:postgresql://localhost:5432/Observer2.0?useSSL=fals
 spring.datasource.username = postgres
 spring.datasource.password = postgres
 #spring.datasource.password = admin@123
-server.port= 8080
+server.port= 8054
 spring.datasource.driver-class-name=org.postgresql.Driver
 ## Hibernate Properties
 # The SQL dialect makes Hibernate generate better SQL for the chosen database

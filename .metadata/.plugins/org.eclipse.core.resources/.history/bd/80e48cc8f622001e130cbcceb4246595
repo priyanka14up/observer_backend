@@ -1,6 +1,0 @@
-package Observer20.Model;
-
-public class Submit {
-	private Long formId;
-    private List<Response> response;
-}

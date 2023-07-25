@@ -12,7 +12,7 @@ public interface ObserverService {
 
 	ObserverUserDto createObserver(ObserverUserDto user);
 
-	ApiResponse loginObserver(LoginDto loginDto) ;
+	//ApiResponse loginObserver(LoginDto loginDto) ;
 	
 	List<ObserverUserDto> getAllUsers();
 	

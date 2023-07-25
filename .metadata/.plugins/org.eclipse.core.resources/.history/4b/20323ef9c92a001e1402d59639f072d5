@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name="answer")
+@Table(name="questions_response")
 @EntityListeners(AuditingEntityListener.class)
 public class Answer {
 
@@ -37,6 +37,8 @@ public class Answer {
 	public void setQid(Long qid) {
 		this.qid = qid;
 	}
+
+	
 
 	public String getAnswer() {
 		return answer;

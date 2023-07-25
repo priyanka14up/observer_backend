@@ -5,8 +5,7 @@ import java.util.Random;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -27,9 +26,9 @@ public class ForgotController {
 	ObserverUserRepo observerUserRepo;
 	//@Autowired
 	//private BCryptPasswordEncoder bcrypt;
-	@Autowired
-	PasswordEncoder passwordEncoder;
-	
+	/*
+	 * @Autowired PasswordEncoder passwordEncoder;
+	 */
 	Random random=new Random(1000);
 	
 	@PostMapping("/send-otp")
@@ -97,8 +96,8 @@ public class ForgotController {
 		  
 		  //String email1=(String)session.getAttribute("email"); 
 		  ObserverUser observerUser=observerUserRepo.getObserverUserByEmail(email);
-		  observerUser.setPassword(passwordEncoder.encode(newpassword));
-		  //observerUser.setPassword(DigestUtils.md5DigestAsHex.getBytes(newpassword));
+		 // observerUser.setPassword(passwordEncoder.encode(newpassword));
+		  observerUser.setPassword(DigestUtils.md5DigestAsHex(newpassword.getBytes()));
 		  observerUserRepo.save(observerUser);
 		   return "password changed successfully";
 	  

@@ -11,19 +11,20 @@ public class Role {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private int id;
-	private String obscode;
+	private String name;
 	public int getId() {
 		return id;
 	}
 	public void setId(int id) {
 		this.id = id;
 	}
-	public String getObscode() {
-		return obscode;
+	public String getName() {
+		return name;
 	}
-	public void setObscode(String obscode) {
-		this.obscode = obscode;
+	public void setName(String name) {
+		this.name = name;
 	}
+	
 	
 	
 	

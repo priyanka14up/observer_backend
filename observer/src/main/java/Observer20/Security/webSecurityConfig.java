@@ -1,64 +1,59 @@
-package Observer20.Security;
 
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+  package Observer20.Security;
+  
+  import org.springframework.beans.factory.annotation.Autowired; 
+  import org.springframework.context.annotation.Bean;
+  import org.springframework.context.annotation.Configuration;
+  import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder; 
+  import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+  import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity; 
+  import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 
-//@Configuration
-//@EnableWebSecurity
-public class webSecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	@Bean
-	public UserDetailsService userDetailsService()
-	{
-		return new UserDetailsServiceImpl();
-		
-	}
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	@Bean
-	public DaoAuthenticationProvider authenticationProvider()
-	{
-		DaoAuthenticationProvider authProvider=new DaoAuthenticationProvider();
-		authProvider.setUserDetailsService(userDetailsService());
-		authProvider.setPasswordEncoder(passwordEncoder());
-		
-		return authProvider;
-		
-	}
+  
+  @Configuration
+  
+  @EnableWebSecurity public class webSecurityConfig extends
+  WebSecurityConfigurerAdapter{
+  
+  @Autowired CustomUserDetailsService customUserDetailsService;
+  @Autowired
+  MD5PasswordEncoder  mD5PasswordEncoder;
+  
+  //@Autowired PasswordEncoder PasswordEncoder;
+  @Bean
+  public CustomUserDetailsService customUserDetailsService() {
+      return new CustomUserDetailsService();
+  }
+  
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+  
+  http. csrf(). disable() .authorizeRequests() .anyRequest() .authenticated()
+  .and() .httpBasic(); }
+  
+  @Override 
+  protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+  
+  auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder()); }
 
- protected void configure(AuthenticationManagerBuilder auth ) throws Exception{
-	 
-		auth.authenticationProvider(authenticationProvider());
- }
-protected void configure(HttpSecurity http) throws Exception {
-		
-		http
-		.authorizeRequests()
-		.antMatchers("/ObsCode").hasAnyAuthority("g","p")
-		.anyRequest()
-		.authenticated()
-		.and()
-		.formLogin().permitAll()
-		.and()
-		.logout().permitAll()
-		.and().exceptionHandling().accessDeniedPage("/403");
-		http
-		.csrf()
-		.disable();
-		http.headers().frameOptions().disable();
-		}
-
+@Bean
+public PasswordEncoder passwordEncoder() {
+    return new MD5PasswordEncoder();
 }
+
+
+  }
+  
+/*
+ * @Bean public PasswordEncoder passwordEncoder() { return new
+ * MD5PasswordEncoder() // return new BCryptPasswordEncoder(); }
+ 
+ * 
+ * 
+ * 
+ * }
+ */
+ 

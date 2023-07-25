@@ -11,6 +11,7 @@ import Observer20.Model.Form;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+//import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
 import Observer20.repository.FormServiceRepo;
 import Observer20.repository.QuestionRepo;
@@ -230,7 +231,7 @@ public class FormServiceBean implements FormService {
 					
 				}else
 				{
-					throw new HandledException("CHECK_PARAMETERS", "this is already submitted by User");
+					throw new HandledException("CHECK_PARAMETERS", "this Question is already submitted by User");
 				}
 			}
 			return resultResponses;
@@ -284,4 +285,11 @@ ResponseMap.put("remarks",response.getRemarks());
 			return ResponseMap;
 			
 		}
+
+//		@Override
+//		public List<SubFormDraft> fillSubForm(HttpServletRequest request, @Valid List<SubFormDraft> subFormDrafts)
+//				throws HandledException {
+//			
+//			return null;
+//		}
 }

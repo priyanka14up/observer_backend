@@ -14,6 +14,7 @@ import Observer20.Model.Form;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+//import Observer20.Model.SubFormDraft;
 import Observer20.Services.FormService;
 import Observer20.errors.ResponseHandler;
 import Observer20.repository.FormServiceRepo;
@@ -204,4 +205,23 @@ public class FormController {
 		}
 		
 	}
+	
+	
+//	@PostMapping("/fillSubform")
+//	public ResponseEntity<Object> fillSubForm(HttpServletRequest request, @Valid @RequestBody List<SubFormDraft> subFormDrafts) throws HandledException {
+//		try {
+//			
+//			List<SubFormDraft> result=formService.fillSubForm(request,subFormDrafts);
+//	
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
+//	
+	
+	
+	
 }

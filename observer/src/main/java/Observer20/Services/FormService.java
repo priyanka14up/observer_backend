@@ -9,6 +9,7 @@ import Observer20.Model.Form;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+//import Observer20.Model.SubFormDraft;
 
 
 public interface FormService {
@@ -21,4 +22,5 @@ public interface FormService {
 	public Long getFormIdBySid(Long sid)throws HandledException;
 	public List<Response> createResponses(HttpServletRequest request, @Valid List<Response> responses)throws HandledException;
 	public List<Response> getResponses(String submittedBy)throws HandledException;
+	//public List<SubFormDraft> fillSubForm(HttpServletRequest request, @Valid List<SubFormDraft> subFormDrafts)throws HandledException;
 }

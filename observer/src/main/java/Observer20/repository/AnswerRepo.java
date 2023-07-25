@@ -10,7 +10,7 @@ import Observer20.Model.Response;
 public interface AnswerRepo extends JpaRepository<Answer, Long>{
 
 	
-	List<Response> findAllBySubmittedBy(String submittedBy);
-	Response findBySubmittedBy(String submittedBy);
+//	List<Response> findAllBySubmittedBy(String submittedBy);
+//	Response findBySubmittedBy(String submittedBy);
 	
 }

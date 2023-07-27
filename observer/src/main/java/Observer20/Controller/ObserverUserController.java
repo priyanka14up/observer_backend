@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +17,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Response.ApiResponse;
 import Observer20.Services.ObserverService;
-import Observer20.payloads.ApiResponse;
-import Observer20.payloads.LoginDto;
+
+
 import Observer20.payloads.ObserverUserDto;
 
 
@@ -43,13 +45,14 @@ public class ObserverUserController {
 		}
 			
 		//login user
-		@PostMapping("/login")
-		public ResponseEntity<?> loginObserver(@RequestBody LoginDto  loginDto)
-		{
-			ApiResponse apiResponse=observerService.loginObserver(loginDto);
-			return ResponseEntity.ok(apiResponse);
-			
-		}
+	/*
+	 * @PostMapping("/login") public ResponseEntity<?> loginObserver(@RequestBody
+	 * LoginDto loginDto) { ApiResponse
+	 * apiResponse=observerService.loginObserver(loginDto); return
+	 * ResponseEntity.ok(apiResponse);
+	 * 
+	 * }
+	 */
 		//get all
 		@GetMapping("/")
 		public ResponseEntity<List<ObserverUserDto>> getAllUsers()
@@ -66,6 +69,7 @@ public class ObserverUserController {
 			
 		}
 		// delete
+		//@PreAuthorize("hasRole('ADMIN')")
 		@DeleteMapping("/{obscode}")
 		public ResponseEntity<ApiResponse> deleteObserverUser(@PathVariable String obscode)
 		{

@@ -5,14 +5,19 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import Observer20.Exception.ApiException;
 import Observer20.Model.ObserverUser;
+import Observer20.Response.ApiResponse;
+import Observer20.Security.CustomUserDetailsService;
+import Observer20.Security.JwtAuthRequest;
+import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.ObserverService;
-import Observer20.payloads.ApiResponse;
-import Observer20.payloads.LoginDto;
+
+
 import Observer20.payloads.ObserverUserDto;
 import Observer20.repository.ObserverUserRepo;
 
@@ -20,17 +25,11 @@ import Observer20.repository.ObserverUserRepo;
 public class ObserverServiceIMPL implements ObserverService {
 	@Autowired
 	private ObserverUserRepo observerUserRepo;
-	/*
-	 * @Autowired private PasswordEncoder Md5PasswordEncoder;
-	 */
-
-	/*
-	 * @Autowired PasswordEncoder passwordEncoder;
-	 */
-
-	/*
-	 * public PasswordEncoder passwordEncoder () { return Md5PasswordEncoder; }
-	 */
+	@Autowired
+	JwtTokenHelper jwtTokenHelper;
+	
+	 @Autowired private CustomUserDetailsService userDetailsService;
+	
 
 	@Override
 
@@ -41,25 +40,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		return userToDto(SavedObserverUser);
 	}
 
-	/*
-	 * @Override public ObserverUserDto createObserver(ObserverUserDto
-	 * observerUserDto) { String message; boolean status;
-	 * 
-	 * ObserverUser observerUser=dtoToUser(observerUserDto);
-	 * if(observerUser!=observerUser) { ObserverUser
-	 * SavedObserverUser=observerUserRepo.save(observerUser); return new
-	 * ApiResponse(message ="User saved successfully...", status =true);}
-	 * 
-	 * } else
-	 * 
-	 * ObserverUser SavedObserverUser=observerUserRepo.save(observerUser); return
-	 * userToDto(SavedObserverUser);
-	 * 
-	 * 
-	 * 
-	 * 
-	 * }
-	 */
+	
 	@Override
 	public List<ObserverUserDto> getAllUsers() {
 		List<ObserverUser> observerusers = observerUserRepo.findAll();
@@ -106,48 +87,81 @@ public class ObserverServiceIMPL implements ObserverService {
 		return observerUserDto;
 	}
 
+	
 	/*
-	 * @Override public ApiResponse loginObserver(LoginDto loginDto) {
+	 * @Override public ApiResponse1 loginObserver(JwtAuthRequest jwtAuthRequest) {
 	 * 
 	 * 
 	 * 
 	 * ObserverUser
-	 * observerUser1=observerUserRepo.findByObscode(loginDto.getObscode());
+	 * observerUser1=observerUserRepo.findByObscode(jwtAuthRequest.getObscode()); //
+	 * UserDetails userDetails =
+	 * userDetailsService.loadUserByUsername(jwtAuthRequest.getObscode());
 	 * 
 	 * 
-	 * String message; boolean status; if(observerUser1!=null) {
+	 * String message; boolean status; String token; if(observerUser1!=null) {
 	 * 
 	 * String
-	 * password=DigestUtils.md5DigestAsHex(loginDto.getPassword().getBytes());
+	 * password=DigestUtils.md5DigestAsHex(jwtAuthRequest.getPassword().getBytes());
 	 * String encodedPassword=observerUser1.getPassword(); // Boolean //
-	 * isPwdRight=passwordEncoder.matches(password,encodedPassword); Boolean
+	 * //isPwdRight=passwordEncoder.matches(password,encodedPassword); Boolean
 	 * isPwdRight = password.equals(encodedPassword);
 	 * //System.out.println(password); //System.out.println(encodedPassword);
 	 * //System.out.println(isPwdRight);
 	 * 
 	 * if(isPwdRight) { Optional<ObserverUser>
-	 * observerUser=observerUserRepo.findOneByObscodeAndPassword(loginDto.getObscode
-	 * (),encodedPassword); if(observerUser.isPresent()) { return new
-	 * ApiResponse(message ="login success", status =true); } else { return new
-	 * ApiResponse(message ="Login unsuccess", status =false); } }
+	 * observerUser=observerUserRepo.findOneByObscodeAndPassword(jwtAuthRequest.
+	 * getObscode(),encodedPassword); if(observerUser.isPresent()) { String token1
+	 * =jwtTokenHelper.generateToken(observerUser1);
 	 * 
-	 * else { return new ApiResponse(message ="Password not match", status =false);}
-	 * 
-	 * } else {
-	 * 
-	 * return new ApiResponse(message ="observer code not exist", status= false); }
+	 * return new ApiResponse1(message="Login success", status=true,token=token1);
 	 * 
 	 * 
 	 * }
 	 * 
+	 * else { return new ApiResponse1(message ="Login unsuccess", status
+	 * =false,token=null); } }
+	 * 
+	 * else { return new ApiResponse1(message ="Password not match", status
+	 * =false,token=null);}
+	 * 
+	 * } else { return new ApiResponse1(message ="observer code not exist",
+	 * status=false, token=null); }
+	 * 
+	 * 
+	 * }
+	 */
+	 
+
+	
+	/*
+	 * @Override public ObserverUserDto getObserverUserById(String obsCode) {
+	 * ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
+	 * 
+	 * return userToDto(observerUser); }
 	 */
 
-	@Override
-	public ObserverUserDto getObserverUserById(String obsCode) {
-		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
+	  @Override 
+	  public ObserverUserDto getObserverUserById(String obsCode) {
+	  ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
+	  
+	  //return userToDto(observerUser); 
+	  String message;
+		boolean status;
+		if (observerUser != null)
 
-		return userToDto(observerUser);
-	}
+		{
+			return userToDto(observerUser);
+			//return new ApiResponse(message = "User deleted Successfully ...", status = true);
+		} else {
+
+			//return new ApiResponse(message = "User does not exist", status = false);
+			  throw new ApiException("usercode not exist") ; }
+
+		}
+	 
+	 
+	
 
 	@Override
 	public ObserverUserDto updateObserverUserById(ObserverUserDto user, String obscode) {

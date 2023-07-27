@@ -11,7 +11,7 @@ import javax.validation.constraints.NotBlank;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name="questions_response")
+@Table(name="answer")
 @EntityListeners(AuditingEntityListener.class)
 public class Answer {
 

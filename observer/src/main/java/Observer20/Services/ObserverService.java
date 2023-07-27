@@ -3,8 +3,9 @@ package Observer20.Services;
 
 import java.util.List;
 
-import Observer20.payloads.ApiResponse;
-import Observer20.payloads.LoginDto;
+
+import Observer20.Response.ApiResponse;
+
 import Observer20.payloads.ObserverUserDto;
 
 
@@ -12,7 +13,7 @@ public interface ObserverService {
 
 	ObserverUserDto createObserver(ObserverUserDto user);
 
-	//ApiResponse loginObserver(LoginDto loginDto) ;
+	//ApiResponse1 loginObserver(JwtAuthRequest jwtAuthRequest) ;
 	
 	List<ObserverUserDto> getAllUsers();
 	

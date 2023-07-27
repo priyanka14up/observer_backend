@@ -11,7 +11,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import Observer20.payloads.ApiResponse;
+import Observer20.Response.ApiResponse;
+
+
 
 
 @RestControllerAdvice
@@ -55,6 +57,14 @@ public class GlobalExceptionHandler {
 	  ResponseEntity<ApiResponse>(apiResponse,HttpStatus.NOT_FOUND);
 	  
 	  }
+	  @ExceptionHandler(ApiException.class)
+		public ResponseEntity<ApiResponse> handelApiException(ApiException ex)
+		{
+			String message=ex.getMessage();
+			ApiResponse apiResponse=new ApiResponse (message,false);
+			return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.BAD_REQUEST);
+			
+			}
 
 }
 

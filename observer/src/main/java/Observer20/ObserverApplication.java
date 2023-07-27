@@ -7,6 +7,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @SpringBootApplication(exclude=SecurityAutoConfiguration.class)
+//@SpringBootApplication
 
 public class ObserverApplication   {
 	/*implements CommandLineRunner */

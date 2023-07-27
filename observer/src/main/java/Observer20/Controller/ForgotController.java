@@ -7,6 +7,7 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.util.DigestUtils;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +30,7 @@ public class ForgotController {
 	/*
 	 * @Autowired PasswordEncoder passwordEncoder;
 	 */
-	Random random=new Random(1000);
+	Random random=new Random(10000);
 	
 	@PostMapping("/send-otp")
 	public String sendOtp(@RequestParam("email") String email,HttpSession session)

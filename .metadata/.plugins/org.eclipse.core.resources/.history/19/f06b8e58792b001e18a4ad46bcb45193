@@ -1,0 +1,70 @@
+package Observer20.Model;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "form_subform_responses")
+public class FormSubformResponse {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+  
+    
+    @Convert(converter = JsonBConverter.class)
+    @Column(name = "subform_responses", columnDefinition = "jsonb")
+    private Map<String, SubformResponse> subformResponses = new HashMap<>();
+    
+    /*observer code*/
+	@Column(name = "submitted_by",nullable=false)
+    private String submittedBy;
+	
+    @Column(name = "status")
+    private boolean status;
+    
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getSubformResponses() {
+		return subformResponses;
+	}
+
+	public void setSubformResponses(String subformResponses) {
+		this.subformResponses = subformResponses;
+	}
+
+	public String getSubmittedBy() {
+		return submittedBy;
+	}
+
+	public void setSubmittedBy(String submittedBy) {
+		this.submittedBy = submittedBy;
+	}
+
+	public boolean isStatus() {
+		return status;
+	}
+
+	public void setStatus(boolean status) {
+		this.status = status;
+	}
+
+	@Override
+	public String toString() {
+		return "FormSubformResponse [id=" + id + ", subformResponses=" + subformResponses + ", submittedBy="
+				+ submittedBy + ", status=" + status + "]";
+	}
+  
+}

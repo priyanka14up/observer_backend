@@ -1,15 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="jakarta.persistence.ManyToOne"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.JoinColumn"/>
-    <fullyQualifiedTypeName name="jakarta.validation.Valid"/>
-    <fullyQualifiedTypeName name="Observer20.Model.Question"/>
-    <fullyQualifiedTypeName name="jakarta.servlet.http.HttpServletRequest"/>
-    <fullyQualifiedTypeName name="java.util.HashMap"/>
-    <fullyQualifiedTypeName name="Observer20.repository.QuestionRepo"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
-    <fullyQualifiedTypeName name="Observer20.repository.SubFormRepo"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.CascadeType"/>
     <fullyQualifiedTypeName name="Observer20.Model.Form"/>
     <fullyQualifiedTypeName name="org.hibernate.bytecode.spi.ReflectionOptimizer.AccessOptimizer"/>
     <fullyQualifiedTypeName name="Observer20.Model.SubForm"/>
@@ -33,7 +23,6 @@
     <fullyQualifiedTypeName name="Observer20.Model.Form1"/>
     <fullyQualifiedTypeName name="Observer20.Model.Question1"/>
     <fullyQualifiedTypeName name="Observer20.Model.SubForm1"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Entity"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
     <fullyQualifiedTypeName name="jakarta.persistence.EntityListeners"/>
@@ -46,13 +35,7 @@
     <fullyQualifiedTypeName name="Observer20.Model.Response"/>
     <fullyQualifiedTypeName name="javax.validation.Valid"/>
     <fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
-    <fullyQualifiedTypeName name="javax.persistence.Entity"/>
-    <fullyQualifiedTypeName name="javax.persistence.Table"/>
     <fullyQualifiedTypeName name="javax.persistence.EntityListeners"/>
-    <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
-    <fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
-    <fullyQualifiedTypeName name="javax.persistence.Column"/>
-    <fullyQualifiedTypeName name="javax.persistence.Id"/>
     <fullyQualifiedTypeName name="javax.validation.constraints.NotBlank"/>
     <fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
     <fullyQualifiedTypeName name="javax.persistence.JoinColumn"/>
@@ -60,4 +43,21 @@
     <fullyQualifiedTypeName name="javax.persistence.OneToMany"/>
     <fullyQualifiedTypeName name="javax.persistence.CascadeType"/>
     <fullyQualifiedTypeName name="Observer20.Model.SubFormDraft"/>
+    <fullyQualifiedTypeName name="Observer20.Model.Answer"/>
+    <fullyQualifiedTypeName name="javax.persistence.Entity"/>
+    <fullyQualifiedTypeName name="javax.persistence.Table"/>
+    <fullyQualifiedTypeName name="javax.persistence.Id"/>
+    <fullyQualifiedTypeName name="javax.persistence.GeneratedValue"/>
+    <fullyQualifiedTypeName name="javax.persistence.GenerationType"/>
+    <fullyQualifiedTypeName name="javax.persistence.Column"/>
+    <fullyQualifiedTypeName name="Observer20.Model.FormSubformResponse"/>
+    <fullyQualifiedTypeName name="javax.persistence.Convert"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.type.MapType"/>
+    <fullyQualifiedTypeName name="Observer20.Dto.SubformResponse"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="Observer20.repository.FormSubformResponsesRepo"/>
+    <fullyQualifiedTypeName name="Observer20.repository.AnswerRepo"/>
+    <fullyQualifiedTypeName name="Observer20.Services.FormService"/>
 </qualifiedTypeNameHistroy>

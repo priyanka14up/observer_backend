@@ -20,6 +20,12 @@ public class Answer {
     @Column(name = "ans_id", updatable = false, nullable = false)
     private Long aid;
 	
+	@Column(name = "f_id",nullable=false)
+    private Long fid;
+	
+	@Column(name = "s_id",nullable=false)
+    private Long sid;
+	
 	@Column(name = "q_id",nullable=false)
     private Long qid;
 	
@@ -30,6 +36,27 @@ public class Answer {
 	@Column(name = "remarks")
     private String remarks;
 	
+	  /*observer code*/
+		@Column(name = "submitted_by",nullable=false)
+	    private String submittedBy;
+	
+
+	public Long getFid() {
+		return fid;
+	}
+
+	public void setFid(Long fid) {
+		this.fid = fid;
+	}
+
+	public Long getSid() {
+		return sid;
+	}
+
+	public void setSid(Long sid) {
+		this.sid = sid;
+	}
+
 	public Long getQid() {
 		return qid;
 	}
@@ -61,12 +88,21 @@ public class Answer {
 	public void setAid(Long aid) {
 		this.aid = aid;
 	}
+	
+	
+	public String getSubmittedBy() {
+		return submittedBy;
+	}
+
+	public void setSubmittedBy(String submittedBy) {
+		this.submittedBy = submittedBy;
+	}
 
 	@Override
 	public String toString() {
-		return "Answer [aid=" + aid + ", qid=" + qid + ", answer=" + answer + ", remarks=" + remarks + "]";
+		return "Answer [aid=" + aid + ", fid=" + fid + ", sid=" + sid + ", qid=" + qid + ", answer=" + answer
+				+ ", remarks=" + remarks + ", submittedBy=" + submittedBy + "]";
 	}
-	
 
 	}
 

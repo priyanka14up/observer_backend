@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import Observer20.Exception.HandledException;
+import Observer20.Model.Answer;
 import Observer20.Model.Form;
+import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
@@ -206,6 +208,36 @@ public class FormController {
 		
 	}
 	
+//	@PostMapping("/submitAnswers")
+//	public ResponseEntity<Object> submitAnswers(HttpServletRequest request, @Valid @RequestBody List<Answer> answers) throws HandledException {
+//		try {
+//			
+//			List<Answer> result=formService.submitAnswers(request,answers);
+//	
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
+	
+	@PostMapping("/submitAnswers/{status}")
+	public ResponseEntity<Object> submitAnswers(HttpServletRequest request, @Valid @RequestBody List<Answer> answers,@PathVariable("status") boolean status) throws HandledException {
+		try {
+			
+			List<Answer> result=formService.submitAnswers(request,answers,status);
+	
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
+	
+	
+	
 	
 //	@PostMapping("/fillSubform")
 //	public ResponseEntity<Object> fillSubForm(HttpServletRequest request, @Valid @RequestBody List<SubFormDraft> subFormDrafts) throws HandledException {
@@ -223,5 +255,18 @@ public class FormController {
 //	
 	
 	
+//	@PostMapping
+//    public ResponseEntity<FormSubformResponses> saveFormSubformResponses(@RequestBody FormSubformResponses formSubformResponses) {
+//        FormSubformResponses savedResponse = repository.save(formSubformResponses);
+//        return new ResponseEntity<>(savedResponse, HttpStatus.CREATED);
+//    }
+//	
+	
+	
+//	@GetMapping
+//    public ResponseEntity<List<FormSubformResponses>> getAllFormSubformResponses() {
+//        List<FormSubformResponses> allResponses = repository.findAll();
+//        return new ResponseEntity<>(allResponses, HttpStatus.OK);
+//    }
 	
 }

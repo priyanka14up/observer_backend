@@ -2,18 +2,24 @@ package Observer20.Services;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import Observer20.Exception.HandledException;
+import Observer20.Model.Answer;
 import Observer20.Model.Form;
+import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.repository.AnswerRepo;
 //import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
 import Observer20.repository.FormServiceRepo;
+import Observer20.repository.FormSubformResponsesRepo;
 import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.SubFormRepo;
@@ -32,6 +38,13 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public ResponseRepo responseRepo;
+	
+	@Autowired
+	public AnswerRepo answerRepo;
+	
+	@Autowired
+	public FormSubformResponsesRepo formSubformResponsesRepo;
+	
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -286,6 +299,133 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 
+		@Override
+		public List<Answer> submitAnswers(HttpServletRequest request, @Valid List<Answer> answers)
+				throws HandledException {
+			List<Answer> resultAnswers = new ArrayList<Answer>();
+			try {
+				
+			for(int i=0;i<answers.size();i++)
+			{
+				Answer answer=answerRepo.findByQid(answers.get(i).getQid());
+				if(answer==null)
+				{
+					answers.get(i).setQid(answers.get(i).getQid());
+					answers.get(i).setAnswer(answers.get(i).getAnswer());
+					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+					{
+						answers.get(i).setRemarks(answers.get(i).getRemarks());
+						
+					}
+					else
+					{
+						answers.get(i).setRemarks(null);
+						
+					}
+					//answers.get(i).setSubmittedBy(answers.get(i).getSubmittedBy());
+				
+					Long sid=questionRepo.findSubformSidByQid(answers.get(i).getQid());
+					answers.get(i).setSid(sid);
+					Long fid=subFormRepo.findFormIdBySid(sid);
+					answers.get(i).setFid(fid);
+					answerRepo.save(answers.get(i));
+					resultAnswers.add(answers.get(i));
+					
+				}else
+				{
+					throw new HandledException("CHECK_PARAMETERS", "this Answer is already submitted by User");
+				}
+			}
+			return resultAnswers;
+				}catch(Exception e)
+				{
+					throw new HandledException("exception in adding answer", e.getMessage());
+				}
+				
+			
+		}
+
+		
+		
+		
+		
+		public List<Long> getAnswerIdsForSubform(Long subformId) {
+			
+			FormSubformResponse formSubformResponse=formSubformResponsesRepo.findById(subformId).orElse(null);
+			//FormSubformResponse subformResponse = subformResponseRepository.findById(subformId).orElse(null);
+	        if (formSubformResponse != null) {
+	            Map<Long, List<Long>> subformResponses = formSubformResponse.getSubformResponses();
+	            return subformResponses.getOrDefault(subformId, new ArrayList<>());
+	        }
+	        return new ArrayList<>();
+	    }
+
+		@Override
+		public List<Answer> submitAnswers(HttpServletRequest request, @Valid List<Answer> answers,boolean status) throws HandledException {
+			List<Answer> resultAnswers = new ArrayList<Answer>();
+			//List<Long> answerIds=new ArrayList<>(List);
+			FormSubformResponse formSubformResponse=new FormSubformResponse();
+			try {
+				
+			for(int i=0;i<answers.size();i++)
+			{
+				Answer answer=answerRepo.findByQid(answers.get(i).getQid());
+				if(answer==null)
+				{
+					answers.get(i).setQid(answers.get(i).getQid());
+					answers.get(i).setAnswer(answers.get(i).getAnswer());
+					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+					{
+						answers.get(i).setRemarks(answers.get(i).getRemarks());
+						
+					}
+					else
+					{
+						answers.get(i).setRemarks(null);
+						
+					}
+					//answers.get(i).setSubmittedBy(answers.get(i).getSubmittedBy());
+				
+					Long sid=questionRepo.findSubformSidByQid(answers.get(i).getQid());
+					answers.get(i).setSid(sid);
+					Long fid=subFormRepo.findFormIdBySid(sid);
+					answers.get(i).setFid(fid);
+					answerRepo.save(answers.get(i));
+					resultAnswers.add(answers.get(i));
+			
+					
+				}else
+				{
+					throw new HandledException("CHECK_PARAMETERS", "this Answer is already submitted by User");
+				}
+			}
+			//formSubformResponse
+			
+			formSubformResponse.setFid(answers.get(0).getFid());
+			formSubformResponse.setSid(answers.get(0).getSid());
+			List<Long> answerIds=getAnswerIdsForSubform(answers.get(0).getSid());
+			Long sid=answers.get(0).getSid();
+			
+			
+			//List<Long> answersList=answerRepo.findAnswerIdsBySid(sid);
+			Map<Long,List<Long>> subFormResponseMap=new HashMap<>();
+				subFormResponseMap.put(sid, answerIds);
+			//formSubformResponse.setSubformResponses(Map<sid,answerIds>);
+			formSubformResponse.setSubmittedBy(answers.get(0).getSubmittedBy());
+			formSubformResponse.setStatus(formSubformResponse.isStatus());
+			formSubformResponsesRepo.save(formSubformResponse);
+		
+			return resultAnswers;
+				}catch(Exception e)
+				{
+					throw new HandledException("exception in adding answer", e.getMessage());
+				}
+				
+			
+		}
+		
+		
+		
 //		@Override
 //		public List<SubFormDraft> fillSubForm(HttpServletRequest request, @Valid List<SubFormDraft> subFormDrafts)
 //				throws HandledException {

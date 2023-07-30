@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
 import Observer20.Model.Form;
@@ -222,12 +224,15 @@ public class FormController {
 //		}
 //	}
 	
-	@PostMapping("/submitAnswers/{status}")
-	public ResponseEntity<Object> submitAnswers(HttpServletRequest request, @Valid @RequestBody List<Answer> answers,@PathVariable("status") boolean status) throws HandledException {
+	@PostMapping("/submitAnswers")
+	//public ResponseEntity<Object> submitAnswers(HttpServletRequest request, @Valid @RequestBody List<Answer> answers,@PathVariable("status") boolean status) throws HandledException {
+		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
+			
 		try {
 			
-			List<Answer> result=formService.submitAnswers(request,answers,status);
-	
+			//List<Answer> result=formService.submitAnswers(request,answers,status);
+			List<Answer> result=formService.submitAnswers(request,formSubformResponseDto);
+			//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
 		} catch (HandledException e) {

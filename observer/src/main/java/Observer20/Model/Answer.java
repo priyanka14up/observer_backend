@@ -17,7 +17,7 @@ public class Answer {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "ans_id", updatable = false, nullable = false)
+    @Column(name = "a_id", updatable = false, nullable = false)
     private Long aid;
 	
 	@Column(name = "f_id",nullable=false)

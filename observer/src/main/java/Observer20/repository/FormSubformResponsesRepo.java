@@ -9,4 +9,5 @@ import Observer20.Model.FormSubformResponse;
 @Repository
 public interface FormSubformResponsesRepo extends JpaRepository<FormSubformResponse, Long> {
     // Add custom queries or methods if required
+	FormSubformResponse findByStatus(boolean status);
 }

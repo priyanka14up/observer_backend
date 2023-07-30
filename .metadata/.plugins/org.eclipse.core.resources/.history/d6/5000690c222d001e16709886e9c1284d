@@ -1,0 +1,54 @@
+package Observer20.Model;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import javax.persistence.AttributeConverter;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+
+
+public class Serialization implements AttributeConverter<List<Map>, String>{
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
+    @Override
+    public String convertToDatabaseColumn(List<Map> sidAidsMaps) {
+
+        String parentDetailsJson = null;
+        
+        try {
+        	
+        	parentDetailsJson = objectMapper.writeValueAsString(parentDetails);
+        	
+        } catch (final JsonProcessingException e) {
+        	
+        	System.out.println("JSON writing error"+ e);
+        }
+
+        return parentDetailsJson;
+        
+    }
+    
+    @Override
+    public List<ChildrenDetails> convertToEntityAttribute(String parentDetailsJSON) {
+
+        List<ChildrenDetails> parentDetails = null;
+        
+        try {
+        	
+        	parentDetails = objectMapper.readValue(parentDetailsJSON, ArrayList.class);
+        	
+        } catch (final IOException e) {
+        	
+            System.out.println("JSON reading error"+e);
+        }
+
+        return parentDetails;
+    }
+    
+   
+}
+

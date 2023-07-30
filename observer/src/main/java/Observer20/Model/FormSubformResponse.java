@@ -25,9 +25,11 @@ public class FormSubformResponse {
     @Column(name = "s_id",nullable=false)
     private Long sid;
     
-    @Convert(converter = MapToJsonConverter.class)
+    /*subform responses*/
+    @Convert(converter = Serialization.class)
     @Column(columnDefinition = "TEXT")
-    private Map<Long, List<Long>> subformResponses;
+    List<Map> subformResponses;
+    //private Map<Long, List<Long>> subformResponses;
     
     //@Convert(converter = JsonBConverter.class)
    // @Column(name = "subform_responses", columnDefinition = "jsonb")
@@ -40,7 +42,7 @@ public class FormSubformResponse {
     @Column(name = "status")
     private boolean status;
     
-    public FormSubformResponse(Long fid,Long sid,boolean status, Map<Long, List<Long>> subformResponses) {
+    public FormSubformResponse(Long fid,Long sid,boolean status,List<Map> subformResponses) {
         this.fid = fid;
         this.sid=sid;
         this.status = status;
@@ -73,12 +75,12 @@ public class FormSubformResponse {
 	}
 
 
-	public Map<Long, List<Long>> getSubformResponses() {
+	public List<Map> getSubformResponses() {
 		return subformResponses;
 	}
 
 
-	public void setSubformResponses(Map<Long, List<Long>> subformResponses) {
+	public void setSubformResponses(List<Map> subformResponses) {
 		this.subformResponses = subformResponses;
 	}
 

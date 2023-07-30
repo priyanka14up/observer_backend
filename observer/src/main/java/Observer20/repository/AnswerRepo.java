@@ -13,6 +13,8 @@ public interface AnswerRepo extends JpaRepository<Answer, Long>{
 //	List<Response> findAllBySubmittedBy(String submittedBy);
 //	Response findBySubmittedBy(String submittedBy);
 	Answer findByQid(Long qid);
-	 List<Long> findAnswerIdsBySid(Long sid);
+	 List<Long> findAllAidBySid(Long sid);
+	 List<Answer> findAllBySid(Long sid);
+	//Long findAidBySid(Long sid);
 	
 }

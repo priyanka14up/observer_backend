@@ -26,12 +26,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 @Entity
 @Table(name="eci_observers")
 public class ObserverUser implements UserDetails{
-	/**
-	 * 
-	 */
-	//private static final long serialVersionUID = 1L;
-
-	//public static final String DigestUtils = null;
+	
+	
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -207,7 +203,8 @@ public class ObserverUser implements UserDetails{
 		// TODO Auto-generated method stub
 		return true;
 	}
-	  
+
+	 
 	 
 	
 }

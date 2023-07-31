@@ -414,7 +414,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 			if(existingFormSubformResponse!=null)
 			{
-				if(status==false)
+				if(existingFormSubformResponse.isStatus()==false)
 				{
 					
 					List<Map> subFormresponses=existingFormSubformResponse.getSubformResponses();

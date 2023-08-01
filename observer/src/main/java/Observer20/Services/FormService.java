@@ -33,6 +33,7 @@ public interface FormService {
 	//public List<SubFormDraft> fillSubForm(HttpServletRequest request, @Valid List<SubFormDraft> subFormDrafts)throws HandledException;
 	//List<Answer> submitAnswers(HttpServletRequest request, @Valid List<Answer> answers, boolean status)
 			//throws HandledException;
-	List<Answer> submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
+	FormSubformResponseDto submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
 			throws HandledException;
+	//getAnswers();
 }

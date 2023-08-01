@@ -231,7 +231,7 @@ public class FormController {
 		try {
 			
 			//List<Answer> result=formService.submitAnswers(request,answers,status);
-			List<Answer> result=formService.submitAnswers(request,formSubformResponseDto);
+			FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
 			//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
@@ -241,6 +241,22 @@ public class FormController {
 		}
 	}
 	
+//	@GetMapping("/answers/{fid}")
+//	public ResponseEntity<Object> getAnswers(@PathVariable("fid") Long fid) throws HandledException {
+//		try {
+//
+//			
+//			
+//			List<Response> result=formService.getAnswers(fid);
+//	
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//		
+//	}
 	
 	
 	

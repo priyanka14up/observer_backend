@@ -1,23 +1,16 @@
 package Observer20.Services.ServiceIMPL;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
-
 import Observer20.Exception.ApiException;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 import Observer20.Security.CustomUserDetailsService;
-import Observer20.Security.JwtAuthRequest;
 import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.ObserverService;
-
-
 import Observer20.payloads.ObserverUserDto;
 import Observer20.repository.ObserverUserRepo;
 
@@ -134,12 +127,7 @@ public class ObserverServiceIMPL implements ObserverService {
 	 
 
 	
-	/*
-	 * @Override public ObserverUserDto getObserverUserById(String obsCode) {
-	 * ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
-	 * 
-	 * return userToDto(observerUser); }
-	 */
+	
 
 	  @Override 
 	  public ObserverUserDto getObserverUserById(String obsCode) {
@@ -156,7 +144,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		} else {
 
 			//return new ApiResponse(message = "User does not exist", status = false);
-			  throw new ApiException("usercode not exist") ; }
+			  throw new ApiException("usercode does not exist") ; }
 
 		}
 	 

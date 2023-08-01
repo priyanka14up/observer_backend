@@ -19,6 +19,7 @@ import Observer20.Model.ObserverUser;
 @Repository
 public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	Optional<ObserverUser> findOneByObscodeAndPassword(String obscode,String password);
+	//ObserverUser getUserByUsername(String obscode);
 	
 	//Optional<ObserverUser> findByObscode(String obscode);
 	ObserverUser findByObscode(String obscode);

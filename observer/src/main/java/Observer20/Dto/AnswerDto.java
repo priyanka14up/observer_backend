@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
+import Observer20.Model.FinalSubmitAnswer;
 import Observer20.repository.AnswerRepo;
 
 public class AnswerDto {
@@ -17,6 +18,7 @@ public class AnswerDto {
 	 //@NotBlank(message = "answers to be filled")
 	 private List<DraftAnswer> draftAnswers;
 		
+	 private List<FinalSubmitAnswer> finalSubmitAnswer;
 	 //@NotBlank(message = "File Location is mandatory")
 	 
 	 private  boolean status;
@@ -57,11 +59,22 @@ public class AnswerDto {
 	public void setSubmittedBy(String submittedBy) {
 		this.submittedBy = submittedBy;
 	}
+	
+	
+
+	public List<FinalSubmitAnswer> getFinalSubmitAnswer() {
+		return finalSubmitAnswer;
+	}
+
+	public void setFinalSubmitAnswer(List<FinalSubmitAnswer> finalSubmitAnswer) {
+		this.finalSubmitAnswer = finalSubmitAnswer;
+	}
 
 	@Override
 	public String toString() {
-		return "AnswerDto [id=" + id + ", draftAnswers=" + draftAnswers + ", status=" + status + ", submittedBy="
-				+ submittedBy + "]";
-	}    
-  
+		return "AnswerDto [id=" + id + ", draftAnswers=" + draftAnswers + ", finalSubmitAnswer=" + finalSubmitAnswer
+				+ ", status=" + status + ", submittedBy=" + submittedBy + "]";
+	}
+
+	
 }

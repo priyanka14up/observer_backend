@@ -586,13 +586,14 @@ ResponseMap.put("remarks",response.getRemarks());
 				draftAnswerRepo.deleteAll(draftAnswers);
 				if(existingFormStatus!=null)
 				{
-					List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);;
-					 savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					//List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
+					
 					 existingFormStatus.setFid(formId);
 					 existingFormStatus.setStatus(status);
 					 existingFormStatus.setSubmittedBy(submittedBy);
 					 formStatusRepo.save(existingFormStatus);
-					return entityToDto(existingFormStatus,savedAnswers);
+					return entityToDtoForFinal(existingFormStatus,savedFinalAnswers);
 				}
 				else
 				{
@@ -600,9 +601,10 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setFid(fid);
 				formStatus.setStatus(status);
 				formStatus.setSubmittedBy(submittedBy);
-				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
+				List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
+				//List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
-				return entityToDto(formStatus,savedAnswers);
+				return entityToDtoForFinal(formStatus,savedFinalAnswers);
 				}			
 			
 				
@@ -612,13 +614,13 @@ ResponseMap.put("remarks",response.getRemarks());
 			{
 				if(existingFormStatus!=null)
 				{
-					List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);;
+					List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);;
 					 savedAnswers=draftAnswerRepo.findAllBySid(sid);
 					 existingFormStatus.setFid(formId);
 					 existingFormStatus.setStatus(status);
 					 existingFormStatus.setSubmittedBy(submittedBy);
 					 formStatusRepo.save(existingFormStatus);
-					return entityToDto(existingFormStatus,savedAnswers);
+					return entityToDtoForDraft(existingFormStatus,savedAnswers);
 				}
 				else
 				{
@@ -628,7 +630,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setSubmittedBy(submittedBy);
 				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
-				return entityToDto(formStatus,savedAnswers);
+				return entityToDtoForDraft(formStatus,savedAnswers);
 				}			
 			
 			}
@@ -641,7 +643,20 @@ ResponseMap.put("remarks",response.getRemarks());
 		
 		}
 		
-		public AnswerDto entityToDto(FormStatus formStatus,List<DraftAnswer> draftAnswers) {
+		public AnswerDto entityToDtoForFinal(FormStatus formStatus,List<FinalSubmitAnswer> finalSubmitAnswers) {
+
+			AnswerDto Dto = new AnswerDto();
+			Dto.setId(formStatus.getStid());
+			Dto.setFinalSubmitAnswer(finalSubmitAnswers);
+			
+			Dto.setStatus(formStatus.isStatus());
+			Dto.setSubmittedBy(formStatus.getSubmittedBy());
+
+			return Dto;
+
+		}
+		
+		public AnswerDto entityToDtoForDraft(FormStatus formStatus,List<DraftAnswer> draftAnswers) {
 
 			AnswerDto Dto = new AnswerDto();
 			Dto.setId(formStatus.getStid());
@@ -652,7 +667,6 @@ ResponseMap.put("remarks",response.getRemarks());
 			return Dto;
 
 		}
-		
 		
 		
 		

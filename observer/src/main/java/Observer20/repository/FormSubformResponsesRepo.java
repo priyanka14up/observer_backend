@@ -10,5 +10,5 @@ import Observer20.Model.FormSubformResponse;
 public interface FormSubformResponsesRepo extends JpaRepository<FormSubformResponse, Long> {
     // Add custom queries or methods if required
 	FormSubformResponse findByStatus(boolean status);
-	FormSubformResponse findByFid(Long sid);
+	FormSubformResponse findByFid(Long fid);
 } 

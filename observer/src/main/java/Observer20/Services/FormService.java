@@ -7,9 +7,11 @@ import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
+import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
+import Observer20.Model.DraftAnswer;
 import Observer20.Model.Form;
 import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
@@ -35,5 +37,9 @@ public interface FormService {
 			//throws HandledException;
 	FormSubformResponseDto submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
 			throws HandledException;
-	//getAnswers();
+	
+	public FormSubformResponse getAnswers(Long fid)throws HandledException;
+	
+	
+	AnswerDto submitAnswers(HttpServletRequest request, AnswerDto nswerDto) throws HandledException;
 }

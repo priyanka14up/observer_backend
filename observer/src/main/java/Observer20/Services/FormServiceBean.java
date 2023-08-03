@@ -3,24 +3,34 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
+import Observer20.Model.DraftAnswer;
 import Observer20.Model.Form;
+import Observer20.Model.Answer;
+import Observer20.Model.DraftAnswer;
+import Observer20.Model.FinalSubmitAnswer;
+import Observer20.Model.FormStatus;
 import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
 import Observer20.repository.AnswerRepo;
+import Observer20.repository.DraftAnswerRepo;
+import Observer20.repository.FinalSubmitAnswerRepo;
 //import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
 import Observer20.repository.FormServiceRepo;
+import Observer20.repository.FormStatusRepo;
 import Observer20.repository.FormSubformResponsesRepo;
 import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
@@ -45,8 +55,17 @@ public class FormServiceBean implements FormService {
 	public AnswerRepo answerRepo;
 	
 	@Autowired
+	public DraftAnswerRepo draftAnswerRepo;
+	
+	@Autowired
 	public FormSubformResponsesRepo formSubformResponsesRepo;
 	
+	
+	@Autowired
+	public FormStatusRepo formStatusRepo;
+	
+	@Autowired
+	public FinalSubmitAnswerRepo finalSubmitAnswerRepo;
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -481,6 +500,161 @@ ResponseMap.put("remarks",response.getRemarks());
 			return Dto;
 
 		}
+
+		@Override
+		public FormSubformResponse getAnswers(Long fid) throws HandledException {
+			FormSubformResponse formSubformResponse=formSubformResponsesRepo.findByFid(fid);
+			Map<Long,List<Long>> subFormResponseMap=new HashMap<>();
+			Long sid=formSubformResponse.getSid();
+			List<Map> subFormResponsesMaps=formSubformResponse.getSubformResponses();
+			for(int i=0;i<subFormResponsesMaps.size();i++)
+			{
+				
+				subFormResponseMap=subFormResponsesMaps.get(i);
+				Set<Long> set=subFormResponseMap.keySet();
+			
+			}
+			return null;
+		}
+
+		@Override
+		public AnswerDto submitAnswers(HttpServletRequest request,AnswerDto answerDto) throws HandledException {
+			
+			
+			FormStatus formStatus=new FormStatus();
+			List<DraftAnswer> resultAnswers = new ArrayList<DraftAnswer>();
+			
+			List<DraftAnswer> answers=answerDto.getDraftAnswers();
+			Long formId=null;
+			Long sid=null;
+			boolean status=answerDto.isStatus();
+			String submittedBy=answerDto.getSubmittedBy();
+			try {
+				
+			for(int i=0;i<answers.size();i++)
+			{
+				DraftAnswer answer=draftAnswerRepo.findByQid(answers.get(i).getQid());
+				if(answer==null)
+				{
+					Long qid=answers.get(i).getQid();
+					answers.get(i).setQid(answers.get(i).getQid());
+					String answerget=answers.get(i).getAnswer();
+					answers.get(i).setAnswer(answers.get(i).getAnswer());
+					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+					{
+						answers.get(i).setRemarks(answers.get(i).getRemarks());
+						
+					}
+					else
+					{
+						answers.get(i).setRemarks(null);
+						
+					}	
+					sid=questionRepo.findSubformSidByQid(qid);
+					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
+					formId=subFormRepo.findFormIdBySid(sid);
+					answers.get(i).setFid(formId);
+					answers.get(i).setSubmittedBy(submittedBy);
+					draftAnswerRepo.save(answers.get(i));
+					resultAnswers.add(answers.get(i));
+			
+					
+				}else
+				{
+					throw new HandledException("CHECK_PARAMETERS", "this Answer is already submitted by User");
+				}
+			}//end of for
+			
+			FormStatus existingFormStatus=formStatusRepo.findByFid(formId);
+			List<FinalSubmitAnswer> finalSubmitAnswer=new ArrayList<FinalSubmitAnswer>();
+			if(status==true)
+			{
+				List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllByFid(formId);
+				for(int i=0;i<draftAnswers.size();i++)
+				{
+					FinalSubmitAnswer finalAnswer = new FinalSubmitAnswer();
+					finalAnswer.setAnswer(draftAnswers.get(i).getAnswer());
+					finalAnswer.setFid(formId);
+					finalAnswer.setQid(draftAnswers.get(i).getQid());
+					finalAnswer.setRemarks(draftAnswers.get(i).getRemarks());
+					finalAnswer.setSid(draftAnswers.get(i).getSid());
+					finalAnswer.setSubmittedBy(submittedBy);
+						finalSubmitAnswerRepo.save(finalAnswer);
+						finalSubmitAnswer.add(finalAnswer);
+					
+				}
+				draftAnswerRepo.deleteAll(draftAnswers);
+				if(existingFormStatus!=null)
+				{
+					List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);;
+					 savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					 existingFormStatus.setFid(formId);
+					 existingFormStatus.setStatus(status);
+					 existingFormStatus.setSubmittedBy(submittedBy);
+					 formStatusRepo.save(existingFormStatus);
+					return entityToDto(existingFormStatus,savedAnswers);
+				}
+				else
+				{
+				Long fid=subFormRepo.findFormIdBySid(sid);
+				formStatus.setFid(fid);
+				formStatus.setStatus(status);
+				formStatus.setSubmittedBy(submittedBy);
+				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
+				formStatusRepo.save(formStatus);
+				return entityToDto(formStatus,savedAnswers);
+				}			
+			
+				
+				
+			}
+			else
+			{
+				if(existingFormStatus!=null)
+				{
+					List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);;
+					 savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					 existingFormStatus.setFid(formId);
+					 existingFormStatus.setStatus(status);
+					 existingFormStatus.setSubmittedBy(submittedBy);
+					 formStatusRepo.save(existingFormStatus);
+					return entityToDto(existingFormStatus,savedAnswers);
+				}
+				else
+				{
+				Long fid=subFormRepo.findFormIdBySid(sid);
+				formStatus.setFid(fid);
+				formStatus.setStatus(status);
+				formStatus.setSubmittedBy(submittedBy);
+				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
+				formStatusRepo.save(formStatus);
+				return entityToDto(formStatus,savedAnswers);
+				}			
+			
+			}
+			
+		}
+			catch(Exception e)
+			{
+				throw new HandledException("exception in adding answer", e.getMessage());
+			}
+		
+		}
+		
+		public AnswerDto entityToDto(FormStatus formStatus,List<DraftAnswer> draftAnswers) {
+
+			AnswerDto Dto = new AnswerDto();
+			Dto.setId(formStatus.getStid());
+			Dto.setDraftAnswers(draftAnswers);
+			Dto.setStatus(formStatus.isStatus());
+			Dto.setSubmittedBy(formStatus.getSubmittedBy());
+
+			return Dto;
+
+		}
+		
+		
+		
 		
 		
 //		@Override

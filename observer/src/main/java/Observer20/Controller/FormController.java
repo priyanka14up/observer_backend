@@ -10,10 +10,14 @@ import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
+import Observer20.Model.DraftAnswer;
+import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
+import Observer20.Model.FormStatus;
 import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -225,7 +229,6 @@ public class FormController {
 //	}
 	
 	@PostMapping("/submitAnswers")
-	//public ResponseEntity<Object> submitAnswers(HttpServletRequest request, @Valid @RequestBody List<Answer> answers,@PathVariable("status") boolean status) throws HandledException {
 		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
 			
 		try {
@@ -241,23 +244,37 @@ public class FormController {
 		}
 	}
 	
-//	@GetMapping("/answers/{fid}")
-//	public ResponseEntity<Object> getAnswers(@PathVariable("fid") Long fid) throws HandledException {
-//		try {
-//
-//			
-//			
-//			List<Response> result=formService.getAnswers(fid);
-//	
-//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-//
-//		} catch (HandledException e) {
-//
-//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//		}
-//		
-//	}
+	@GetMapping("/answers/{fid}")
+	public ResponseEntity<Object> getAnswers(@PathVariable("fid") Long fid) throws HandledException {
+		try {
+
+		FormSubformResponse result=formService.getAnswers(fid);
 	
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+		
+	}
+	
+	
+	@PostMapping("/submitAnswers1")
+	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto) throws HandledException {
+		
+	try {
+		
+		//List<Answer> result=formService.submitAnswers(request,answers,status);
+		AnswerDto result=formService.submitAnswers(request,answerDto);
+		//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
 	
 	
 //	@PostMapping("/fillSubform")

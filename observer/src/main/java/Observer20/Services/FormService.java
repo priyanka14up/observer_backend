@@ -1,6 +1,7 @@
 package Observer20.Services;
 
 
+import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
+import Observer20.Dto.GetAnswerDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
@@ -38,8 +40,8 @@ public interface FormService {
 	FormSubformResponseDto submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
 			throws HandledException;
 	
-	public FormSubformResponse getAnswers(Long fid)throws HandledException;
+	//public FormSubformResponse getAnswers(Long fid)throws HandledException;
 	
-	
-	AnswerDto submitAnswers(HttpServletRequest request, AnswerDto nswerDto) throws HandledException;
+	public GetAnswerDto getAnswers(Long fid)throws HandledException;
+	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto) throws HandledException;
 }

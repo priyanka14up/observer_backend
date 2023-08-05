@@ -12,6 +12,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
+import Observer20.Dto.GetAnswerDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
@@ -248,7 +249,7 @@ public class FormController {
 	public ResponseEntity<Object> getAnswers(@PathVariable("fid") Long fid) throws HandledException {
 		try {
 
-		FormSubformResponse result=formService.getAnswers(fid);
+			GetAnswerDto result=formService.getAnswers(fid);
 	
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
@@ -266,7 +267,7 @@ public class FormController {
 	try {
 		
 		//List<Answer> result=formService.submitAnswers(request,answers,status);
-		AnswerDto result=formService.submitAnswers(request,answerDto);
+		HashMap<String, Object> result=formService.submitAnswers(request,answerDto);
 		//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
 		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 

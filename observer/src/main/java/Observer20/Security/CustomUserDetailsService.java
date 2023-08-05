@@ -25,12 +25,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 		return observerUser;
 		
 		
-		/*
-		 * ObserverUser observerUser=observerUserRepo.getObserverUserByobscode(obscode)
-		 * ; if(observerUser==null) { throw new
-		 * UsernameNotFoundException("could not find user"); } return new
-		 * MyUserDetails(observerUser);
-		 */
+		
 	}
 
 }

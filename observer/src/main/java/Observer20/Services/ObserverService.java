@@ -12,8 +12,6 @@ import Observer20.payloads.ObserverUserDto;
 public interface ObserverService {
 
 	ObserverUserDto createObserver(ObserverUserDto user);
-
-	//ApiResponse1 loginObserver(JwtAuthRequest jwtAuthRequest) ;
 	
 	List<ObserverUserDto> getAllUsers();
 	

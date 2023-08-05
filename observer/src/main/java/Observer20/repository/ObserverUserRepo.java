@@ -19,6 +19,7 @@ import Observer20.Model.ObserverUser;
 @Repository
 public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	Optional<ObserverUser> findOneByObscodeAndPassword(String obscode,String password);
+	//ObserverUser getUserByUsername(String obscode);
 	
 	//Optional<ObserverUser> findByObscode(String obscode);
 	ObserverUser findByObscode(String obscode);
@@ -28,4 +29,6 @@ public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	
 	@Query("Select u from ObserverUser u where u.obsecoee=:obsecode")
 	 ObserverUser getObserverUserByobscode(@Param("obscode") String obscode);
+
+	Optional<ObserverUser> findById(Long userId);
 }

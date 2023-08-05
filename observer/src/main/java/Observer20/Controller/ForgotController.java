@@ -97,13 +97,17 @@ public class ForgotController {
 		  
 		  //String email1=(String)session.getAttribute("email"); 
 		  ObserverUser observerUser=observerUserRepo.getObserverUserByEmail(email);
+		  if(observerUser==null) 
+		  { 
+			  return "user does not exist";
+		  }
 		 // observerUser.setPassword(passwordEncoder.encode(newpassword));
 		  observerUser.setPassword(DigestUtils.md5DigestAsHex(newpassword.getBytes()));
 		  observerUserRepo.save(observerUser);
 		   return "password changed successfully";
 	  
 	  }
-	  //@RequestParam("email") String email
+	  
 
 }
 

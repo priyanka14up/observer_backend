@@ -17,6 +17,7 @@ import javax.persistence.JoinColumn;
 
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -28,6 +29,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class ObserverUser implements UserDetails{
 	
 	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -202,6 +208,15 @@ public class ObserverUser implements UserDetails{
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+	
+	 @OneToMany(mappedBy = "observeruser", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private Set<UserSecurityQuestion> securityQuestions = new HashSet<>();
+
+
+	public void addSecurityQuestion(UserSecurityQuestion userSecurityQuestion) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	 

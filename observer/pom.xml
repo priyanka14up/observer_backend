@@ -104,6 +104,23 @@
     <artifactId>jjwt-api</artifactId>
     <version>0.11.2</version> <!-- Replace with the latest version available -->
 </dependency>
+<!-- https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket -->
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-websocket</artifactId>
+    
+</dependency>
+<!-- https://mvnrepository.com/artifact/com.twilio.sdk/twilio -->
+<dependency>
+    <groupId>com.twilio.sdk</groupId>
+    <artifactId>twilio</artifactId>
+    <version>7.1.0</version>
+</dependency>
+ 
+
+
+
+
 
 
 

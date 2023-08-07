@@ -678,52 +678,17 @@ ResponseMap.put("remarks",response.getRemarks());
 		}
 
 		@Override
-		public GetAnswerDto getAnswers(Long fid) throws HandledException {
-			FormStatus formStatus=formStatusRepo.findByFid(fid);
+		public HashMap<String, Object> getDraftAnswers(String userid,Long fid,Long sid) throws HandledException {
+			
 			GetAnswerDto getAnswerDto=new GetAnswerDto();
+			List<DraftAnswer> draftAnswers=draftAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
+					 SubForm subform=subFormRepo.findById(sid)
+						.orElseThrow(() ->new HandledException("NOT_FOUND", "subForm Id is not found"));
+					 getAnswerDto.setSubform_heading(subform.getHeading());
+					 getAnswerDto.setDraftAnswers(draftAnswers);
+					 
+				return customResponseGetAnswerDtoforDraftAnswer(getAnswerDto);
 			
-			Long sid=null;
-			if(formStatus.isStatus()==false)
-			{
-				List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllByFid(fid);
-				for(int i=0;i<draftAnswers.size();i++)
-				{
-				 sid=draftAnswers.get(i).getSid();
-				List<SubForm> subForms=subFormRepo.findAllBysid(sid);
-				for(int j=0;j<subForms.size();j++)
-				{
-					getAnswerDto.setSid(sid);
-					getAnswerDto.setSubform_heading(subForms.get(i).getHeading());
-					getAnswerDto.setDraftAnswers(draftAnswers);
-					
-				}
-				}
-			}
-			else
-			{
-//				finalSubmitAnswerRepo.findallby
-//				List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllByFid(fid);
-//				for(int i=0;i<draftAnswers.size();i++)
-//				{
-//				 sid=draftAnswers.get(i).getSid();
-//				List<SubForm> subForms=subFormRepo.findAllBysid(sid);
-//				for(int j=0;j<subForms.size();j++)
-//				{
-//					getAnswerDto.setSid(sid);
-//					getAnswerDto.setSubform_heading(subForms.get(i).getHeading());
-//					getAnswerDto.setDraftAnswers(draftAnswers);
-//					
-//				}
-//				}
-			}
-			
-			
-			
-			
-			List<SubForm> subForms=subFormRepo.findSubFormsByFormId(fid);
-			Date date=formStatus.getDate();
-			String submittedBy=formStatus.getSubmittedBy();
-			return null;
 		}
 		
 		private HashMap<String, Object> customResponseFinalAnswerDto( AnswerDto dto) {
@@ -761,6 +726,32 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 		
+		private HashMap<String, Object> customResponseGetAnswerDtoforDraftAnswer(GetAnswerDto dto) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("subformHeading",dto.getSubform_heading());
+			
+			msgMap.put("draftAnswer",customResponseDraftAnswers(dto.getDraftAnswers()));
+			
+			return msgMap;
+			
+		}
+		
+		private HashMap<String, Object> customResponsGetAnswerDtoforFinalAnswer( GetAnswerDto dto) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			
+			
+			msgMap.put("subformHeading",dto.getSubform_heading());
+			
+			msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dto.getFinalSubmitAnswers()));
+			
+			return msgMap;
+			
+		}
+
 		private List<HashMap<String, Object>> customResponseDraftAnswers( List<DraftAnswer> draftAnswers) {
 			
 			HashMap<String, Object> msgMap =  new HashMap<>();

@@ -229,7 +229,7 @@ public class FormController {
 //		}
 //	}
 	
-	@PostMapping("/submitAnswers")
+	@PostMapping("/submitAnswers1")
 		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
 			
 		try {
@@ -245,11 +245,11 @@ public class FormController {
 		}
 	}
 	
-	@GetMapping("/answers/{fid}")
-	public ResponseEntity<Object> getAnswers(@PathVariable("fid") Long fid) throws HandledException {
+	@GetMapping("/draftanswers/{userid}/{fid}/{sid}")
+	public ResponseEntity<Object> getAnswers(@PathVariable("userid")String userid,@PathVariable("fid") Long fid,@PathVariable("sid") Long sid) throws HandledException {
 		try {
 
-			GetAnswerDto result=formService.getAnswers(fid);
+			HashMap<String, Object> result=formService.getDraftAnswers(userid,fid,sid);
 	
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
@@ -261,7 +261,7 @@ public class FormController {
 	}
 	
 	
-	@PostMapping("/submitAnswers1")
+	@PostMapping("/submitAnswers")
 	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto) throws HandledException {
 		
 	try {

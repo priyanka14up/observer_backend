@@ -42,6 +42,9 @@ public interface FormService {
 	
 	//public FormSubformResponse getAnswers(Long fid)throws HandledException;
 	
-	public GetAnswerDto getAnswers(Long fid)throws HandledException;
+	//public GetAnswerDto getAnswers(Long fid)throws HandledException;
 	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto) throws HandledException;
+	
+	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
+	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
 }

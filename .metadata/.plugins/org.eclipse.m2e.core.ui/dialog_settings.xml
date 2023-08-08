@@ -2,8 +2,6 @@
 <section name="Workbench">
 	<section name="MavenProjectImportWizardPage">
 		<list key="rootDirectory">
-			<item value="D:\1807\observer"/>
-			<item value="D:\1807\observer\observer"/>
 			<item value="D:\observer\observer"/>
 		</list>
 		<list key="projectNameTemplate">

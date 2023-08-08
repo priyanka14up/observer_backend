@@ -3,7 +3,6 @@ package Observer20.Services;
 import java.text.ParseException;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.MultiValueMap;
 
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -15,7 +14,7 @@ import Observer20.Model.StoreOtp;
 public class SmsService {
 
 	private String Account_Sid="AC024fe836e918f084c98f26a0d435f50c";
-	private String Auth_Token="f658e3a58667d7e788481afdd6b24c0f";
+	private String Auth_Token="2b2425a30502089df8bd0d227724d23a";
     private String From_Number="+12512446173";
     
     public void send(SmsPojo sms) throws ParseException

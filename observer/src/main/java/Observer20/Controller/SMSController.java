@@ -50,14 +50,13 @@ public class SMSController {
 		
 	}
 	@PostMapping("/otp")
-	public String varifyOtp(@RequestBody TempOtp sms)
-	{
-		if(sms.getOtp()==StoreOtp.getOtp())
-			//StoreOtp.getOtp()
-		return "Otp is correct";
-		else
-			return "Otp is not correct";
+	public String verifyOtp(@RequestBody TempOtp sms) {
 		
+	    if (sms.getOtp() == StoreOtp.getOtp()) {
+	        return "Otp is correct";
+	    } else {
+	        return "Otp is not correct";
+	    }
 	}
 
 	

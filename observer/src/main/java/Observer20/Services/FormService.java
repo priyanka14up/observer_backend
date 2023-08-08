@@ -47,4 +47,5 @@ public interface FormService {
 	
 	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
+	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
 }

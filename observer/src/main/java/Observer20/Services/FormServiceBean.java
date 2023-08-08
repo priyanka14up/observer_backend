@@ -691,6 +691,32 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 		
+		@Override
+		public List<HashMap<String, Object>> getFinalAnswers(String userid,Long fid) throws HandledException {
+			
+			GetAnswerDto getAnswerDto=new GetAnswerDto();
+			List<GetAnswerDto> listOfDtos = new ArrayList<GetAnswerDto>();
+			Long sid=null;
+			String heading=null;
+			List<FinalSubmitAnswer> finalSubmitAnswers;
+			List<SubForm> subforms=subFormRepo.findSubFormsByFormId(fid);
+			for(int i=0;i<subforms.size();i++)
+			{
+				sid=subforms.get(i).getSid();
+				heading=subforms.get(i).getHeading();
+				getAnswerDto.setSubform_heading(heading);
+			 finalSubmitAnswers=finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid,userid);
+			 getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
+			 listOfDtos.add(getAnswerDto);
+			}
+			
+			
+			
+				return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);
+			
+		}
+		
+		
 		private HashMap<String, Object> customResponseFinalAnswerDto( AnswerDto dto) {
 			
 			HashMap<String, Object> msgMap =  new HashMap<>();
@@ -738,17 +764,21 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 		
-		private HashMap<String, Object> customResponsGetAnswerDtoforFinalAnswer( GetAnswerDto dto) {
+		private List<HashMap<String, Object>> customResponsGetAnswerDtoforFinalAnswer( List<GetAnswerDto> dtos) {
 			
 			HashMap<String, Object> msgMap =  new HashMap<>();
+			List<HashMap<String, Object>> listOfMsgMaps =  new ArrayList<>();
 			
-			
-			
-			msgMap.put("subformHeading",dto.getSubform_heading());
-			
-			msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dto.getFinalSubmitAnswers()));
-			
-			return msgMap;
+			for(int i=0;i<dtos.size();i++)
+			{
+				msgMap.put("subformHeading",dtos.get(i).getSubform_heading());
+				
+				msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dtos.get(i).getFinalSubmitAnswers()));
+				
+				listOfMsgMaps.add(msgMap);
+				
+			}
+			return listOfMsgMaps;
 			
 		}
 

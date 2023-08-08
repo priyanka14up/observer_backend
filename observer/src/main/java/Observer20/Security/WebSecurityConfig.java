@@ -1,5 +1,7 @@
 package Observer20.Security;
 
+import java.util.Arrays;
+
 import org.springframework.beans.factory.annotation.Autowired; 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -55,7 +57,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://10.72.140.67:80"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
 

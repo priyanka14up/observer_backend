@@ -691,29 +691,113 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 		
+//		@Override
+//		public List<HashMap<String, Object>> getFinalAnswers(String userid,Long fid) throws HandledException {
+//			
+////			GetAnswerDto getAnswerDto=new GetAnswerDto();
+//			List<GetAnswerDto> listOfDtos = new ArrayList<GetAnswerDto>();
+////			Long sid=null;
+////			String heading=null;
+////			List<FinalSubmitAnswer> finalSubmitAnswers;
+//			List<SubForm> subforms=subFormRepo.findSubFormsByFormId(fid);
+////			for(int i=0;i<subforms.size();i++)
+////			{
+////				sid=subforms.get(i).getSid();
+////				heading=subforms.get(i).getHeading();
+////				getAnswerDto.setSubform_heading(heading);
+////			 finalSubmitAnswers=finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid,userid);
+////			 getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
+////			 listOfDtos.add(getAnswerDto);
+////			}
+//			
+//			for (SubForm subform : subforms) {
+//			    Long sid = subform.getSid();
+//			    String heading = subform.getHeading();
+//			    
+//			    GetAnswerDto getAnswerDto = new GetAnswerDto();
+//			    getAnswerDto.setSubform_heading(heading);
+//
+//			    List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
+//			    getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
+//			    
+//			    listOfDtos.add(getAnswerDto);
+//			}
+//			
+//			return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);
+//				//return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);	
+//			
+//		}
+//		
+		
+//		@Override
+//		public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException {
+//		    List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+//		    
+//		    List<SubForm> subforms = subFormRepo.findSubFormsByFormId(fid);
+//
+//		    for (SubForm subform : subforms) {
+//		        Long sid = subform.getSid();
+//		        String heading = subform.getHeading();
+//
+//		        GetAnswerDto getAnswerDto = new GetAnswerDto();
+//		        getAnswerDto.setSubform_heading(heading);
+//
+//		        List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
+//		        List<HashMap<String, Object>> finalSubmitAnswerMaps = customResponseFinalAnswers(finalSubmitAnswers);
+//
+//		        HashMap<String, Object> msgMap = new HashMap<>();
+//		        msgMap.put("subformHeading", heading);
+//		        msgMap.put("finalSubmitAnswer", finalSubmitAnswerMaps);
+//
+//		        listOfMsgMaps.add(msgMap);
+//		    }
+//
+//		    return listOfMsgMaps;
+//		}
+//		
 		@Override
-		public List<HashMap<String, Object>> getFinalAnswers(String userid,Long fid) throws HandledException {
-			
-			GetAnswerDto getAnswerDto=new GetAnswerDto();
-			List<GetAnswerDto> listOfDtos = new ArrayList<GetAnswerDto>();
-			Long sid=null;
-			String heading=null;
-			List<FinalSubmitAnswer> finalSubmitAnswers;
-			List<SubForm> subforms=subFormRepo.findSubFormsByFormId(fid);
-			for(int i=0;i<subforms.size();i++)
-			{
-				sid=subforms.get(i).getSid();
-				heading=subforms.get(i).getHeading();
-				getAnswerDto.setSubform_heading(heading);
-			 finalSubmitAnswers=finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid,userid);
-			 getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
-			 listOfDtos.add(getAnswerDto);
-			}
-			
-			
-			
-				return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);
-			
+		public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException {
+		    List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+		    
+		    List<SubForm> subforms = subFormRepo.findSubFormsByFormId(fid);
+		    
+		    for (SubForm subform : subforms) {
+		        Long sid = subform.getSid();
+		        String heading = subform.getHeading();
+
+		        GetAnswerDto getAnswerDto = new GetAnswerDto();
+		        getAnswerDto.setSubform_heading(heading);
+
+		        List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
+		        getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
+		        
+		        HashMap<String, Object> msgMap = new HashMap<>();
+		        msgMap.put("subformHeading", getAnswerDto.getSubform_heading());
+		        msgMap.put("finalSubmitAnswer", customResponseFinalAnswers1(getAnswerDto.getFinalSubmitAnswers()));
+		        
+		        listOfMsgMaps.add(msgMap);
+		    }
+		    
+		    return listOfMsgMaps;
+		}
+
+		private List<HashMap<String, Object>> customResponseFinalAnswers1(List<FinalSubmitAnswer> finalSubmitAnswer) {
+		    List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
+		    
+		    for (FinalSubmitAnswer answer : finalSubmitAnswer) {
+		        HashMap<String, Object> msgMap = new HashMap<>();
+		        //msgMap.put("id", answer.getId());
+		        msgMap.put("formId", answer.getFid());
+		        msgMap.put("questionId", answer.getQid());
+		        msgMap.put("subFormId", answer.getSid());
+		        msgMap.put("answer", answer.getAnswer());
+		        msgMap.put("remarks", answer.getRemarks());
+		        msgMap.put("submittedBy", answer.getSubmittedBy());
+		        
+		        listOfMaps.add(msgMap);
+		    }
+
+		    return listOfMaps;
 		}
 		
 		
@@ -765,12 +849,12 @@ ResponseMap.put("remarks",response.getRemarks());
 		}
 		
 		private List<HashMap<String, Object>> customResponsGetAnswerDtoforFinalAnswer( List<GetAnswerDto> dtos) {
-			
+	
 			HashMap<String, Object> msgMap =  new HashMap<>();
 			List<HashMap<String, Object>> listOfMsgMaps =  new ArrayList<>();
 			
 			for(int i=0;i<dtos.size();i++)
-			{
+		{
 				msgMap.put("subformHeading",dtos.get(i).getSubform_heading());
 				
 				msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dtos.get(i).getFinalSubmitAnswers()));
@@ -779,6 +863,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				
 			}
 			return listOfMsgMaps;
+			//return msgMap;
 			
 		}
 

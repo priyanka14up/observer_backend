@@ -10103,3 +10103,18 @@ user global configuration and to define the default location to store repositori
 not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
 EGit might behave differently since they see different configuration options.
 This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jdt.debug 4 125 2023-08-08 11:47:45.705
+!MESSAGE Failed to enable GC for event: ExceptionEvent: 18
+!STACK 0
+com.sun.jdi.VMDisconnectedException: Got IOException from Virtual Machine
+	at org.eclipse.jdi.internal.connect.PacketSendManager.sendPacket(PacketSendManager.java:93)
+	at org.eclipse.jdi.internal.MirrorImpl.requestVM(MirrorImpl.java:203)
+	at org.eclipse.jdi.internal.MirrorImpl.requestVM(MirrorImpl.java:243)
+	at org.eclipse.jdi.internal.MirrorImpl.requestVM(MirrorImpl.java:259)
+	at org.eclipse.jdi.internal.ObjectReferenceImpl.enableCollection(ObjectReferenceImpl.java:117)
+	at org.eclipse.jdi.internal.event.ExceptionEventImpl.enableExceptionGC(ExceptionEventImpl.java:92)
+	at org.eclipse.jdt.internal.debug.core.EventDispatcher.enableGCForExceptionEvent(EventDispatcher.java:430)
+	at org.eclipse.jdt.internal.debug.core.EventDispatcher.dispatch(EventDispatcher.java:162)
+	at org.eclipse.jdt.internal.debug.core.EventDispatcher.run(EventDispatcher.java:318)
+	at java.base/java.lang.Thread.run(Thread.java:833)

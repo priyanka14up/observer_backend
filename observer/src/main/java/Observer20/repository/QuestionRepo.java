@@ -14,4 +14,5 @@ public interface QuestionRepo extends JpaRepository<Question, Long>{
 	List<Question> findQuestionsBySubformSid(Long sid);
 	 @Query("SELECT q.subform.sid FROM Question q WHERE q.qid = :qid")
 	    Long findSubformSidByQid(@Param("qid") Long qid);
+	 Question findByQid(Long qid);
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Dto.FinalAnswerDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
@@ -606,7 +607,6 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setStatus(status);
 				formStatus.setSubmittedBy(submittedBy);
 				List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
-				//List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
 				return entityToDtoForFinal(formStatus,savedFinalAnswers);
 				}					
@@ -691,80 +691,17 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 		}
 		
-//		@Override
-//		public List<HashMap<String, Object>> getFinalAnswers(String userid,Long fid) throws HandledException {
-//			
-////			GetAnswerDto getAnswerDto=new GetAnswerDto();
-//			List<GetAnswerDto> listOfDtos = new ArrayList<GetAnswerDto>();
-////			Long sid=null;
-////			String heading=null;
-////			List<FinalSubmitAnswer> finalSubmitAnswers;
-//			List<SubForm> subforms=subFormRepo.findSubFormsByFormId(fid);
-////			for(int i=0;i<subforms.size();i++)
-////			{
-////				sid=subforms.get(i).getSid();
-////				heading=subforms.get(i).getHeading();
-////				getAnswerDto.setSubform_heading(heading);
-////			 finalSubmitAnswers=finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid,userid);
-////			 getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
-////			 listOfDtos.add(getAnswerDto);
-////			}
-//			
-//			for (SubForm subform : subforms) {
-//			    Long sid = subform.getSid();
-//			    String heading = subform.getHeading();
-//			    
-//			    GetAnswerDto getAnswerDto = new GetAnswerDto();
-//			    getAnswerDto.setSubform_heading(heading);
-//
-//			    List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
-//			    getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
-//			    
-//			    listOfDtos.add(getAnswerDto);
-//			}
-//			
-//			return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);
-//				//return customResponsGetAnswerDtoforFinalAnswer(listOfDtos);	
-//			
-//		}
-//		
-		
-//		@Override
-//		public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException {
-//		    List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
-//		    
-//		    List<SubForm> subforms = subFormRepo.findSubFormsByFormId(fid);
-//
-//		    for (SubForm subform : subforms) {
-//		        Long sid = subform.getSid();
-//		        String heading = subform.getHeading();
-//
-//		        GetAnswerDto getAnswerDto = new GetAnswerDto();
-//		        getAnswerDto.setSubform_heading(heading);
-//
-//		        List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
-//		        List<HashMap<String, Object>> finalSubmitAnswerMaps = customResponseFinalAnswers(finalSubmitAnswers);
-//
-//		        HashMap<String, Object> msgMap = new HashMap<>();
-//		        msgMap.put("subformHeading", heading);
-//		        msgMap.put("finalSubmitAnswer", finalSubmitAnswerMaps);
-//
-//		        listOfMsgMaps.add(msgMap);
-//		    }
-//
-//		    return listOfMsgMaps;
-//		}
-//		
+
 		@Override
 		public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException {
 		    List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
-		    
+		    FinalAnswerDto finalAnswerDto=new FinalAnswerDto();
+		    List<GetAnswerDto> listOfDtos = new ArrayList<GetAnswerDto>();
 		    List<SubForm> subforms = subFormRepo.findSubFormsByFormId(fid);
 		    
 		    for (SubForm subform : subforms) {
 		        Long sid = subform.getSid();
 		        String heading = subform.getHeading();
-
 		        GetAnswerDto getAnswerDto = new GetAnswerDto();
 		        getAnswerDto.setSubform_heading(heading);
 
@@ -789,6 +726,8 @@ ResponseMap.put("remarks",response.getRemarks());
 		        //msgMap.put("id", answer.getId());
 		        msgMap.put("formId", answer.getFid());
 		        msgMap.put("questionId", answer.getQid());
+		        Question question=questionRepo.findByQid(answer.getQid());
+		         msgMap.put("questiionText",question.getQname());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
 		        msgMap.put("remarks", answer.getRemarks());

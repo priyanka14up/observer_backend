@@ -13,7 +13,7 @@ public class GetAnswerDto {
 	 private List<DraftAnswer> draftAnswers;
 		
 	 private List<FinalSubmitAnswer> finalSubmitAnswers;
-	 
+	// private List<FinalAnswerDto> finalAnswerDtos;
 	 
 	public Long getId() {
 		return id;
@@ -22,14 +22,13 @@ public class GetAnswerDto {
 		this.id = id;
 	}
 	
-	
-	
 	public List<DraftAnswer> getDraftAnswers() {
 		return draftAnswers;
 	}
 	public void setDraftAnswers(List<DraftAnswer> draftAnswers) {
 		this.draftAnswers = draftAnswers;
 	}
+	
 	public List<FinalSubmitAnswer> getFinalSubmitAnswers() {
 		return finalSubmitAnswers;
 	}
@@ -47,5 +46,7 @@ public class GetAnswerDto {
 		return "GetAnswerDto [id=" + id + ", subform_heading=" + subform_heading + ", draftAnswers=" + draftAnswers
 				+ ", finalSubmitAnswers=" + finalSubmitAnswers + "]";
 	}
-	 
+	
+
+
 }

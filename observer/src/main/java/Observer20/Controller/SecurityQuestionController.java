@@ -66,10 +66,10 @@ public class SecurityQuestionController {
     
 
 
-    @PostMapping("/{userId}/validate-answers")
-    public boolean validateAnswers(@PathVariable Integer userId, @RequestBody List<UserSecurityQuestion> userAnswers) {
+    @PostMapping("/{obscode}/validate-answers")
+    public boolean validateAnswers(@PathVariable String obscode, @RequestBody List<UserSecurityQuestion> userAnswers) {
         // Fetch the observer user based on userId
-        ObserverUser observerUser = observerUserRepo.findById(userId).orElse(null);
+        ObserverUser observerUser = observerUserRepo.findByObscode(obscode);
         
         if (observerUser == null) {
             // Handle the case where ObserverUser is not found based on userId

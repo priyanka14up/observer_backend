@@ -20,7 +20,9 @@ public class SecurityQuestionService {
 
         for (UserSecurityQuestion userSecurityQuestion : userSecurityQuestions) {
             for (UserSecurityQuestion userAnswer : userAnswers) {
-                if (userSecurityQuestion.getQuestion().getQ_id().equals(userAnswer.getQuestion().getQ_id())) {
+                //if (userSecurityQuestion.getQuestion().getQ_id().equals(userAnswer.getQuestion().getQ_id()))
+                
+                	if (userSecurityQuestion.getQuestion().getQ_id()==(userAnswer.getQuestion().getQ_id())){
                     if (userSecurityQuestion.getAnswer().equals(userAnswer.getAnswer())) {
                         return true; // Return true if any answer matches
                     }

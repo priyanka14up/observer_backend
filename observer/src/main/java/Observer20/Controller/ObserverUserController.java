@@ -8,11 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,6 +24,7 @@ import Observer20.Services.ObserverService;
 
 
 import Observer20.payloads.ObserverUserDto;
+import Observer20.repository.UpdateValidationGroup;
 
 
 
@@ -77,6 +80,15 @@ public class ObserverUserController {
 			return ResponseEntity.ok(observerService.deleteObserverUser(obscode));
 		
 		}
+		//Put-update- user
+		@PutMapping("/{ObsCode}")
+		public ResponseEntity<ObserverUserDto> updateUser(
+				@Validated(UpdateValidationGroup.class) @RequestBody ObserverUserDto observerUserDto,
+		    @PathVariable String ObsCode) {
+		    
+		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, ObsCode);
+		    return ResponseEntity.ok(updatedUser);
+		} 
 		
 		
 		

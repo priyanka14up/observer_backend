@@ -34,6 +34,7 @@ public class Form {
 	
 	 @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
 	    private List<SubForm> subforms = new ArrayList<>();
+	 
 	
 	public Long getId() {
 		return id;

@@ -229,6 +229,7 @@ public class FormController {
 //		}
 //	}
 	
+	//response and status
 	@PostMapping("/submitAnswers1")
 		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
 			
@@ -292,34 +293,21 @@ public class FormController {
 }
 	
 	
-//	@PostMapping("/fillSubform")
-//	public ResponseEntity<Object> fillSubForm(HttpServletRequest request, @Valid @RequestBody List<SubFormDraft> subFormDrafts) throws HandledException {
+//	@GetMapping("/forms/{consistuency}")
+//	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("consistuency") String consistuency) throws HandledException {
+//
 //		try {
-//			
-//			List<SubFormDraft> result=formService.fillSubForm(request,subFormDrafts);
-//	
-//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//			List formData = (List) formService.allFormsByConsistuency(consistuency);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
 //
 //		} catch (HandledException e) {
 //
 //			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//
 //		}
+//
 //	}
-//	
 	
-	
-//	@PostMapping
-//    public ResponseEntity<FormSubformResponses> saveFormSubformResponses(@RequestBody FormSubformResponses formSubformResponses) {
-//        FormSubformResponses savedResponse = repository.save(formSubformResponses);
-//        return new ResponseEntity<>(savedResponse, HttpStatus.CREATED);
-//    }
-//	
-	
-	
-//	@GetMapping
-//    public ResponseEntity<List<FormSubformResponses>> getAllFormSubformResponses() {
-//        List<FormSubformResponses> allResponses = repository.findAll();
-//        return new ResponseEntity<>(allResponses, HttpStatus.OK);
-//    }
 	
 }

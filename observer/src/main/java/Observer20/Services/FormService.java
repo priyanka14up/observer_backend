@@ -1,24 +1,22 @@
 package Observer20.Services;
 
 
-import java.util.HashMap;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestBody;
 
-import Observer20.Dto.AnswerDto;
 import Observer20.Dto.FormSubformResponseDto;
-import Observer20.Dto.GetAnswerDto;
 import Observer20.Exception.HandledException;
 import Observer20.Model.Answer;
-import Observer20.Model.DraftAnswer;
 import Observer20.Model.Form;
 import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.Dto.AnswerDto;
+import java.util.*;
 //import Observer20.Model.SubFormDraft;
 
 
@@ -37,8 +35,9 @@ public interface FormService {
 	//public List<SubFormDraft> fillSubForm(HttpServletRequest request, @Valid List<SubFormDraft> subFormDrafts)throws HandledException;
 	//List<Answer> submitAnswers(HttpServletRequest request, @Valid List<Answer> answers, boolean status)
 			//throws HandledException;
-	FormSubformResponseDto submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
-			throws HandledException;
+	//FormSubformResponseDto submitAnswers(HttpServletRequest request, FormSubformResponseDto formSubformResponseDto)
+			//throws HandledException;
+
 	
 	//public FormSubformResponse getAnswers(Long fid)throws HandledException;
 	
@@ -48,4 +47,5 @@ public interface FormService {
 	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
+
 }

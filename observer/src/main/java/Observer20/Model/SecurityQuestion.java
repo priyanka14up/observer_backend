@@ -11,16 +11,16 @@ public class SecurityQuestion {
 
 	 @Id
 	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long q_id;
+	    private int q_id;
 
 	    @Column(nullable = false)
 	    private String question;
 
-		public Long getQ_id() {
+		public int getQ_id() {
 			return q_id;
 		}
 
-		public void setQ_id(Long q_id) {
+		public void setQ_id(int q_id) {
 			this.q_id = q_id;
 		}
 
@@ -32,7 +32,7 @@ public class SecurityQuestion {
 			this.question = question;
 		}
 
-	    
+		
 		
 	    
 }

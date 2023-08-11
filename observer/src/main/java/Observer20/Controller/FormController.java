@@ -1,3 +1,4 @@
+
 package Observer20.Controller;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
@@ -230,21 +231,21 @@ public class FormController {
 //	}
 	
 	//response and status
-	@PostMapping("/submitAnswers1")
-		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
-			
-		try {
-			
-			//List<Answer> result=formService.submitAnswers(request,answers,status);
-			FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
-			//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
-			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-
-		} catch (HandledException e) {
-
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-		}
-	}
+//	@PostMapping("/submitAnswers1")
+//		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody FormSubformResponseDto formSubformResponseDto) throws HandledException {
+//			
+//		try {
+//			
+//			//List<Answer> result=formService.submitAnswers(request,answers,status);
+//			FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
+//			//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
 	
 	@GetMapping("/draftanswers/{userid}/{fid}/{sid}")
 	public ResponseEntity<Object> getAnswers(@PathVariable("userid")String userid,@PathVariable("fid") Long fid,@PathVariable("sid") Long sid) throws HandledException {

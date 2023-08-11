@@ -39,9 +39,12 @@ public class ForgotController {
 		
 		//Generate Otp 4 digit
 		
-		int otp=random.nextInt(999999);
-		System.out.println("OTP:"+otp);
+		//int otp=random.nextInt(999999);
 		
+		int min=100000;
+    	int max=999999;
+    	int otp=(int)(Math.random()*(max-min+1)+min);
+    	System.out.println("OTP:"+otp);
 		//Write a code for send to email
 		
 		  String subject="OTP From ECI"; 
@@ -58,14 +61,14 @@ public class ForgotController {
 		else
 		{
 			session.setAttribute("message", "Check your Email id!!");
-			 return "varifiy-otp";
+			 return "verifiy-otp";
 			
 		}
 	}
 	
 	  //varify otp 
-	@PostMapping("/varify-otp")
-	public String varifyotp(@RequestParam("otp") int otp,HttpSession session) { 
+	@PostMapping("/verify-otp")
+	public String verifyotp(@RequestParam("otp") int otp,HttpSession session) { 
 		int myotp =(int)session.getAttribute("myotp");
 		String email=(String)session.getAttribute("email"); 
 		if(myotp==otp) 
@@ -83,7 +86,7 @@ public class ForgotController {
 	  } }
 		else {
 			session.setAttribute("message","you have entered wrong otp");
-			return "varify-otp";
+			return "verify-otp";
 	  
 	  }
 	

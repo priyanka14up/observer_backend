@@ -134,7 +134,7 @@ public class ObserverServiceIMPL implements ObserverService {
 	  ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 	  
 	  //return userToDto(observerUser); 
-	  String message;
+	  //String message;
 		boolean status;
 		if (observerUser != null)
 
@@ -152,10 +152,27 @@ public class ObserverServiceIMPL implements ObserverService {
 	
 
 	@Override
-	public ObserverUserDto updateObserverUserById(ObserverUserDto user, String obscode) {
+	public ObserverUserDto updateObserverUser(ObserverUserDto observerUserDto, String obsCode) {
 		// observerUserRepo.
-		return null;
-	}
+		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
+		if (observerUser != null) {
+		    // Update specific fields
+		    observerUser.setName(observerUserDto.getName());
+		    observerUser.setHomeState(observerUserDto.getHomeState());
+		    observerUser.setMobnum(observerUserDto.getMobnum());
+		    observerUser.setService(observerUserDto.getService());
+		    observerUser.setWorkexperience(observerUserDto.getWorkexperience());
+
+		    // Save the updated entity back to the database
+		    ObserverUser updatedUser = observerUserRepo.save(observerUser);
+		    // Return the updated user as DTO
+		    ObserverUserDto observerUserDto1 = userToDto(updatedUser);
+		    return observerUserDto1;
+		} else {
+		    throw new ApiException("usercode does not exist");}
+		}
+		
+	
 
 	@Override
 	public ApiResponse deleteObserverUser(String obscode) {

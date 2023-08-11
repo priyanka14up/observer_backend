@@ -17,7 +17,7 @@ public interface ObserverService {
 	
 	ObserverUserDto getObserverUserById(String obsCode);
 	
-	ObserverUserDto updateObserverUserById(ObserverUserDto user,String obscode)	;
+	ObserverUserDto updateObserverUser(ObserverUserDto user,String obscode)	;
 	
 	ApiResponse deleteObserverUser(String obscode);
 	

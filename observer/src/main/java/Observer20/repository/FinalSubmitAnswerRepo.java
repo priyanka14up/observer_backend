@@ -16,5 +16,6 @@ public interface FinalSubmitAnswerRepo extends JpaRepository<FinalSubmitAnswer, 
 	 @Query("SELECT DISTINCT a.subformId FROM Answer a " +
 	           "WHERE a.formId = ?1 AND a.submittedBy = ?2")
 	    List<Long> findDistinctSIdsByFidAndSubmittedBy(Long fid, String submittedBy);
-	 
+	 List<FinalSubmitAnswer> findAllByFid(Long fid);
+	 //List<FinalSubmitAnswer> findBySid(Long sid);
 }

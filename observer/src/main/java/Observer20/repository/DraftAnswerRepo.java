@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jdbc.repository.query.Query;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import Observer20.Model.Answer;
+
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 

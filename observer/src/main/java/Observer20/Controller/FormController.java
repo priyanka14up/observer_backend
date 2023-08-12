@@ -12,15 +12,16 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import Observer20.Dto.AnswerDto;
-import Observer20.Dto.FormSubformResponseDto;
+//import Observer20.Dto.AnswerDto;
+//import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
 import Observer20.Exception.HandledException;
-import Observer20.Model.Answer;
+//import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
 import Observer20.Model.FormStatus;
-import Observer20.Model.FormSubformResponse;
+//import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
@@ -64,6 +65,23 @@ public class FormController {
 		try {
 
 			List formData = (List) formService.allFormsByObsType(obsType);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	
+	@GetMapping("/forms/{obsType}/{userId}")
+	public ResponseEntity<Object> getAllFormsByObsType1(@PathVariable("obsType") String obsType,@PathVariable("userId") String userId) throws HandledException {
+
+		try {
+
+			List formData = (List) formService.allFormsByObsType1(obsType,userId);
 			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
 
 		} catch (HandledException e) {
@@ -253,6 +271,7 @@ public class FormController {
 
 		HashMap<String, Object> result=formService.getDraftAnswers(userid,fid,sid);
 	
+		
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
 		} catch (HandledException e) {
@@ -268,6 +287,9 @@ public class FormController {
 
 			List<HashMap<String, Object>> result=formService.getFinalAnswers(userid,fid);
 	
+			if (result == null|| result.isEmpty()) {
+	            return ResponseHandler.generateResponse("No final answers found", HttpStatus.NOT_FOUND, null);
+	        }
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
 		} catch (HandledException e) {

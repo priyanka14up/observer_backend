@@ -158,6 +158,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		if (observerUser != null) {
 		    // Update specific fields
 		    observerUser.setName(observerUserDto.getName());
+		    observerUser.setEmail(observerUserDto.getEmail());
 		    observerUser.setHomeState(observerUserDto.getHomeState());
 		    observerUser.setMobnum(observerUserDto.getMobnum());
 		    observerUser.setService(observerUserDto.getService());

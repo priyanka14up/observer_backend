@@ -2,6 +2,8 @@ package Observer20.payloads;
 
 
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -30,7 +32,10 @@ public class ObserverUserDto {
 	@NotEmpty
 	private String  homeState;
 	@NotNull
-	private int mobnum;
+	@NotNull(message = "Mobnum cannot be null")
+    @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
+    @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	private long mobnum;
 	@NotNull
 	private int workexperience;
 
@@ -86,11 +91,11 @@ public class ObserverUserDto {
 	public void setHomeState(String homeState) {
 		this.homeState = homeState;
 	}
-	public int getMobnum() {
+	public long getMobnum() {
 		return mobnum;
 	}
-	public void setMobnum(int mobnum) {
-		this.mobnum = mobnum;
+	public void setMobnum(long l) {
+		this.mobnum = l;
 	}
 	public int getWorkexperience() {
 		return workexperience;
@@ -105,7 +110,7 @@ public class ObserverUserDto {
 				+ ", mobnum=" + mobnum + ", workexperience=" + workexperience + "]";
 	}
 	public ObserverUserDto(int id, String obscode, String name, String email, String password, String role,
-			String service, String homeState, int mobnum, int workexperience) {
+			String service, String homeState, long mobnum, int workexperience) {
 		super();
 		this.id = id;
 		this.obscode = obscode;

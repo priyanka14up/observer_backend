@@ -50,7 +50,7 @@ public class ObserverUser implements UserDetails{
     private String role;
     private String service;
     private String homeState;
-    private int mobnum;
+    private long mobnum;
     private int workexperience;
     
 	
@@ -118,11 +118,11 @@ public class ObserverUser implements UserDetails{
 		this.homeState = homeState;
 	}
 
-	public int getMobnum() {
+	public long getMobnum() {
 		return mobnum;
 	}
 
-	public void setMobnum(int mobnum) {
+	public void setMobnum(long mobnum) {
 		this.mobnum = mobnum;
 	}
 
@@ -137,7 +137,7 @@ public class ObserverUser implements UserDetails{
 	
 
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
-			String homeState, int mobnum, int workexperience, Set<Role> roles) {
+			String homeState, long mobnum, int workexperience, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.obscode = obscode;

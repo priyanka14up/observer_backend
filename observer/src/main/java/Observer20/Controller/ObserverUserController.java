@@ -24,7 +24,7 @@ import Observer20.Services.ObserverService;
 
 
 import Observer20.payloads.ObserverUserDto;
-import Observer20.repository.UpdateValidationGroup;
+
 
 
 
@@ -83,7 +83,7 @@ public class ObserverUserController {
 		//Put-update- user
 		@PutMapping("/{ObsCode}")
 		public ResponseEntity<ObserverUserDto> updateUser(
-				@Validated(UpdateValidationGroup.class) @RequestBody ObserverUserDto observerUserDto,
+				@Valid @RequestBody ObserverUserDto observerUserDto,
 		    @PathVariable String ObsCode) {
 		    
 		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, ObsCode);

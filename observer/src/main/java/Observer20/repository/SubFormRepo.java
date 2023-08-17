@@ -15,8 +15,16 @@ public interface SubFormRepo extends JpaRepository<SubForm, Long>{
 	
 	
 	List<SubForm> findSubFormsByFormId(Long id);
+	
 	 @Query("SELECT s.form.id FROM SubForm s WHERE s.sid = :sid")
 	    Long findFormIdBySid(@Param("sid") Long sid);
+
+
+	 
+	 List<SubForm> findAllBysid(Long sid);
+	 
+
+
 	
 	
 	

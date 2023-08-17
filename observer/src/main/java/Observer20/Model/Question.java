@@ -26,7 +26,7 @@ public class Question {
     private Long qid;
 	
 	@NotBlank(message = "Question Name is mandatory")
-	@Column(name = "ques_name",nullable=false)
+	@Column(columnDefinition = "TEXT",name = "ques_name",nullable=false)
     private String qname;
 	
 	@NotBlank(message = "Input Type is mandatory")

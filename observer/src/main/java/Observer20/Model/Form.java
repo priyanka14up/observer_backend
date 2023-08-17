@@ -25,7 +25,7 @@ public class Form {
     private Long id;
 	
 	@NotBlank(message = "Form Name is mandatory")
-	@Column(name = "form_name",nullable=false)
+	@Column(columnDefinition = "TEXT",name = "form_name",nullable=false)
     private String name;
 	
 	@NotBlank(message = "Observer Type is mandatory")
@@ -34,9 +34,8 @@ public class Form {
 	
 	 @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
 	    private List<SubForm> subforms = new ArrayList<>();
+	 
 	
-	
-
 	public Long getId() {
 		return id;
 	}

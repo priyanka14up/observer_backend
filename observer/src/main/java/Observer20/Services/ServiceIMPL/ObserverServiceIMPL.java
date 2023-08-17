@@ -12,6 +12,7 @@ import Observer20.Security.CustomUserDetailsService;
 import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.ObserverService;
 import Observer20.payloads.ObserverUserDto;
+import Observer20.payloads.ObserverUserDtoUpdation;
 import Observer20.repository.ObserverUserRepo;
 
 @Service
@@ -152,17 +153,17 @@ public class ObserverServiceIMPL implements ObserverService {
 	
 
 	@Override
-	public ObserverUserDto updateObserverUser(ObserverUserDto observerUserDto, String obsCode) {
-		// observerUserRepo.
+	public ObserverUserDto updateObserverUser(ObserverUserDtoUpdation observerUserDtoUpdation, String obsCode) {
+		
 		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 		if (observerUser != null) {
 		    // Update specific fields
-		    observerUser.setName(observerUserDto.getName());
-		    observerUser.setEmail(observerUserDto.getEmail());
-		    observerUser.setHomeState(observerUserDto.getHomeState());
-		    observerUser.setMobnum(observerUserDto.getMobnum());
-		    observerUser.setService(observerUserDto.getService());
-		    observerUser.setWorkexperience(observerUserDto.getWorkexperience());
+		    observerUser.setName(observerUserDtoUpdation.getName());
+		    observerUser.setEmail(observerUserDtoUpdation.getEmail());
+		    observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
+		    observerUser.setService(observerUserDtoUpdation.getService());
+		    observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
 
 		    // Save the updated entity back to the database
 		    ObserverUser updatedUser = observerUserRepo.save(observerUser);

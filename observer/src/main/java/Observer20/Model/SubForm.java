@@ -29,7 +29,7 @@ public class SubForm {
     private Long sid;
 	
 	@NotBlank(message = "Heading is mandatory")
-	@Column(name = "Heading",nullable=false)
+	@Column(columnDefinition = "TEXT",name = "Heading",nullable=false)
     private String heading;
 		
 	@ManyToOne(fetch = FetchType.LAZY)

@@ -7,10 +7,10 @@ import javax.validation.constraints.NotBlank;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import Observer20.Model.Answer;
+//import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
-import Observer20.repository.AnswerRepo;
+//import Observer20.repository.AnswerRepo;
 
 public class AnswerDto {
 	

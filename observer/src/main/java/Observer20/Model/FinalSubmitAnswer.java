@@ -3,9 +3,11 @@ package Observer20.Model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
 
@@ -26,6 +28,8 @@ public class FinalSubmitAnswer {
 	
 	@Column(name = "s_id",nullable=false)
     private Long sid;
+	
+	
 	
 	@Column(name = "q_id",nullable=false)
     private Long qid;

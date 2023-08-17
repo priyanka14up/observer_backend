@@ -24,6 +24,7 @@ import Observer20.Services.ObserverService;
 
 
 import Observer20.payloads.ObserverUserDto;
+import Observer20.payloads.ObserverUserDtoUpdation;
 
 
 
@@ -36,6 +37,7 @@ public class ObserverUserController {
 	
 		@Autowired
 		private ObserverService observerService;
+		private ObserverUserDtoUpdation ObserverUserDtoUpdation;
 		
 		//POST -create user
 
@@ -81,20 +83,30 @@ public class ObserverUserController {
 		
 		}
 		//Put-update- user
+		/*
+		 * @PutMapping("/{ObsCode}") public ResponseEntity<ObserverUserDto> updateUser(
+		 * 
+		 * @Valid @RequestBody ObserverUserDto observerUserDto,
+		 * 
+		 * @PathVariable String ObsCode) {
+		 * 
+		 * ObserverUserDto updatedUser =
+		 * observerService.updateObserverUser(ObserverUserDtoUpdation, ObsCode); return
+		 * ResponseEntity.ok(updatedUser); }
+		 */
+		
+		
+		
+		
+		
 		@PutMapping("/{ObsCode}")
 		public ResponseEntity<ObserverUserDto> updateUser(
-				@Valid @RequestBody ObserverUserDto observerUserDto,
-		    @PathVariable String ObsCode) {
+		        @Valid @RequestBody ObserverUserDtoUpdation observerUserDtoUpdation,
+		        @PathVariable String ObsCode) {
 		    
-		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, ObsCode);
+		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDtoUpdation, ObsCode);
 		    return ResponseEntity.ok(updatedUser);
-		} 
-		
-		
-		
-		
-		
-		
+		}
 	
 	
 }

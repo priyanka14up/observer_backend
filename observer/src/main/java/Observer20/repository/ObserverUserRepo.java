@@ -27,6 +27,7 @@ public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	@Query("Select u from ObserverUser u where u.email=:email")
 	 ObserverUser getObserverUserByEmail(@Param("email") String email);
 	
+	
 	@Query("Select u from ObserverUser u where u.obsecoee=:obsecode")
 	 ObserverUser getObserverUserByobscode(@Param("obscode") String obscode);
 

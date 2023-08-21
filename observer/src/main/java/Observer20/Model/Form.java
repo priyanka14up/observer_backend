@@ -1,5 +1,6 @@
 package Observer20.Model;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -10,8 +11,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 
+import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
@@ -74,47 +78,13 @@ public class Form {
 	}
 
 	
-
 	
-	
-//	public List<SubForm> getSubforms() {
-//		return subforms;
-//	}
-//
-//	public void setSubforms(List<SubForm> subforms) {
-//		this.subforms = subforms;
-//	}
-
-	
-
-	
-	
-	
-
-//	public List<SubForm> getSubforms() {
-//		return subforms;
-//	}
-//
-//	public void setSubforms(List<SubForm> subforms) {
-//		this.subforms = subforms;
-//	}
-
-//	public List<SubForm> getSubforms() {
-//		return subforms;
-//	}
-//
-//	public void setSubforms(List<SubForm> subforms) {
-//		this.subforms = subforms;
-//	}
-
 	
 	
 	
 	
 	
 	}
-
-
 
 
 

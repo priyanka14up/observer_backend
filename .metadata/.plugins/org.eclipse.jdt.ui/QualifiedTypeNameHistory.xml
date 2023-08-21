@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="Observer20.repository.SubFormRepo1"/>
-    <fullyQualifiedTypeName name="Observer20.Model.Form1"/>
-    <fullyQualifiedTypeName name="Observer20.Model.Question1"/>
-    <fullyQualifiedTypeName name="Observer20.Model.SubForm1"/>
-    <fullyQualifiedTypeName name="jakarta.persistence.Entity"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Table"/>
     <fullyQualifiedTypeName name="jakarta.persistence.EntityListeners"/>
     <fullyQualifiedTypeName name="jakarta.persistence.Id"/>
@@ -42,7 +37,6 @@
     <fullyQualifiedTypeName name="javax.validation.constraints.NotBlank"/>
     <fullyQualifiedTypeName name="Observer20.Model.Answer"/>
     <fullyQualifiedTypeName name="java.util.Set"/>
-    <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="javax.persistence.Temporal"/>
     <fullyQualifiedTypeName name="org.hibernate.annotations.CreationTimestamp"/>
     <fullyQualifiedTypeName name="javax.persistence.TemporalType"/>
@@ -60,4 +54,10 @@
     <fullyQualifiedTypeName name="javax.persistence.FetchType"/>
     <fullyQualifiedTypeName name="javax.persistence.ManyToOne"/>
     <fullyQualifiedTypeName name="javax.persistence.JoinColumn"/>
+    <fullyQualifiedTypeName name="Observer20.Model.FormDates"/>
+    <fullyQualifiedTypeName name="Observer20.repository.FormDatesRepo"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
+    <fullyQualifiedTypeName name="java.time.LocalDate"/>
+    <fullyQualifiedTypeName name="Observer20.Enum.ObsStatus"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
 </qualifiedTypeNameHistroy>

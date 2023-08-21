@@ -20,6 +20,7 @@ import Observer20.Exception.HandledException;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
+import Observer20.Model.FormDates;
 import Observer20.Model.FormStatus;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
@@ -299,14 +300,11 @@ public class FormController {
 		
 	}
 	
-	@PostMapping("/submitAnswers")
-	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto) throws HandledException {
+	@PostMapping("/submitAnswers/{consistuency}")
+	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
 		
 	try {
-		
-		//List<Answer> result=formService.submitAnswers(request,answers,status);
-		HashMap<String, Object> result=formService.submitAnswers(request,answerDto);
-		//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
+		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
 		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
 	} catch (HandledException e) {
@@ -316,21 +314,37 @@ public class FormController {
 }
 	
 	
-//	@GetMapping("/forms/{consistuency}")
-//	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("consistuency") String consistuency) throws HandledException {
-//
-//		try {
-//
-//			List formData = (List) formService.allFormsByConsistuency(consistuency);
-//			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
-//
-//		} catch (HandledException e) {
-//
-//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//
-//		}
-//
-//	}
+	@GetMapping("/forms/{obsType}/{consistuency}/{userId}")
+	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("obsType") String obsType,@PathVariable("consistuency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
+
+		try {
+
+			List<HashMap<String, Object>>formData = formService.allFormsByConsistuency(obsType,consistuency,userId);
+			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+			 //listOfMsgMaps.add(formData);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	
+	@PostMapping("/saveDates")
+	public ResponseEntity<Object> submitDates(HttpServletRequest request,@Valid @RequestBody FormDates formdates) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitDates(request,formdates);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
 	
 	
 }

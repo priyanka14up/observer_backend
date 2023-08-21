@@ -40,8 +40,10 @@ public class FormStatus {
 	  /*observer code*/
 			@Column(name = "submitted_by",nullable=false)
 		    private String submittedBy;
-		
-	
+			
+	@Column(name = "consistuency")
+	private String Consistuency;
+			
 	public Long getStid() {
 		return stid;
 	}
@@ -85,12 +87,24 @@ public class FormStatus {
 		this.submittedBy = submittedBy;
 	}
 
+	
+	
+	
+	public String getConsistuency() {
+		return Consistuency;
+	}
+
+	public void setConsistuency(String consistuency) {
+		Consistuency = consistuency;
+	}
+
 	@Override
 	public String toString() {
 		return "FormStatus [stid=" + stid + ", fid=" + fid + ", status=" + status + ", date=" + date + ", submittedBy="
-				+ submittedBy + "]";
+				+ submittedBy + ", Consistuency=" + Consistuency + "]";
 	}
 
+	
 	
 	
 	}

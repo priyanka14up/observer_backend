@@ -1,7 +1,6 @@
 package Observer20.Services;
 
 
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -12,6 +11,7 @@ import Observer20.Dto.AnswerDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.Form;
+import Observer20.Model.FormDates;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -44,10 +44,13 @@ public interface FormService {
 	//public FormSubformResponse getAnswers(Long fid)throws HandledException;
 	
 	//public GetAnswerDto getAnswers(Long fid)throws HandledException;
-	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto) throws HandledException;
+	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto,String consistuency) throws HandledException;
 	
 	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
+	
+	public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId)throws HandledException;
+	HashMap<String, Object> submitDates(HttpServletRequest request,FormDates formDates) throws HandledException;
 
 }

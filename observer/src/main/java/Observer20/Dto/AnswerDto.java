@@ -27,6 +27,8 @@ public class AnswerDto {
 	 private  boolean status;
 	 
 	 private String submittedBy;
+	 
+	
 
 	public Long getId() {
 		return id;
@@ -74,6 +76,13 @@ public class AnswerDto {
 		return "AnswerDto [id=" + id + ", draftAnswers=" + draftAnswers + ", finalSubmitAnswer=" + finalSubmitAnswer
 				+ ", status=" + status + ", submittedBy=" + submittedBy + "]";
 	}
+
+	
+	
+	
+	
+	
+
 	
 	
 	

@@ -1,8 +1,11 @@
 package Observer20.Services;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -12,10 +15,12 @@ import org.springframework.stereotype.Service;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Enum.ObsStatus;
 import Observer20.Dto.FinalAnswerDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.Form;
+import Observer20.Model.FormDates;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -33,6 +38,7 @@ import Observer20.repository.ResponseRepo;
 import Observer20.repository.SubFormRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
+import Observer20.repository.FormDatesRepo;
 import Observer20.repository.FormStatusRepo;
 
 
@@ -50,6 +56,9 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public ResponseRepo responseRepo;
+	
+	@Autowired
+	public FormDatesRepo formDatesRepo;
 	
 //	@Autowired
 //	public AnswerRepo answerRepo;
@@ -170,7 +179,7 @@ public class FormServiceBean implements FormService {
 				
 				
 				 FormForGeneral=formServiceRepo.findAllByObsType(obsType);
-				 formStatusRepo.findAllBySubmittedBy(userId);
+				 //formStatusRepo.findAllBySubmittedBy(userId);
 			}catch(Exception e) {
 				
 				 System.out.println(e);
@@ -585,7 +594,7 @@ ResponseMap.put("remarks",response.getRemarks());
 
 
 		@Override
-		public HashMap<String, Object> submitAnswers(HttpServletRequest request,AnswerDto answerDto) throws HandledException {
+		public HashMap<String, Object> submitAnswers(HttpServletRequest request,AnswerDto answerDto,String consistuency) throws HandledException {
 			
 			
 			FormStatus formStatus=new FormStatus();
@@ -597,6 +606,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			Long sid=null;
 			boolean status=answerDto.isStatus();
 			String submittedBy=answerDto.getSubmittedBy();
+			
 			try {
 				
 			for(int i=0;i<answers.size();i++)
@@ -660,6 +670,7 @@ ResponseMap.put("remarks",response.getRemarks());
 					 existingFormStatus.setFid(formId);
 					 existingFormStatus.setStatus(status);
 					 existingFormStatus.setSubmittedBy(submittedBy);
+					 existingFormStatus.setConsistuency(consistuency);
 					 formStatusRepo.save(existingFormStatus);
 					return entityToDtoForFinal(existingFormStatus,savedFinalAnswers);
 				}
@@ -669,6 +680,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setFid(fid);
 				formStatus.setStatus(status);
 				formStatus.setSubmittedBy(submittedBy);
+				formStatus.setConsistuency(consistuency);
 				List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
 				return entityToDtoForFinal(formStatus,savedFinalAnswers);
@@ -684,6 +696,7 @@ ResponseMap.put("remarks",response.getRemarks());
 					 existingFormStatus.setFid(formId);
 					 existingFormStatus.setStatus(status);
 					 existingFormStatus.setSubmittedBy(submittedBy);
+					 existingFormStatus.setConsistuency(consistuency);
 					 formStatusRepo.save(existingFormStatus);
 					return entityToDtoForDraft(existingFormStatus,savedAnswers);
 				}
@@ -693,6 +706,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setFid(fid);
 				formStatus.setStatus(status);
 				formStatus.setSubmittedBy(submittedBy);
+				formStatus.setConsistuency(consistuency);
 				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
 				
@@ -711,6 +725,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		
 		}
 		
+		
 		public HashMap<String, Object> entityToDtoForFinal(FormStatus formStatus,List<FinalSubmitAnswer> finalSubmitAnswers) {
 
 			AnswerDto Dto = new AnswerDto();
@@ -719,7 +734,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 			Dto.setStatus(formStatus.isStatus());
 			Dto.setSubmittedBy(formStatus.getSubmittedBy());
-
+			
 			
 			return customResponseFinalAnswerDto(Dto);
 			//return Dto;
@@ -734,7 +749,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			Dto.setDraftAnswers(draftAnswers);
 			Dto.setStatus(formStatus.isStatus());
 			Dto.setSubmittedBy(formStatus.getSubmittedBy());
-
+			
 			//return Dto;
 			return customResponseDraftAnswerDto(Dto);
 
@@ -797,6 +812,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			    return listOfMsgMaps;
 		    	
 		}
+		
 
 		private List<HashMap<String, Object>> customResponseFinalAnswers1(List<FinalSubmitAnswer> finalSubmitAnswer) {
 		    List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
@@ -833,6 +849,9 @@ ResponseMap.put("remarks",response.getRemarks());
 			msgMap.put("formStatus",dto.isStatus());
 			
 			msgMap.put("submittedBy",dto.getSubmittedBy());
+			
+		
+			
 			
 			return msgMap;
 			
@@ -938,4 +957,165 @@ ResponseMap.put("remarks",response.getRemarks());
 			return listOfMaps;
 		}
 
+		@Override
+		public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId) throws HandledException 
+		{
+			Long fid=null,phaseNo=null;
+			LocalDate sdate,ldate;
+			String state=null;
+			LocalDate currentLocalDate;
+			HashMap<String, Object> formDatesMap = new HashMap<>();
+			List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+		List<Form> forms=formServiceRepo.findAllByObsType(obsType);
+		for(Form form : forms)
+		{
+			fid=form.getId();
+			FormDates formDatesDetails=formDatesRepo.findByFid(fid);
+			FormStatus formStatus=formStatusRepo.findByFidAndSubmittedBy(fid, userId);
+			if(formStatus!=null)
+			{
+				if(formStatus.isStatus()==true)
+				{
+					
+					formDatesMap=customResponseFormStatusSubmit(form,ObsStatus.submitted,formStatus.getDate());
+				}
+				else if(formStatus.isStatus()==false)
+				{ 
+					
+					//status=false;
+					formDatesMap=customResponseFormStatusDraft(form,ObsStatus.draft,formStatus.getDate()); 
+				}
+			}
+			else
+			{ 
+				
+				 ldate=formDatesDetails.getLdate();
+				 currentLocalDate = LocalDate.now();
+//				//savedLocalDate.isAfter(currentLocalDate)
+				if(formDatesDetails.getLdate().isAfter(currentLocalDate))
+				{
+				System.out.println("pending");	
+				formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate()); 
+				}
+				else if(formDatesDetails.getLdate().isBefore(currentLocalDate))
+			{
+				System.out.println("due");	
+				formDatesMap=customResponseFormStatusDue(form,ObsStatus.due,formDatesDetails.getLdate()); 
+//					 state=formDatesDetails.getState();
+//						 phaseNo=formDatesDetails.getPhaseNo();				
+				}
+				else
+				{
+					formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate()); 
+				}
+				//customResponseForm(form); 
+			
+			}
+			listOfMsgMaps.add(formDatesMap);
+		}
+		//return null;
+		return listOfMsgMaps;
+		
+		
+		}
+
+
+private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStatus status,Date submitDate) {
+	
+	HashMap<String, Object> formMap =  new HashMap<>();
+	
+	formMap.put("FormId",form.getId());
+	formMap.put("FormName",form.getName());
+	formMap.put("FormStatus",status);
+	formMap.put("Submitted On",submitDate);
+	
+
+	return formMap;
+	
+}
+
+private HashMap<String, Object> customResponseFormStatusDraft(Form form,ObsStatus status,Date draftDate) {
+	
+	HashMap<String, Object> formMap =  new HashMap<>();
+	
+	formMap.put("FormId",form.getId());
+	formMap.put("FormName",form.getName());
+	formMap.put("FormStatus",status);
+	formMap.put("Last Submitted On",draftDate);
+	
+
+	return formMap;
+	
+}
+private HashMap<String, Object> customResponseFormStatusPending(Form form,ObsStatus status,LocalDate startDate,LocalDate lastdate) {
+	
+	HashMap<String, Object> formMap =  new HashMap<>();
+	
+	formMap.put("FormId",form.getId());
+	formMap.put("FormName",form.getName());
+	formMap.put("FormStatus",status);
+	formMap.put("Pending Since",startDate);
+	formMap.put("Last date",lastdate);
+	
+
+	return formMap;
+	
+}
+private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus status,LocalDate lastDate) {
+	
+	HashMap<String, Object> formMap =  new HashMap<>();
+	
+	formMap.put("FormId",form.getId());
+	formMap.put("FormName",form.getName());
+	formMap.put("FormStatus",status);
+	formMap.put("Due On",lastDate);
+	
+
+	return formMap;
+	
+}
+
+
+		@Override
+		public HashMap<String, Object> submitDates(HttpServletRequest request, FormDates formDates)
+				throws HandledException {
+		//FormDates formDatesInDB=formDatesRepo.findByFidAndObsType(formDates.getFid(),formDates.getObsType());
+		FormDates formDatesInDB=formDatesRepo.findByFidAndObsType(formDates.getFid(),formDates.getObsType());
+			HashMap<String, Object> formDatesMap = new HashMap<>();
+			
+			if (formDatesInDB == null) {
+				
+				formDatesRepo.save(formDates);
+				
+				formDatesMap = customResponseFormDates(formDates);
+				
+			}else {
+				
+//				formDatesInDB.setSdate(formDates.getSdate());
+//				formDatesInDB.setLdate(formDates.getLdate());
+//				formDatesInDB.setActiveStatus(formDates.getActiveStatus());
+//				formDatesRepo.save(formDatesInDB);
+//				formDatesMap = customResponseFormDates(formDatesInDB);
+				throw new HandledException("CHECK_PARAMETERS", "Already existed");
+			}
+			
+			return formDatesMap;
+			
+			
+		}
+		private HashMap<String, Object> customResponseFormDates( FormDates formDates) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("FormId",formDates.getFid());
+			msgMap.put("ObsType",formDates.getObsType());
+			msgMap.put("StartDate",formDates.getSdate());
+			msgMap.put("LastDate",formDates.getLdate());
+			msgMap.put("ActiveStatus", formDates.getActiveStatus());
+			
+			return msgMap;
+			
+		}
+			
+			
 }

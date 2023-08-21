@@ -45,7 +45,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/mobileNo").permitAll()
             .antMatchers("/api/observers/verify-otp").permitAll()
             .antMatchers("/api/observers/otp").permitAll()
-            .antMatchers("/api/observers/otp").permitAll()
             .antMatchers("/api/observers/change-password").permitAll()
             .anyRequest().authenticated()
             .and()

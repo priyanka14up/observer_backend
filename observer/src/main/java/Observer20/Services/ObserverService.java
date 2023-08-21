@@ -3,7 +3,7 @@ package Observer20.Services;
 
 import java.util.List;
 
-
+import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 
 import Observer20.payloads.ObserverUserDto;
@@ -23,6 +23,9 @@ public interface ObserverService {
 	ApiResponse deleteObserverUser(String obscode);
 
 	ObserverUserDto updateObserverUser(ObserverUserDtoUpdation user, String obsCode);
+	ObserverUserDto addLocalInfo(String obsCode, String localAddress, String localMobileNumber);
+
+	
 	
 	
 

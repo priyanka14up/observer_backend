@@ -57,6 +57,7 @@ public class GlobalExceptionHandler {
 	  ResponseEntity<ApiResponse>(apiResponse,HttpStatus.NOT_FOUND);
 	  
 	  }
+	  
 	  @ExceptionHandler(ApiException.class)
 		public ResponseEntity<ApiResponse> handelApiException(ApiException ex)
 		{
@@ -65,6 +66,8 @@ public class GlobalExceptionHandler {
 			return new ResponseEntity<ApiResponse>(apiResponse,HttpStatus.BAD_REQUEST);
 			
 			}
+	  
+	 
 
 }
 

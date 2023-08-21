@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -218,6 +219,18 @@ public class ObserverUser implements UserDetails{
 		// TODO Auto-generated method stub
 		
 	}
+	@OneToOne(mappedBy = "observerUser", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private ObserverLocalInfo localInfo;
+
+	    // Method to add local info
+	    public void addLocalInfo(ObserverLocalInfo localInfo) {
+	        this.localInfo = localInfo;
+	    }
+
+		public void setObserverLocalInfo(ObserverLocalInfo localInfo2) {
+			// TODO Auto-generated method stub
+			
+		}
 
 	 
 	 

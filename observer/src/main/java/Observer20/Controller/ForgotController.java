@@ -5,11 +5,11 @@ import java.util.Random;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.data.repository.query.Param;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -93,24 +93,35 @@ public class ForgotController {
 	}
 
 	
-	  //change password
-	  
-	  @PostMapping("/change-password") 
-	  public String changePassword(@RequestParam("newpassword") String newpassword , @RequestParam("email") String email,HttpSession session) { 
-		  
-		  //String email1=(String)session.getAttribute("email"); 
-		  ObserverUser observerUser=observerUserRepo.getObserverUserByEmail(email);
-		  if(observerUser==null) 
-		  { 
-			  return "user does not exist";
-		  }
-		 // observerUser.setPassword(passwordEncoder.encode(newpassword));
-		  observerUser.setPassword(DigestUtils.md5DigestAsHex(newpassword.getBytes()));
-		  observerUserRepo.save(observerUser);
-		   return "password changed successfully";
-	  
-	  }
+	 
+	@PostMapping("/change-password")
+	public String changePassword(@RequestBody ChangePasswordRequest request, HttpSession session) {
+	    // Fetch the user based on the provided obscode
+	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request.getObscode());
+
+	    if (observerUser == null) {
+	        return "User does not exist.";
+	    }
+
+	    // Check if the old password matches the stored MD5 password
+	    String storedMd5Password = observerUser.getPassword();
+	    String oldPasswordMd5 = DigestUtils.md5DigestAsHex(request.getOldpassword().getBytes());
+
+	    if (!storedMd5Password.equals(oldPasswordMd5)) {
+	        return "Old password is incorrect.";
+	    }
+
+	    observerUser.setPassword(DigestUtils.md5DigestAsHex(request.getNewpassword().getBytes()));
+	    observerUserRepo.save(observerUser);
+
+	    return "Password changed successfully.";
+	}
+
+
+
+	}
+
 	  
 
-}
+
 

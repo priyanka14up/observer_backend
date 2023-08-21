@@ -19,12 +19,18 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Model.ObserverLocalInfo;
+import Observer20.Model.ObserverLocalInfoRequest;
+import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 import Observer20.Services.ObserverService;
 
 
 import Observer20.payloads.ObserverUserDto;
-import Observer20.repository.UpdateValidationGroup;
+import Observer20.payloads.ObserverUserDtoUpdation;
+import Observer20.repository.ObserverLocalInfoRepository;
+import Observer20.repository.ObserverUserRepo;
+
 
 
 
@@ -36,6 +42,11 @@ public class ObserverUserController {
 	
 		@Autowired
 		private ObserverService observerService;
+		//private ObserverUserDtoUpdation ObserverUserDtoUpdation;
+		@Autowired
+	    private ObserverLocalInfoRepository observerLocalInfoRepository;
+		@Autowired
+		private ObserverUserRepo observerUserRepo;
 		
 		//POST -create user
 
@@ -47,15 +58,7 @@ public class ObserverUserController {
 			
 		}
 			
-		//login user
-	/*
-	 * @PostMapping("/login") public ResponseEntity<?> loginObserver(@RequestBody
-	 * LoginDto loginDto) { ApiResponse
-	 * apiResponse=observerService.loginObserver(loginDto); return
-	 * ResponseEntity.ok(apiResponse);
-	 * 
-	 * }
-	 */
+		
 		//get all
 		@GetMapping("/")
 		public ResponseEntity<List<ObserverUserDto>> getAllUsers()
@@ -80,16 +83,39 @@ public class ObserverUserController {
 			return ResponseEntity.ok(observerService.deleteObserverUser(obscode));
 		
 		}
-		//Put-update- user
+		
+		
 		@PutMapping("/{ObsCode}")
 		public ResponseEntity<ObserverUserDto> updateUser(
-				@Validated(UpdateValidationGroup.class) @RequestBody ObserverUserDto observerUserDto,
-		    @PathVariable String ObsCode) {
+		        @Valid @RequestBody ObserverUserDtoUpdation observerUserDtoUpdation,
+		        @PathVariable String ObsCode) {
 		    
-		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, ObsCode);
+		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDtoUpdation, ObsCode);
 		    return ResponseEntity.ok(updatedUser);
-		} 
+		}
 		
+		
+		
+		/*
+		 * @PostMapping("/update-local-info") public ResponseEntity<String>
+		 * updateLocalInfo(@RequestBody ObserverLocalInfoRequest request) {
+		 * ObserverLocalInfo localInfo = new ObserverLocalInfo(); ObserverUser
+		 * observerUser = observerUserRepo.findByObscode(request.getObscode());
+		 * 
+		 * if (observerUser == null) { return
+		 * ResponseEntity.status(HttpStatus.NOT_FOUND).body("Observer not found"); }
+		 * 
+		 * localInfo.setObserverUser(observerUser);
+		 * localInfo.setLocalAddress(request.getLocalAddress());
+		 * localInfo.setLocalMobile(request.getLocalMobile());
+		 * observerLocalInfoRepository.save(localInfo);
+		 * 
+		 * // Link local info to the observer user observerUser.addLocalInfo(localInfo);
+		 * observerUserRepo.save(observerUser); return
+		 * ResponseEntity.ok("Local info updated successfully"); }
+		 */
+	
+	
 }
 
 

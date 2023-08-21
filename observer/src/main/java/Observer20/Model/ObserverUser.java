@@ -18,6 +18,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.springframework.security.core.GrantedAuthority;
@@ -50,7 +51,7 @@ public class ObserverUser implements UserDetails{
     private String role;
     private String service;
     private String homeState;
-    private int mobnum;
+    private long mobnum;
     private int workexperience;
     
 	
@@ -118,11 +119,11 @@ public class ObserverUser implements UserDetails{
 		this.homeState = homeState;
 	}
 
-	public int getMobnum() {
+	public long getMobnum() {
 		return mobnum;
 	}
 
-	public void setMobnum(int mobnum) {
+	public void setMobnum(long mobnum) {
 		this.mobnum = mobnum;
 	}
 
@@ -137,7 +138,7 @@ public class ObserverUser implements UserDetails{
 	
 
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
-			String homeState, int mobnum, int workexperience, Set<Role> roles) {
+			String homeState, long mobnum, int workexperience, Set<Role> roles) {
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -218,6 +219,18 @@ public class ObserverUser implements UserDetails{
 		// TODO Auto-generated method stub
 		
 	}
+	@OneToOne(mappedBy = "observerUser", cascade = CascadeType.ALL, orphanRemoval = true)
+	    private ObserverLocalInfo localInfo;
+
+	    // Method to add local info
+	    public void addLocalInfo(ObserverLocalInfo localInfo) {
+	        this.localInfo = localInfo;
+	    }
+
+		public void setObserverLocalInfo(ObserverLocalInfo localInfo2) {
+			// TODO Auto-generated method stub
+			
+		}
 
 	 
 	 

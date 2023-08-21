@@ -10,6 +10,7 @@ import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 
 public interface DraftAnswerRepo extends JpaRepository<DraftAnswer, Long>{
+	
 	DraftAnswer findByQid(Long qid);
 	List<DraftAnswer> findAllBySid(Long sid);
 	List<DraftAnswer> findAllByFid(Long fid);

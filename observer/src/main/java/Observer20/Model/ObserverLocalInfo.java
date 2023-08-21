@@ -38,8 +38,11 @@ public class ObserverLocalInfo {
 
     @Column(name = "local_mobile")
     @NotNull(message = "Mobnum cannot be null")
-    @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
-    @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	/*
+	 * @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
+	 * 
+	 * @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	 */
     private String localMobile;
     
 

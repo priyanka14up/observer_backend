@@ -359,5 +359,18 @@ public class FormController {
 	}
 }
 	
+	@PutMapping("/updateForm/{fid}")
+	public ResponseEntity<Object> updateForm(@PathVariable("fid")Long fid,@RequestBody Form form) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateFormName(fid,form);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
 	
 }

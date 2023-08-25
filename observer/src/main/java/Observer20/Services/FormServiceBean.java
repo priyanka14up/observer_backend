@@ -616,8 +616,7 @@ ResponseMap.put("remarks",response.getRemarks());
 
 			        List<FinalSubmitAnswer> finalSubmitAnswers = finalSubmitAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
 			       
-			        if (finalSubmitAnswers == null || finalSubmitAnswers.isEmpty()) {
-			            // Skip this subform if no final submit answers are found
+			        if (finalSubmitAnswers == null || finalSubmitAnswers.isEmpty()) {        
 			        	
 			            continue;
 			        }
@@ -633,10 +632,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				        
 				        
 				        }
-//				        msgMap.put("finalSubmitAnswer", customResponseFinalAnswers1(getAnswerDto.getFinalSubmitAnswers()));
-//				        
-//				        listOfMsgMaps.add(msgMap);
-			        	 
+
 			    }
 			    
 			    return listOfMsgMaps;
@@ -649,11 +645,11 @@ ResponseMap.put("remarks",response.getRemarks());
 		    
 		    for (FinalSubmitAnswer answer : finalSubmitAnswer) {
 		        HashMap<String, Object> msgMap = new HashMap<>();
-		        //msgMap.put("id", answer.getId());
 		        msgMap.put("formId", answer.getFid());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
-		         msgMap.put("questiionText",question.getQname());
+		         msgMap.put("questionText",question.getQname());
+		         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
 		        msgMap.put("remarks", answer.getRemarks());
@@ -970,6 +966,26 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			
 		
 		}
+		@Override
+		public HashMap<String, Object> updateFormName(Long fid,Form form)throws HandledException {
 			
+			Optional<Form> existedForm=formServiceRepo.findById(fid);
+			HashMap<String, Object> formDatesMap = new HashMap<>();
+			if(existedForm.get()!=null)
+			{
+				existedForm.get().setName(form.getName());
+				
+				formServiceRepo.save(existedForm.get());
+				formDatesMap = customResponseForm(existedForm.get());
+				return formDatesMap;
+				
+			}
+			else
+			{
+				throw new HandledException("CHECK_PARAMETERS", "not existed");
+			}
+			
+		
+		}
 			
 }

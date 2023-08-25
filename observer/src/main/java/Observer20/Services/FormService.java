@@ -53,4 +53,5 @@ public interface FormService {
 	public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId)throws HandledException;
 	HashMap<String, Object> submitDates(HttpServletRequest request,FormDates formDates) throws HandledException;
 	HashMap<String, Object> updateDates(Long fid,FormDates formDates) throws HandledException;
+	HashMap<String, Object> updateFormName(Long fid,Form form) throws HandledException;
 }

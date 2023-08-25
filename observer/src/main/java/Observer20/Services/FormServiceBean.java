@@ -857,7 +857,7 @@ private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStat
 	formMap.put("FormId",form.getId());
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
-	formMap.put("Submitted On",submitDate);
+	formMap.put("Submitted_On",submitDate);
 	
 
 	return formMap;
@@ -871,7 +871,7 @@ private HashMap<String, Object> customResponseFormStatusDraft(Form form,ObsStatu
 	formMap.put("FormId",form.getId());
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
-	formMap.put("Last Submitted On",draftDate);
+	formMap.put("Last_Submitted_On",draftDate);
 	
 
 	return formMap;
@@ -884,8 +884,8 @@ private HashMap<String, Object> customResponseFormStatusPending(Form form,ObsSta
 	formMap.put("FormId",form.getId());
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
-	formMap.put("Pending Since",startDate);
-	formMap.put("Last date",lastdate);
+	formMap.put("Pending_Since",startDate);
+	formMap.put("Last_date",lastdate);
 	
 
 	return formMap;
@@ -898,7 +898,7 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 	formMap.put("FormId",form.getId());
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
-	formMap.put("Due On",lastDate);
+	formMap.put("Due_On",lastDate);
 	
 
 	return formMap;
@@ -945,6 +945,30 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			
 			return msgMap;
 			
+		}
+
+		@Override
+		public HashMap<String, Object> updateDates(Long fid,FormDates formDates)throws HandledException {
+			FormDates formDate=formDatesRepo.findByFid(fid);
+			HashMap<String, Object> formDatesMap = new HashMap<>();
+			if(formDate!=null)
+			{
+				formDate.setLdate(formDates.getLdate());
+				formDate.setSdate(formDates.getSdate());
+				formDate.setPhaseNo(formDates.getPhaseNo());
+				formDate.setState(formDates.getState());
+				formDate.setActiveStatus(formDates.getActiveStatus());
+				formDatesRepo.save(formDate);
+				formDatesMap = customResponseFormDates(formDate);
+				return formDatesMap;
+				
+			}
+			else
+			{
+				throw new HandledException("CHECK_PARAMETERS", "not existed");
+			}
+			
+		
 		}
 			
 			

@@ -54,4 +54,8 @@ public interface FormService {
 	HashMap<String, Object> submitDates(HttpServletRequest request,FormDates formDates) throws HandledException;
 	HashMap<String, Object> updateDates(Long fid,FormDates formDates) throws HandledException;
 	HashMap<String, Object> updateFormName(Long fid,Form form) throws HandledException;
+	HashMap<String, Object> updateSubFormHeading(Long sid,SubForm subForm) throws HandledException;
+	HashMap<String, Object> updateSubFormHeadingsByFid(Long sid,List<SubForm> subForms) throws HandledException;
+	HashMap<String, Object> getFormById(Long fid)throws HandledException;
+	Map<String, Boolean> deleteForm(Long fid)throws HandledException;
 }

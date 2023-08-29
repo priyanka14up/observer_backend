@@ -372,5 +372,60 @@ public class FormController {
 	}
 }
 	
+	@PutMapping("/updateSubForm/{sid}")
+	public ResponseEntity<Object> updateSubForm(@PathVariable("sid")Long fid,@RequestBody SubForm subForm) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateSubFormHeading(fid,subForm);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	@PutMapping("/updateSubForms/{fid}")
+	public ResponseEntity<Object> updateSubForms(@PathVariable("fid")Long fid,@RequestBody List<SubForm> subForms) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateSubFormHeadingsByFid(fid,subForms);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
+	@GetMapping("/getform/{formId}")
+	public ResponseEntity<Object> getFormById(@PathVariable Long formId) {
+		
+		try {
+			HashMap<String, Object> result=formService.getFormById(formId);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	
+	}
+
+	@DeleteMapping("/deleteForm/{formId}")
+    public ResponseEntity<Object> deleteForm(@PathVariable Long formId) {
+       
+        
+        try {
+
+			Map<String, Boolean> messageData = formService.deleteForm(formId);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, messageData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+    }
+	
+	
 	
 }

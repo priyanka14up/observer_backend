@@ -134,12 +134,24 @@ public class FormServiceBean implements FormService {
 			formMap.put("id", formData.getId());
 			formMap.put("FormName", formData.getName());
 			formMap.put("ObserverType", formData.getObsType());
+			formMap.put("subforms",formData.getSubforms());
 
 			return formMap;
 			
 		}
 		
 		
+	private HashMap<String, Object> customResponseSubForm( SubForm subFormData) {
+			
+			HashMap<String, Object> formMap =  new HashMap<>();
+			
+			formMap.put("SubFormId",subFormData.getSid());
+			formMap.put("Heading", subFormData.getHeading());
+			
+
+			return formMap;
+			
+		}
 		
 		//custom response
 				private HashMap<String, Object> customResponseQuestion( Question questionData) {
@@ -986,6 +998,65 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			}
 			
 		
+		}
+
+		@Override
+		public HashMap<String, Object> updateSubFormHeading(Long sid, SubForm subForm) throws HandledException {
+			Optional<SubForm> existedSubForm=subFormRepo.findById(sid);
+			
+			HashMap<String, Object> formDatesMap = new HashMap<>();
+			if(existedSubForm.get()!=null)
+			{
+				existedSubForm.get().setHeading(subForm.getHeading());
+				
+				subFormRepo.save(existedSubForm.get());
+				formDatesMap = customResponseSubForm(existedSubForm.get());
+				return formDatesMap;
+				
+			}
+			else
+			{
+				throw new HandledException("CHECK_PARAMETERS", "not existed");
+			}
+		}
+
+		@Override
+		public HashMap<String, Object> updateSubFormHeadingsByFid(Long fid, List<SubForm> subForms) throws HandledException {
+			
+			return null;
+		}
+
+		@Override
+		public HashMap<String, Object> getFormById(Long fid) throws HandledException {
+			Optional<Form> optionalForm = formServiceRepo.findById(fid);
+			if (optionalForm.isPresent()) {
+		        Form form = optionalForm.get();
+		        return customResponseForm(form);
+		    } else {
+		        throw new HandledException("CHECK_PARAMETERS", "not existed");
+		    }
+			
+		}
+
+		@Override
+		public Map<String, Boolean> deleteForm(Long fid) throws HandledException {
+			 
+			        Optional<Form> optionalForm = formServiceRepo.findById(fid);
+
+			        if (optionalForm.isPresent()) {
+			            Form form = optionalForm.get();
+			            formServiceRepo.delete(form);
+			            HashMap<String, Boolean> response = new HashMap<>();
+						 response.put("deleted", Boolean.TRUE);
+						 return response;
+			            //return ResponseEntity.ok("Form deleted successfully");
+			        } else {
+			        	throw new HandledException("CHECK_PARAMETERS", "not existed");
+			        }
+			   
+			        
+			        
+			        
 		}
 			
 }

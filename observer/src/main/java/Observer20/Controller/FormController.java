@@ -418,7 +418,7 @@ public class FormController {
         try {
 
 			Map<String, Boolean> messageData = formService.deleteForm(formId);
-			return ResponseHandler.generateResponse("success", HttpStatus.OK, messageData);
+			return ResponseHandler.generateResponse("deleted successfully", HttpStatus.OK, messageData);
 
 		} catch (HandledException e) {
 

@@ -29,8 +29,6 @@ public class FinalSubmitAnswer {
 	@Column(name = "s_id",nullable=false)
     private Long sid;
 	
-	
-	
 	@Column(name = "q_id",nullable=false)
     private Long qid;
 	

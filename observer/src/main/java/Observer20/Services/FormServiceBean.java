@@ -78,15 +78,7 @@ public class FormServiceBean implements FormService {
 	@Autowired
 	public FormDatesRepo formDatesRepo;
 	
-//	@Autowired
-//	public AnswerRepo answerRepo;
-	
-//	@Autowired
-//	public FormSubformResponsesRepo formSubformResponsesRepo;
-//	
-	
-	
-@Autowired
+	@Autowired
 	public DraftAnswerRepo draftAnswerRepo;
 	
 	@Autowired
@@ -94,6 +86,8 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public FormStatusRepo formStatusRepo;
+	
+	
 	
 	
 
@@ -242,11 +236,7 @@ public class FormServiceBean implements FormService {
 					else
 					{ status=false;
 						formList.add(customResponseForm(FormForGeneral.get(i),status)); 
-					}
-					
-					
-					
-					
+					}	
 				}  
 				
 				return formList;
@@ -1041,22 +1031,33 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 		@Override
 		public Map<String, Boolean> deleteForm(Long fid) throws HandledException {
 			 
-			        Optional<Form> optionalForm = formServiceRepo.findById(fid);
-
+			      Optional<Form> optionalForm = formServiceRepo.findById(fid);
+			      FormDates formDates=formDatesRepo.findByFid(fid);
+			      FormStatus formStatus=formStatusRepo.findByFid(fid);
+			      List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllByFid(fid);
+			      List<FinalSubmitAnswer> finalSubmitAnswers=finalSubmitAnswerRepo.findAllByFid(fid);
 			        if (optionalForm.isPresent()) {
 			            Form form = optionalForm.get();
 			            formServiceRepo.delete(form);
+			            formDatesRepo.delete(formDates);
+			            
+			            if(formStatus.isStatus()==false)
+			            {
+			            	 draftAnswerRepo.deleteAll(draftAnswers);
+			            }
+			            else
+			            {
+			            	finalSubmitAnswerRepo.deleteAll(finalSubmitAnswers);
+			            	
+			            }
+			            formStatusRepo.delete(formStatus);
 			            HashMap<String, Boolean> response = new HashMap<>();
 						 response.put("deleted", Boolean.TRUE);
 						 return response;
-			            //return ResponseEntity.ok("Form deleted successfully");
 			        } else {
 			        	throw new HandledException("CHECK_PARAMETERS", "not existed");
 			        }
 			   
-			        
-			        
-			        
 		}
 			
 }

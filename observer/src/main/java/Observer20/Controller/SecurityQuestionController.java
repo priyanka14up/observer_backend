@@ -40,16 +40,14 @@ public class SecurityQuestionController {
         ObserverUser observerUser = observerUserRepo.findByObscode(obscode);
 
         if (observerUser == null) {
-            // Handle the case where ObserverUser is not found based on userId
-            // You can return an error, throw an exception, or handle it as per your requirements.
+            
             return new ResponseEntity<>("User not found", HttpStatus.NOT_FOUND);
         }
          // Fetch the security question based on questionId
             SecurityQuestion question = securityQuestionRepo.findById(request.getQuestionId()).orElse(null);
 
             if (question == null) {
-                // Handle the case where SecurityQuestion is not found based on questionId
-                // You can return an error, throw an exception, or handle it as per your requirements.
+             
                 return new ResponseEntity<>("Security question not found", HttpStatus.NOT_FOUND);
             }
 
@@ -72,8 +70,7 @@ public class SecurityQuestionController {
         ObserverUser observerUser = observerUserRepo.findByObscode(obscode);
         
         if (observerUser == null) {
-            // Handle the case where ObserverUser is not found based on userId
-            // You can return an error, throw an exception, or handle it as per your requirements.
+            
             return false;
         }
      // Validate the user's answers

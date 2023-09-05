@@ -46,6 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/verify-otp").permitAll()
             .antMatchers("/api/observers/otp").permitAll()
             .antMatchers("/api/observers/change-password").permitAll()
+            .antMatchers("/api/observers/change-password1").permitAll()
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

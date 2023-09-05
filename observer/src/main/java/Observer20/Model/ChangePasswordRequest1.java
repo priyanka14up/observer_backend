@@ -1,20 +1,13 @@
-package Observer20.Controller;
+package Observer20.Model;
 
-public class ChangePasswordRequest {
+public class ChangePasswordRequest1 {
 	private String obscode;
-    private String oldpassword;
     private String newpassword;
 	public String getObscode() {
 		return obscode;
 	}
 	public void setObscode(String obscode) {
 		this.obscode = obscode;
-	}
-	public String getOldpassword() {
-		return oldpassword;
-	}
-	public void setOldpassword(String oldpassword) {
-		this.oldpassword = oldpassword;
 	}
 	public String getNewpassword() {
 		return newpassword;
@@ -23,5 +16,10 @@ public class ChangePasswordRequest {
 		this.newpassword = newpassword;
 	}
     
+    
+	
+	}
+	
+    
 
-}
+

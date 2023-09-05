@@ -16,17 +16,24 @@ public class EmailService {
 	public boolean sendEmail(String subject,String message,String to)
 	{
 		boolean f=false;
-		String from="eci921693@gmail.com";
+		//String from="eci921693@gmail.com";
+		String from="no-reply@eci.gov.in";
 		//variabale for gmail
-		String host="smtp.gmail.com";
+		//String host="smtp.gmail.com";
+		String host="relay.nic.in";
 		
-		Properties  properties=System.getProperties();
-		System.out.println("Properties"+properties);
-		//setting important information to properties object
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.port", "465");
-		properties.put("mail.smtp.ssl.enable", "true");
-		properties.put("mail.smtp.auth", "true");
+		
+		
+		  Properties properties=System.getProperties();
+		  System.out.println("Properties"+properties); //setting important information
+		  //to properties object
+		  properties.put("mail.smtp.host", host);
+		  //properties.put("mail.smtp.port", "465"); 
+		  properties.put("mail.smtp.port","25"); 
+		 // properties.put("mail.smtp.ssl.enable", "true");
+		  properties.put("mail.smtp.auth", "true");
+		  
+		
 		
 		//step 1: to get the session object
 		Session session	=Session.getInstance(properties, new Authenticator() {
@@ -34,9 +41,10 @@ public class EmailService {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				
-				return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
+				//return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
+				return new PasswordAuthentication("no-reply@eci.gov.in", "Y6$tA5&bS4");
 			}
-			//dnybgjowedvtbzvo
+			
 		
 			
 		});

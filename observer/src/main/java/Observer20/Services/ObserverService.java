@@ -23,7 +23,7 @@ public interface ObserverService {
 	ApiResponse deleteObserverUser(String obscode);
 
 	ObserverUserDto updateObserverUser(ObserverUserDtoUpdation user, String obsCode);
-	ObserverUserDto addLocalInfo(String obsCode, String localAddress, String localMobileNumber);
+	
 
 	
 	

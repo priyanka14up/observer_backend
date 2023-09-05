@@ -96,24 +96,6 @@ public class ObserverUserController {
 		
 		
 		
-		/*
-		 * @PostMapping("/update-local-info") public ResponseEntity<String>
-		 * updateLocalInfo(@RequestBody ObserverLocalInfoRequest request) {
-		 * ObserverLocalInfo localInfo = new ObserverLocalInfo(); ObserverUser
-		 * observerUser = observerUserRepo.findByObscode(request.getObscode());
-		 * 
-		 * if (observerUser == null) { return
-		 * ResponseEntity.status(HttpStatus.NOT_FOUND).body("Observer not found"); }
-		 * 
-		 * localInfo.setObserverUser(observerUser);
-		 * localInfo.setLocalAddress(request.getLocalAddress());
-		 * localInfo.setLocalMobile(request.getLocalMobile());
-		 * observerLocalInfoRepository.save(localInfo);
-		 * 
-		 * // Link local info to the observer user observerUser.addLocalInfo(localInfo);
-		 * observerUserRepo.save(observerUser); return
-		 * ResponseEntity.ok("Local info updated successfully"); }
-		 */
 	
 	
 }

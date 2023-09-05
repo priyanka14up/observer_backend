@@ -5,22 +5,19 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import Observer20.Model.ObserverLocalInfo;
+import Observer20.Response.ApiResponse;
+import Observer20.payloads.ObserverLocalInfoDTO;
+import Observer20.payloads.ObserverUserDto;
+import Observer20.payloads.ObserverUserDtoUpdation;
 import Observer20.repository.ObserverLocalInfoRepository;
 
-@Service
-public class ObserverLocalInfoService {
-	private final ObserverLocalInfoRepository observerLocalInfoRepository;
 
-    public ObserverLocalInfoService(ObserverLocalInfoRepository localInfoRepository) {
-        this.observerLocalInfoRepository = localInfoRepository;
-    }
+public interface ObserverLocalInfoService {
 
-    public ObserverLocalInfo saveLocalInfo(ObserverLocalInfo localInfo) {
-        return observerLocalInfoRepository.save(localInfo);
-    }
-
-    public Optional<ObserverLocalInfo> getLocalInfoByObscode(String obscode) {
-        return observerLocalInfoRepository.findByObserverUser_Obscode(obscode);
-    }
+	ApiResponse addLocalInfo(String obsCode, String localAddress, String localMobileNumber);
+	//ObserverUserDto getObserverUserById(String obsCode);
+	ObserverLocalInfoDTO getObserverLocalInfoByObscode(String obsCode);
+	//ObserverUserDto updateObserverUser(ObserverUserDtoUpdation user, String obsCode);
+	ObserverLocalInfoDTO updateObserverLocalInfo(ObserverLocalInfoDTO user, String obsCode);
 
 }

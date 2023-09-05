@@ -1029,8 +1029,8 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 		}
 
 		@Override
-		public Map<String, Boolean> deleteForm(Long fid) throws HandledException {
-			 
+		public Map<String, Boolean> deleteForm(Long fid) throws HandledException 
+		{
 			      Optional<Form> optionalForm = formServiceRepo.findById(fid);
 			      FormDates formDates=formDatesRepo.findByFid(fid);
 			      FormStatus formStatus=formStatusRepo.findByFid(fid);

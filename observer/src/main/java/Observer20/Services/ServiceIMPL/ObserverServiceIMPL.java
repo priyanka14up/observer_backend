@@ -1,7 +1,12 @@
 package Observer20.Services.ServiceIMPL;
 
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.Validation;
+import javax.xml.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -29,7 +34,7 @@ public class ObserverServiceIMPL implements ObserverService {
 	
 
 	@Override
-
+// add observer
 	public ObserverUserDto createObserver(ObserverUserDto observerUserDto) {
 
 		ObserverUser observerUser = dtoToUser(observerUserDto);
@@ -38,7 +43,7 @@ public class ObserverServiceIMPL implements ObserverService {
 	}
 
 	
-	@Override
+	@Override// get all observer
 	public List<ObserverUserDto> getAllUsers() {
 		List<ObserverUser> observerusers = observerUserRepo.findAll();
 		List<ObserverUserDto> observeruserDtos = observerusers.stream().map(user -> userToDto(user))
@@ -85,61 +90,18 @@ public class ObserverServiceIMPL implements ObserverService {
 	}
 
 	
-	/*
-	 * @Override public ApiResponse1 loginObserver(JwtAuthRequest jwtAuthRequest) {
-	 * 
-	 * 
-	 * 
-	 * ObserverUser
-	 * observerUser1=observerUserRepo.findByObscode(jwtAuthRequest.getObscode()); //
-	 * UserDetails userDetails =
-	 * userDetailsService.loadUserByUsername(jwtAuthRequest.getObscode());
-	 * 
-	 * 
-	 * String message; boolean status; String token; if(observerUser1!=null) {
-	 * 
-	 * String
-	 * password=DigestUtils.md5DigestAsHex(jwtAuthRequest.getPassword().getBytes());
-	 * String encodedPassword=observerUser1.getPassword(); // Boolean //
-	 * //isPwdRight=passwordEncoder.matches(password,encodedPassword); Boolean
-	 * isPwdRight = password.equals(encodedPassword);
-	 * //System.out.println(password); //System.out.println(encodedPassword);
-	 * //System.out.println(isPwdRight);
-	 * 
-	 * if(isPwdRight) { Optional<ObserverUser>
-	 * observerUser=observerUserRepo.findOneByObscodeAndPassword(jwtAuthRequest.
-	 * getObscode(),encodedPassword); if(observerUser.isPresent()) { String token1
-	 * =jwtTokenHelper.generateToken(observerUser1);
-	 * 
-	 * return new ApiResponse1(message="Login success", status=true,token=token1);
-	 * 
-	 * 
-	 * }
-	 * 
-	 * else { return new ApiResponse1(message ="Login unsuccess", status
-	 * =false,token=null); } }
-	 * 
-	 * else { return new ApiResponse1(message ="Password not match", status
-	 * =false,token=null);}
-	 * 
-	 * } else { return new ApiResponse1(message ="observer code not exist",
-	 * status=false, token=null); }
-	 * 
-	 * 
-	 * }
-	 */
-	 
+	
 
 	
 	
 
-	  @Override 
+	  @Override //get one observer by id
 	  public ObserverUserDto getObserverUserById(String obsCode) {
 	  ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 	  
 	  //return userToDto(observerUser); 
 	  //String message;
-		boolean status;
+		//boolean status;
 		if (observerUser != null)
 
 		{
@@ -155,7 +117,7 @@ public class ObserverServiceIMPL implements ObserverService {
 	 
 	
 
-	@Override
+	@Override// update observer by id
 	public ObserverUserDto updateObserverUser(ObserverUserDtoUpdation observerUserDtoUpdation, String obsCode) {
 		
 		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
@@ -179,7 +141,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		
 	
 
-	@Override
+	@Override// delete observer
 	public ApiResponse deleteObserverUser(String obscode) {
 
 		ObserverUser observerUser = observerUserRepo.findByObscode(obscode);
@@ -199,22 +161,11 @@ public class ObserverServiceIMPL implements ObserverService {
 	}
 
 
-	@Override
-	public ObserverUserDto addLocalInfo(String obsCode, String localAddress, String localMobileNumber) {
-	    ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 
-	    if (observerUser == null) {
-	        throw new ApiException("Observer with obscode " + obsCode + " not found.");
-	    }
+	
+	
 
-	    ObserverLocalInfo localInfo = new ObserverLocalInfo();
-	    localInfo.setObserverUser(observerUser); // Set the observerUser reference
-	    localInfo.setLocalAddress(localAddress);
-	    localInfo.setLocalMobile(localMobileNumber);
 
-	    observerLocalInfoRepository.save(localInfo);
-
-	    return userToDto(observerUser);
-	}
+	
 	}
 

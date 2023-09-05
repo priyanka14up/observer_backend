@@ -8,8 +8,11 @@
   import Observer20.Model.ObserverLocalInfo;
   
   public interface ObserverLocalInfoRepository extends JpaRepository<ObserverLocalInfo, Long> {
-	  //Optional<ObserverLocalInfo> findByObscode(String obscode); 
-	  Optional<ObserverLocalInfo> findByObserverUser_Obscode(String obscode);
+	   
+	  ObserverLocalInfo findByObserverUser_Obscode(String obscode);
+	  Optional<ObserverLocalInfo> findByObserverUserObscode(String obscode);
+
+	
 	  }
   
  

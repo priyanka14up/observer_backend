@@ -67,6 +67,17 @@ public class GlobalExceptionHandler {
 			
 			}
 	  
+			
+			  @ExceptionHandler(javax.validation.ConstraintViolationException.class)
+			  public ResponseEntity<ApiResponse> ConstraintViolationExceptionhExceptionHandler(javax.validation. ConstraintViolationException ex) 
+			  { 
+				  String message=ex.getLocalizedMessage();
+			  ApiResponse apiResponse=new ApiResponse (message,false); return new
+			  ResponseEntity<ApiResponse>(apiResponse,HttpStatus.NOT_FOUND);
+			  
+			  }
+			 
+			 
 	 
 
 }

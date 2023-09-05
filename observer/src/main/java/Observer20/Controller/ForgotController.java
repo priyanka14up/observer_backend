@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Model.ChangePasswordRequest;
+import Observer20.Model.ChangePasswordRequest1;
 import Observer20.Model.ObserverUser;
 import Observer20.Services.EmailService;
 import Observer20.repository.ObserverUserRepo;
@@ -86,7 +88,7 @@ public class ForgotController {
 	  } }
 		else {
 			session.setAttribute("message","you have entered wrong otp");
-			return "verify-otp";
+			return "Otp is not valid ";
 	  
 	  }
 	
@@ -112,6 +114,24 @@ public class ForgotController {
 	    }
 
 	    observerUser.setPassword(DigestUtils.md5DigestAsHex(request.getNewpassword().getBytes()));
+	    observerUserRepo.save(observerUser);
+
+	    return "Password changed successfully.";
+	}
+	
+
+	
+	@PostMapping("/change-password1")
+	public String changePassword1(@RequestBody ChangePasswordRequest1 request1, HttpSession session) {
+	    // Update the password for the provided obscode
+	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request1.getObscode());
+
+	    if (observerUser == null) {
+	        return "User does not exist.";
+	    }
+
+	    // Update the password to the new password without checking the old password
+	    observerUser.setPassword(DigestUtils.md5DigestAsHex(request1.getNewpassword().getBytes()));
 	    observerUserRepo.save(observerUser);
 
 	    return "Password changed successfully.";

@@ -21,7 +21,7 @@ public interface DraftAnswerRepo extends JpaRepository<DraftAnswer, Long>{
 	List<DraftAnswer> findAllBySubmittedBy(String submittedBy);
 	 List<DraftAnswer> findByFidAndSubmittedBy(Long fid, String submittedBy);
 	 List<DraftAnswer> findByFidAndSidAndSubmittedBy(Long fid,Long sid,String submittedBy);
-	 
+	 DraftAnswer findByFidAndQidAndSubmittedBy(Long fid,Long qid,String submittedBy );
 	 
 	 // Custom query method to delete all draft answers by form ID
 	 @Transactional 

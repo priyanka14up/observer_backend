@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import Observer20.Dto.AnswerDto;
+import Observer20.Dto.UpdateAnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
@@ -46,6 +47,7 @@ public interface FormService {
 	//public GetAnswerDto getAnswers(Long fid)throws HandledException;
 	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto,String consistuency) throws HandledException;
 	
+	HashMap<String, Object> updateAnswer(HttpServletRequest request,AnswerDto answerDto,Long fid,Long sid) throws HandledException;
 	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
@@ -58,4 +60,8 @@ public interface FormService {
 	HashMap<String, Object> updateSubFormHeadingsByFid(Long sid,List<SubForm> subForms) throws HandledException;
 	HashMap<String, Object> getFormById(Long fid)throws HandledException;
 	Map<String, Boolean> deleteForm(Long fid)throws HandledException;
+	
+	
+	
+	
 }

@@ -15,6 +15,7 @@ import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Dto.UpdateAnswerDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
@@ -122,6 +123,9 @@ public class FormController {
 				data.add(q.getQid());
 				data.add(q.getQname());
 				data.add(q.getInputType());
+				data.add(q.getInputLabel());
+				data.add(q.isRemarkStatus());
+				data.add(q.getRemarkLabel());
 				array.put(data);
 				data = new ArrayList<Object>();
 			}
@@ -312,6 +316,20 @@ public class FormController {
 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 	}
 }
+	 @PutMapping("/update/{fid}/{sid}")
+	    public ResponseEntity<Object> updateAnswer(HttpServletRequest request,@RequestBody AnswerDto updateAnswerDto,@PathVariable("fid")Long fid,@PathVariable("sid")Long sid) {
+	        try {
+	            // Call the service layer to update the answer
+	            HashMap<String, Object> result = formService.updateAnswer(request,updateAnswerDto,fid,sid);
+	            return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+	           
+	        } catch (HandledException e) {
+	            // Handle exceptions and return an appropriate response
+	        	return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	           
+	        }
+	    }
+
 	
 	
 	@GetMapping("/forms/{obsType}/{consistuency}/{userId}")
@@ -425,7 +443,6 @@ public class FormController {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 		}
     }
-	
 	
 	
 }

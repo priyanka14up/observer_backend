@@ -1,5 +1,6 @@
 package Observer20.Model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,27 +18,22 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 
 
-@SuppressWarnings("deprecation")
 @Entity
 @Table(name = "observer_local_info")
 public class ObserverLocalInfo {
-	@Id
+    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-	
-	  @OneToOne
-	  @JoinColumn(name = "obscode") 
-	  private ObserverUser observerUser;
-	
+
+    @OneToOne
+    @JoinColumn(name = "obscode")
+    private ObserverUser observerUser;
+
     @Column(name = "local_address")
-    
     private String localAddress;
 
     @Column(name = "local_mobile")
-	
-	
     private String localMobile;
-    
 
 	public Long getId() {
 		return id;
@@ -71,19 +67,12 @@ public class ObserverLocalInfo {
 		this.localMobile = localMobile;
 	}
 
-	public ObserverLocalInfo(Long id, ObserverUser observerUser,
-			@NotEmpty(message = "Local address cannot be empty") String localAddress,
-			@NotNull(message = "Mobnum cannot be null") @Min(value = 1000000000, message = "Mobnum must be at least 10 digits") @Max(value = 999999999, message = "Mobnum can be at most 10 digits") String localMobile) {
+	public ObserverLocalInfo(Long id, ObserverUser observerUser, String localAddress, String localMobile) {
 		super();
 		this.id = id;
 		this.observerUser = observerUser;
 		this.localAddress = localAddress;
 		this.localMobile = localMobile;
-	}
-
-	public ObserverLocalInfo() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
@@ -92,7 +81,12 @@ public class ObserverLocalInfo {
 				+ ", localMobile=" + localMobile + "]";
 	}
 
-	
+	public ObserverLocalInfo() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+    
+    
 
-	
+   
 }

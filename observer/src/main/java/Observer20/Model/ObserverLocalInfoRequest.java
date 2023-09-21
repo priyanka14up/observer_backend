@@ -20,12 +20,7 @@ public class ObserverLocalInfoRequest {
 	  @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
 	 
     private String localMobile;
-	public String getObscode() {
-		return obscode;
-	}
-	public void setObscode(String obscode) {
-		this.obscode = obscode;
-	}
+
 	public String getLocalAddress() {
 		return localAddress;
 	}
@@ -38,5 +33,12 @@ public class ObserverLocalInfoRequest {
 	public void setLocalMobile(String localMobile) {
 		this.localMobile = localMobile;
 	}
+	public String getObscode() {
+		return obscode;
+	}
+	public void setObscode(String obscode) {
+		this.obscode = obscode;
+	}
     
+	
 }

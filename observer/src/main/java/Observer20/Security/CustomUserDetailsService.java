@@ -1,5 +1,7 @@
 package Observer20.Security;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -18,7 +20,7 @@ public class CustomUserDetailsService implements UserDetailsService{
 	@Override
 	public UserDetails loadUserByUsername(String obscode) throws UsernameNotFoundException {
 		
-		ObserverUser observerUser=observerUserRepo.findByObscode(obscode);
+		UserDetails observerUser=observerUserRepo.findByObscode(obscode);
 		if(observerUser==null) 
 		{ 
 			throw new UsernameNotFoundException("could not find user"); }

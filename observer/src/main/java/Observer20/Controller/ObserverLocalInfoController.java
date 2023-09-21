@@ -1,6 +1,8 @@
 package Observer20.Controller;
 
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,13 +15,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-
+import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 import Observer20.Services.ObserverLocalInfoService;
 import Observer20.Services.ObserverService;
+import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.ObserverLocalInfoDTO;
 import Observer20.payloads.ObserverUserDto;
 import Observer20.payloads.ObserverUserDtoUpdation;
@@ -33,6 +36,8 @@ public class ObserverLocalInfoController {
 private  ObserverService observerService;
 @Autowired
 ObserverLocalInfoService observerLocalInfoService;
+@Autowired
+T_Allot_Group_Servcie t_Allot_Group_Servcie;
 
 	
 
@@ -44,14 +49,15 @@ ObserverLocalInfoService observerLocalInfoService;
         String localMobileNumber = localInfoRequest.getLocalMobile();
 
        
-        ApiResponse observerUserDto = observerLocalInfoService.addLocalInfo(obsCode, localAddress, localMobileNumber);
+       ApiResponse observerUserDto = observerLocalInfoService.addLocalInfo(obsCode, localAddress, localMobileNumber);
 
         return ResponseEntity.ok("Local information added successfully for obscode: " + obsCode);
+       
     
     }
   //get by one
   		@GetMapping("/{ObsCode}")
-  		public ResponseEntity<ObserverLocalInfoDTO> getSingleObserverUser(@PathVariable String ObsCode)
+  		public ResponseEntity<List<ObserverLocalInfoDTO>> getSingleObserverUser(@PathVariable String ObsCode)
   		{
   			return ResponseEntity.ok(observerLocalInfoService.getObserverLocalInfoByObscode(ObsCode));
   			
@@ -65,6 +71,12 @@ ObserverLocalInfoService observerLocalInfoService;
 		    return ResponseEntity.ok(updatedObserverLocalInfo);
 		}
   		
+  		@GetMapping("/allot/{ObsCode}")
+  		public ResponseEntity<List<Obs_Allot>> getSingleObsAllot(@PathVariable String ObsCode)
+  		{
+  			return ResponseEntity.ok(t_Allot_Group_Servcie.getObsAllotByObscode(ObsCode));
+  			
+  		}
 }
 
 

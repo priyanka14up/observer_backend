@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication(exclude=SecurityAutoConfiguration.class)
 //@SpringBootApplication
 //@ComponentScan(basePackages = "Observer20.Observer20.Model.MapToJsonConverter")
+//@ComponentScan(basePackages = "Observer20.Model")
 public class ObserverApplication   {
 	/*implements CommandLineRunner */
 	@Autowired

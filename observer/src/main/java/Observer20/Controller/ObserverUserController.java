@@ -75,7 +75,7 @@ public class ObserverUserController {
 			
 		}
 		// delete
-		//@PreAuthorize("hasRole('ADMIN')")
+		@PreAuthorize("hasRole('ADMIN')")
 		@DeleteMapping("/{obscode}")
 		public ResponseEntity<ApiResponse> deleteObserverUser(@PathVariable String obscode)
 		{

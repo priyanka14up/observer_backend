@@ -49,7 +49,7 @@ public class JwtAuthController {
 	        ObserverUser user = getUserByUsername(request.getObscode());
 	        
 	        String obscode = user.getObscode();
-	        String name = user.getName();
+	        String name = user.getUsername();
 	        String email = user.getEmail();
 	        String role = user.getRole();
 	        

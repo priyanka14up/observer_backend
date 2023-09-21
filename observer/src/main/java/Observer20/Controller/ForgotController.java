@@ -3,6 +3,7 @@ package Observer20.Controller;
 import java.util.Random;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -49,7 +50,7 @@ public class ForgotController {
     	System.out.println("OTP:"+otp);
 		//Write a code for send to email
 		
-		  String subject="OTP From ECI"; 
+		  String subject="OTP From Observer Portal"; 
 		  String message="Otp:"+otp; 
 		  String to=email;
 		  boolean flag=emailService.sendEmail(subject,message,to);
@@ -97,7 +98,7 @@ public class ForgotController {
 	
 	 
 	@PostMapping("/change-password")
-	public String changePassword(@RequestBody ChangePasswordRequest request, HttpSession session) {
+	public String changePassword(@Valid @RequestBody ChangePasswordRequest request, HttpSession session) {
 	    // Fetch the user based on the provided obscode
 	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request.getObscode());
 
@@ -122,7 +123,7 @@ public class ForgotController {
 
 	
 	@PostMapping("/change-password1")
-	public String changePassword1(@RequestBody ChangePasswordRequest1 request1, HttpSession session) {
+	public String changePassword1(@Valid @RequestBody ChangePasswordRequest1 request1, HttpSession session) {
 	    // Update the password for the provided obscode
 	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request1.getObscode());
 

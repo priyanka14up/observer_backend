@@ -304,18 +304,39 @@ public class FormController {
 		
 	}
 	
-	@PostMapping("/submitAnswers/{consistuency}")
-	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+	
+	@GetMapping("/draftanswers/{userid}/{fid}")
+	public ResponseEntity<Object> getAllDraftAnswers(@PathVariable("userid")String userid,@PathVariable("fid") Long fid) throws HandledException {
+		try {
+
+			List<HashMap<String, Object>> result=formService.getAllDraftAnswers(userid,fid);
+	
+			if (result == null|| result.isEmpty()) {
+	            return ResponseHandler.generateResponse("No draft answers found", HttpStatus.NOT_FOUND, null);
+	        }
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
 		
-	try {
-		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
-		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-
-	} catch (HandledException e) {
-
-		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 	}
-}
+	
+//	@PostMapping("/submitAnswers/{consistuency}")
+//	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+//		
+//	try {
+//		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
+//		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//	} catch (HandledException e) {
+//
+//		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//	}
+//}
+	
+	
 	 @PutMapping("/update/{fid}/{sid}")
 	    public ResponseEntity<Object> updateAnswer(HttpServletRequest request,@RequestBody AnswerDto updateAnswerDto,@PathVariable("fid")Long fid,@PathVariable("sid")Long sid) {
 	        try {
@@ -330,8 +351,23 @@ public class FormController {
 	        }
 	    }
 
+	 @PutMapping("/submitAnswers1/{consistuency}")
+		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+			
+		try {
+			HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
+	 
+	 
+	 
 	
-	
+	/*dashboard*/
 	@GetMapping("/forms/{obsType}/{consistuency}/{userId}")
 	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("obsType") String obsType,@PathVariable("consistuency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
 

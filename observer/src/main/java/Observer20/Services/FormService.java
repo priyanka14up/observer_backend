@@ -46,10 +46,11 @@ public interface FormService {
 	
 	//public GetAnswerDto getAnswers(Long fid)throws HandledException;
 	HashMap<String, Object> submitAnswers(HttpServletRequest request, AnswerDto nswerDto,String consistuency) throws HandledException;
-	
+	//HashMap<String, Object> submitAnswersPut(HttpServletRequest request, AnswerDto nswerDto,String consistuency) throws HandledException;
 	HashMap<String, Object> updateAnswer(HttpServletRequest request,AnswerDto answerDto,Long fid,Long sid) throws HandledException;
 	//public HashMap<String, Object> getAnswers(String userid, Long fid, Long sid) throws HandledException;
 	public HashMap<String, Object> getDraftAnswers(String userid, Long fid, Long sid) throws HandledException;
+	public HashMap<String, Object> submitAllDraft(String obsType,Long fid)throws HandledException;
 	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
 	public List<HashMap<String, Object>> getAllDraftAnswers(String userid, Long fid) throws HandledException;
 	public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId)throws HandledException;

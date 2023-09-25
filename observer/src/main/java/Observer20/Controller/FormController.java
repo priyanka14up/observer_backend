@@ -323,19 +323,31 @@ public class FormController {
 		
 	}
 	
-//	@PostMapping("/submitAnswers/{consistuency}")
-//	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
-//		
-//	try {
-//		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
-//		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-//
-//	} catch (HandledException e) {
-//
-//		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//	}
-//}
+	@PostMapping("/submitAnswers/{consistuency}")
+	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
 	
+	@PostMapping("/submitAllDraft/{userid}/{fid}")
+	public ResponseEntity<Object> submitAllDraft(@PathVariable("userid")String userid,@PathVariable("fid")Long fid) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitAllDraft(userid,fid);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
 	
 	 @PutMapping("/update/{fid}/{sid}")
 	    public ResponseEntity<Object> updateAnswer(HttpServletRequest request,@RequestBody AnswerDto updateAnswerDto,@PathVariable("fid")Long fid,@PathVariable("sid")Long sid) {
@@ -351,18 +363,18 @@ public class FormController {
 	        }
 	    }
 
-	 @PutMapping("/submitAnswers1/{consistuency}")
-		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
-			
-		try {
-			HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
-			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-
-		} catch (HandledException e) {
-
-			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-		}
-	}
+//	 @PutMapping("/submitAnswers1/{consistuency}")
+//		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+//			
+//		try {
+//			HashMap<String, Object> result=formService.submitAnswersPut(request,answerDto,consistuency);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//		}
+//	}
 	 
 	 
 	 

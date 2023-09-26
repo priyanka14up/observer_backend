@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Observer20.Services.AC_LIST_Service;
 import Observer20.Services.DIST_LIST_Service;
+import Observer20.Services.PC_LIST_Service;
 import Observer20.Services.STATE_LIST_Service;
 import Observer20.Services.T_Allot_Group_Servcie;
 
@@ -24,6 +25,7 @@ import Observer20.Services.T_Allot_Group_Servcie;
 		  @Autowired  DIST_LIST_Service  dIST_LIST_Service;
 		  @Autowired Observer20.Services.PC_AC_DIST_Service pC_AC_DIST_Service;
 		  @Autowired T_Allot_Group_Servcie t_Allot_Group_Servcie;
+		  @Autowired PC_LIST_Service pC_LIST_Service;
 		  
 		  @GetMapping("/migrate/state_list")
 		    public ResponseEntity<String> migrateData() {
@@ -77,6 +79,18 @@ import Observer20.Services.T_Allot_Group_Servcie;
 			            e.printStackTrace();
 			            return ResponseEntity.badRequest().body("Data migration failed.");
 			        }
+			        
+		  }
+		        @GetMapping("/migrate/pc_list")
+			    public ResponseEntity<String> migrateT_PC_LIST() {
+			        try {
+			        	pC_LIST_Service.migrateData_PC_LIST(); // Call your data migration method here
+			            return ResponseEntity.ok("Data migration completed successfully.");
+			        } catch (Exception e) {
+			            e.printStackTrace();
+			            return ResponseEntity.badRequest().body("Data migration failed.");
+			        }
+			        
 		  }
 	}
 		  

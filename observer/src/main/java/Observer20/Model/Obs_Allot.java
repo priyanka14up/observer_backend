@@ -18,6 +18,11 @@ public class Obs_Allot {
 	    private String Ob_To_Date;
 	    private String name;
 	    private String service;
+	    private String PC_NAME;
+	    private String DIST_NAME;
+	    private String StatePhaseNo;
+	    private String CURRENTELECTION;
+	    private String SCHEDULEID;
 		public Long getId() {
 			return id;
 		}
@@ -73,6 +78,42 @@ public class Obs_Allot {
 		}
 		public void setService(String service) {
 			this.service = service;
+		}
+		
+		
+		
+		public String getPC_NAME() {
+			return PC_NAME;
+		}
+		public void setPC_NAME(String pC_NAME) {
+			PC_NAME = pC_NAME;
+		}
+		
+		public String getDIST_NAME() {
+			return DIST_NAME;
+		}
+		public void setDIST_NAME(String dIST_NAME) {
+			DIST_NAME = dIST_NAME;
+		}
+		
+		
+		public String getStatePhaseNo() {
+			return StatePhaseNo;
+		}
+		public void setStatePhaseNo(String statePhaseNo) {
+			StatePhaseNo = statePhaseNo;
+		}
+		public String getCURRENTELECTION() {
+			return CURRENTELECTION;
+		}
+		public void setCURRENTELECTION(String cURRENTELECTION) {
+			CURRENTELECTION = cURRENTELECTION;
+		}
+		public String getSCHEDULEID() {
+			return SCHEDULEID;
+		}
+		public void setSCHEDULEID(String sCHEDULEID) {
+			SCHEDULEID = sCHEDULEID;
 		}
 		@Override
 		public String toString() {

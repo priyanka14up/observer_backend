@@ -14,8 +14,7 @@ public class STATE_LIST2 {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 
 	private Long id;
-	//private String ST_CODE;
-	//private String ST_NAME;
+	
 	@Column(name = "ST_CODE")
     private String stCode;
     

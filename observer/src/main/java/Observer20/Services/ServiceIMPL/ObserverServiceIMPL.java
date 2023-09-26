@@ -180,11 +180,14 @@ public class ObserverServiceIMPL implements ObserverService {
 		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 		if (observerUser != null) {
 		    // Update specific fields
+			observerUser.setOB_TITLE(observerUserDtoUpdation.getOB_TITLE());
+		    observerUser.setOB_CADRE(observerUserDtoUpdation.getOB_CADRE());
 		    observerUser.setName(observerUserDtoUpdation.getName());
-		    observerUser.setEmail(observerUserDtoUpdation.getEmail());
-		    observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
+		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
+		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
-		    observerUser.setService(observerUserDtoUpdation.getService());
+		    //observerUser.setService(observerUserDtoUpdation.getService());
 		    observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
 		    observerUser.setOB_LANG(observerUserDtoUpdation.getOB_LANG());
 		    observerUser.setO_ADR_L1(observerUserDtoUpdation.getO_ADR_L1());

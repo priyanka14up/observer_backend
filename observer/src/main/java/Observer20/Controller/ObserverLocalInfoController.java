@@ -7,6 +7,7 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -56,6 +57,7 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
     
     }
   //get by one
+    
   		@GetMapping("/{ObsCode}")
   		public ResponseEntity<List<ObserverLocalInfoDTO>> getSingleObserverUser(@PathVariable String ObsCode)
   		{
@@ -70,7 +72,7 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
   			ObserverLocalInfoDTO updatedObserverLocalInfo = observerLocalInfoService.updateObserverLocalInfo(observerLocalInfoDTO, ObsCode);
 		    return ResponseEntity.ok(updatedObserverLocalInfo);
 		}
-  		
+  		@PreAuthorize("hasRole('ADMIN')")
   		@GetMapping("/allot/{ObsCode}")
   		public ResponseEntity<List<Obs_Allot>> getSingleObsAllot(@PathVariable String ObsCode)
   		{

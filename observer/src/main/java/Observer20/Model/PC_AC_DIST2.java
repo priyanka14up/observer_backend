@@ -1,5 +1,6 @@
 package Observer20.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,12 +14,14 @@ public class PC_AC_DIST2 {
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 
 	private Long id;
-	private String ST_CODE;
+	@Column(name = "ST_CODE")
+    private String stCode;
 	private String ST_NAME;
 	private String PC_NO;
 	private String PC_NAME;
 	private String PC_TYPE;
-	private String AC_NO;
+	@Column(name = "AC_NO")
+    private String acNo;
 	private String AC_NAME;
 	private String AC_TYPE;
 	private String DIST_NO;
@@ -29,11 +32,12 @@ public class PC_AC_DIST2 {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	public String getST_CODE() {
-		return ST_CODE;
+	
+	public String getStCode() {
+		return stCode;
 	}
-	public void setST_CODE(String sT_CODE) {
-		ST_CODE = sT_CODE;
+	public void setStCode(String stCode) {
+		this.stCode = stCode;
 	}
 	public String getST_NAME() {
 		return ST_NAME;

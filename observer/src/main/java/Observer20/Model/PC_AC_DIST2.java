@@ -63,11 +63,11 @@ public class PC_AC_DIST2 {
 	public void setPC_TYPE(String pC_TYPE) {
 		PC_TYPE = pC_TYPE;
 	}
-	public String getAC_NO() {
-		return AC_NO;
+	public String getAcNo() {
+		return acNo;
 	}
-	public void setAC_NO(String aC_NO) {
-		AC_NO = aC_NO;
+	public void setAcNo(String acNo) {
+		this.acNo = acNo;
 	}
 	public String getAC_NAME() {
 		return AC_NAME;

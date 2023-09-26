@@ -26,7 +26,7 @@ public class PC_AC_DIST_ServiceIMPL implements PC_AC_DIST_Service{
 		  private PC_AC_DIST2 mapToNewEntity(PC_AC_DIST source) 
 		  { 
 			  PC_AC_DIST2 newEntity = new PC_AC_DIST2();
-		  newEntity.setST_CODE(source.getST_CODE());
+		  newEntity.setStCode (source.getST_CODE());
 		  newEntity.setST_NAME(source.getST_NAME());
 		  newEntity.setPC_NO(source.getPC_NO());
 		  newEntity.setPC_NAME(source.getPC_NAME());

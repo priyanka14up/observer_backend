@@ -24,7 +24,8 @@ public class SmsService {
     	int max=999999;
     	int number=(int)(Math.random()*(max-min+1)+min);
     	System.out.println(number);
-    	String msg="your Otp-"+number+"Please Verify this Otp in your application";
+    	//String msg="your OTP is-"+number+"Please Verify this Otp in your application";
+    	String msg="your OTP is-"+number+"for Observer Portal and it is generated on"+System.DateTime.Now.ToString()+"";
     	Message message=Message.creator(new PhoneNumber(sms.getPhoneNo()),new PhoneNumber(From_Number),msg).create();
     	StoreOtp.setOtp(number);
     }

@@ -363,18 +363,18 @@ public class FormController {
 	        }
 	    }
 
-//	 @PutMapping("/submitAnswers1/{consistuency}")
-//		public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
-//			
-//		try {
-//			HashMap<String, Object> result=formService.submitAnswersPut(request,answerDto,consistuency);
-//			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-//
-//		} catch (HandledException e) {
-//
-//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//		}
-//	}
+	 @PutMapping("/submitAndUpdateAnswers/{consistuency}")
+		public ResponseEntity<Object> submitAndUpdateAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+			
+		try {
+			HashMap<String, Object> result=formService.submitAndUpdateAnswers(request,answerDto,consistuency);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
 	 
 	 
 	 
@@ -462,6 +462,20 @@ public class FormController {
 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 	}
 }
+//	@PutMapping("/updateOneAnwer/{qid}")
+//	public ResponseEntity<Object> updateAnswerByQid(@PathVariable("qid")Long qid) throws HandledException {
+//		
+//	try {
+//		HashMap<String, Object> result=formService.updateAnswerByQid(qid);
+//		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//	} catch (HandledException e) {
+//
+//		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//	}
+//}
+	
+	
 	
 	@GetMapping("/getform/{formId}")
 	public ResponseEntity<Object> getFormById(@PathVariable Long formId) {

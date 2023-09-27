@@ -49,7 +49,7 @@ public class ForgotController {
     	System.out.println("OTP:"+otp);
 		//Write a code for send to email
 		
-		  String subject="OTP From ECI"; 
+		  String subject="OTP From Observer Portal"; 
 		  String message="Otp:"+otp; 
 		  String to=email;
 		  boolean flag=emailService.sendEmail(subject,message,to);

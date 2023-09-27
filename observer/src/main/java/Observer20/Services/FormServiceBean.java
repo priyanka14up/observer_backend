@@ -663,13 +663,10 @@ ResponseMap.put("remarks",response.getRemarks());
 						
 					}	
 					
-					
-					
 					//answer.setRemarks(answers.get(i).getRemarks());
 			                // You can update other fields if needed
 
 			                draftAnswerRepo.save(answer);
-			                
 			                resultAnswers.add(answers.get(i));
 				}
 			}//end of for

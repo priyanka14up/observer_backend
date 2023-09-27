@@ -49,7 +49,7 @@ public class ObserverUserController {
 		private ObserverUserRepo observerUserRepo;
 		
 		//POST -create user
-
+		@PreAuthorize("hasRole('ADMIN')")
 		@PostMapping("/save")
 		public ResponseEntity<ObserverUserDto> createUser(@Valid @RequestBody ObserverUserDto observerUserDto)
 		{
@@ -75,7 +75,7 @@ public class ObserverUserController {
 			
 		}
 		// delete
-		//@PreAuthorize("hasRole('ADMIN')")
+		@PreAuthorize("hasRole('ADMIN')")
 		@DeleteMapping("/{obscode}")
 		public ResponseEntity<ApiResponse> deleteObserverUser(@PathVariable String obscode)
 		{

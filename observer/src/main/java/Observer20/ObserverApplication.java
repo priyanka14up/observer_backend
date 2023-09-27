@@ -7,8 +7,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
-@SpringBootApplication(exclude=SecurityAutoConfiguration.class)
-//@SpringBootApplication
+//@SpringBootApplication(exclude=SecurityAutoConfiguration.class)
+@SpringBootApplication
 //@ComponentScan(basePackages = "Observer20.Observer20.Model.MapToJsonConverter")
 public class ObserverApplication   {
 	/*implements CommandLineRunner */

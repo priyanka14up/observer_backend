@@ -65,6 +65,33 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setService(observerUserDto.getService());
 		observerUser.setWorkexperience(observerUserDto.getWorkexperience());
 		observerUser.setRole(observerUserDto.getRole());
+		observerUser.setECI_OBSID(observerUserDto.getECI_OBSID());
+        observerUser.setID_NO(observerUserDto.getID_NO());
+		observerUser.setOB_TITLE(observerUserDto.getOB_TITLE());
+		observerUser.setOB_CADRE(observerUserDto.getOB_CADRE());
+		observerUser.setOB_YEAR(observerUserDto.getOB_YEAR());
+		observerUser.setOB_SEX(observerUserDto.getOB_SEX());
+		observerUser.setOB_DOB(observerUserDto.getOB_DOB());
+		observerUser.setOB_STATUS(observerUserDto.getOB_STATUS());
+		observerUser.setOB_LANG(observerUserDto.getOB_LANG());
+		observerUser.setOB_DESIG(observerUserDto.getOB_DESIG());
+		observerUser.setO_ADR_L1(observerUserDto.getO_ADR_L1());
+		observerUser.setO_CITY(observerUserDto.getO_CITY());
+		observerUser.setO_STATE(observerUserDto.getO_STATE());
+		observerUser.setO_STD(observerUserDto.getO_STD());
+		observerUser.setO_FAX(observerUserDto.getO_FAX());
+		observerUser.setR_PIN(observerUserDto.getR_PIN());
+		observerUser.setR_STD(observerUserDto.getR_STD());
+		observerUser.setR_TNO(observerUserDto.getR_TNO());
+		observerUser.setR_FAX(observerUserDto.getR_FAX());
+		observerUser.setEMG_NAME(observerUserDto.getEMG_NAME());
+		observerUser.setSPONSOR(observerUserDto.getSPONSOR());
+		observerUser.setAGE(observerUserDto.getAGE());
+		observerUser.setO_AccountNo(observerUserDto.getO_AccountNo());
+		observerUser.setO_IFCSCode(observerUserDto.getO_IFCSCode());
+		observerUser.setO_BankName(observerUserDto.getO_BankName());
+		observerUser.setO_BranchName(observerUserDto.getO_BranchName());
+		observerUser.setO_AccountHolderName(observerUserDto.getO_AccountHolderName());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
 		observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
@@ -83,6 +110,36 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setService(observerUser.getService());
 		observerUserDto.setWorkexperience(observerUser.getWorkexperience());
 		observerUserDto.setRole(observerUser.getRole());
+		observerUserDto.setECI_OBSID(observerUser.getECI_OBSID());
+		observerUserDto.setID_NO(observerUser.getID_NO());
+		observerUserDto.setOB_TITLE(observerUser.getOB_TITLE());
+		observerUserDto.setWorkexperience(observerUser.getWorkexperience());
+		observerUserDto.setOB_CADRE(observerUser.getOB_CADRE());
+		observerUserDto.setOB_YEAR(observerUser.getOB_YEAR());
+		observerUserDto.setOB_SEX(observerUser.getOB_SEX());
+		observerUserDto.setOB_DOB(observerUser.getOB_DOB());
+		observerUserDto.setOB_STATUS(observerUser.getOB_STATUS());
+		observerUserDto.setOB_LANG(observerUser.getOB_LANG());
+		observerUserDto.setOB_DESIG(observerUser.getOB_DESIG());
+		observerUserDto.setO_ADR_L1(observerUser.getO_ADR_L1());
+		observerUserDto.setO_CITY(observerUser.getO_CITY());
+		observerUserDto.setO_STATE(observerUser.getO_STATE());
+		observerUserDto.setO_STD(observerUser.getO_STD());
+		observerUserDto.setO_FAX(observerUser.getO_FAX());
+		observerUserDto.setR_PIN(observerUser.getR_PIN());
+		observerUserDto.setR_TNO(observerUser.getR_TNO());
+		observerUserDto.setR_FAX(observerUser.getR_FAX());
+		observerUserDto.setR_STD(observerUser.getR_STD());
+		observerUserDto.setEMG_NAME(observerUser.getEMG_NAME());
+		observerUserDto.setSPONSOR(observerUser.getSPONSOR());
+		observerUserDto.setAGE(observerUser.getAGE());
+		observerUserDto.setO_AccountNo(observerUser.getO_AccountNo());
+
+		observerUserDto.setO_IFCSCode(observerUser.getO_IFCSCode());
+		observerUserDto.setO_BankName(observerUser.getO_BankName());
+		observerUserDto.setO_BranchName(observerUser.getO_BranchName());
+		observerUserDto.setO_AccountHolderName(observerUser.getO_AccountHolderName());
+		
 		// observerUserDto.setPassword(passwordEncoder.encode(observerUser.getPassword()));
 		observerUserDto.setPassword(DigestUtils.md5DigestAsHex(observerUser.getPassword().getBytes()));
 
@@ -123,12 +180,30 @@ public class ObserverServiceIMPL implements ObserverService {
 		ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
 		if (observerUser != null) {
 		    // Update specific fields
+			observerUser.setOB_TITLE(observerUserDtoUpdation.getOB_TITLE());
+		    observerUser.setOB_CADRE(observerUserDtoUpdation.getOB_CADRE());
 		    observerUser.setName(observerUserDtoUpdation.getName());
-		    observerUser.setEmail(observerUserDtoUpdation.getEmail());
-		    observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
+		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
+		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
-		    observerUser.setService(observerUserDtoUpdation.getService());
+		    //observerUser.setService(observerUserDtoUpdation.getService());
 		    observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
+		    observerUser.setOB_LANG(observerUserDtoUpdation.getOB_LANG());
+		    observerUser.setO_ADR_L1(observerUserDtoUpdation.getO_ADR_L1());
+		    observerUser.setO_CITY(observerUserDtoUpdation.getO_CITY());
+		    observerUser.setO_STATE(observerUserDtoUpdation.getO_STATE());
+		    
+		    observerUser.setO_PIN(observerUserDtoUpdation.getO_PIN());
+		    observerUser.setO_STD(observerUserDtoUpdation.getO_STD());
+		    observerUser.setO_FAX(observerUserDtoUpdation.getO_FAX());
+		    observerUser.setO_AccountNo(observerUserDtoUpdation.getO_AccountNo());
+		    observerUser.setO_IFCSCode(observerUserDtoUpdation.getO_IFCSCode());
+		    
+		    observerUser.setO_BankName(observerUserDtoUpdation.getO_BankName());
+		    observerUser.setO_BranchName(observerUserDtoUpdation.getO_BranchName());
+		    observerUser.setO_AccountHolderName(observerUserDtoUpdation.getO_AccountHolderName());
+		    
 
 		    // Save the updated entity back to the database
 		    ObserverUser updatedUser = observerUserRepo.save(observerUser);
@@ -168,4 +243,3 @@ public class ObserverServiceIMPL implements ObserverService {
 
 	
 	}
-

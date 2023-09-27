@@ -81,9 +81,46 @@ public class ObserverUser implements UserDetails{
     private String O_AccountHolderName;
     private String OB_FromDate;
     private String OB_ToDate;
+    private String OB_CDEP;
+    private String Exp_as_RO;
+    private String Exp_as_DEO;
+    private String Exp_as_OtherElectionDuty;
     
 	
-	  @Column(name = "first_time_login") 
+	  public String getOB_CDEP() {
+		return OB_CDEP;
+	}
+
+	public void setOB_CDEP(String oB_CDEP) {
+		OB_CDEP = oB_CDEP;
+	}
+
+	public String getExp_as_RO() {
+		return Exp_as_RO;
+	}
+
+	public void setExp_as_RO(String exp_as_RO) {
+		Exp_as_RO = exp_as_RO;
+	}
+
+	public String getExp_as_DEO() {
+		return Exp_as_DEO;
+	}
+
+	public void setExp_as_DEO(String exp_as_DEO) {
+		Exp_as_DEO = exp_as_DEO;
+	}
+
+	public String getExp_as_OtherElectionDuty() {
+		return Exp_as_OtherElectionDuty;
+	}
+
+	public void setExp_as_OtherElectionDuty(String exp_as_OtherElectionDuty) {
+		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
+	}
+
+
+	@Column(name = "first_time_login") 
 	  private Boolean firstTimeLogin = false;
     
 	
@@ -521,8 +558,10 @@ public class ObserverUser implements UserDetails{
 				+ ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE
 				+ ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode=" + O_IFCSCode + ", O_BankName=" + O_BankName
 				+ ", O_BranchName=" + O_BranchName + ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate="
-				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", firstTimeLogin=" + firstTimeLogin + ", roles=" + roles
-				+ ", securityQuestions=" + securityQuestions + ", localInfo=" + localInfo + "]";
+				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
+				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty
+				+ ", firstTimeLogin=" + firstTimeLogin + ", roles=" + roles + ", securityQuestions=" + securityQuestions
+				+ ", localInfo=" + localInfo + "]";
 	}
 
 	

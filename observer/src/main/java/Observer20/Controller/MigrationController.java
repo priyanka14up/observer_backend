@@ -1,5 +1,7 @@
 package Observer20.Controller;
 
+import java.time.LocalDateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +13,7 @@ import Observer20.Services.DIST_LIST_Service;
 import Observer20.Services.PC_LIST_Service;
 import Observer20.Services.STATE_LIST_Service;
 import Observer20.Services.T_Allot_Group_Servcie;
+import Observer20.Services.T_OBS_Service;
 
 
 	@RestController
@@ -26,6 +29,7 @@ import Observer20.Services.T_Allot_Group_Servcie;
 		  @Autowired Observer20.Services.PC_AC_DIST_Service pC_AC_DIST_Service;
 		  @Autowired T_Allot_Group_Servcie t_Allot_Group_Servcie;
 		  @Autowired PC_LIST_Service pC_LIST_Service;
+		  @Autowired T_OBS_Service t_OBS_Service;
 		  
 		  @GetMapping("/migrate/state_list")
 		    public ResponseEntity<String> migrateData() {
@@ -92,8 +96,55 @@ import Observer20.Services.T_Allot_Group_Servcie;
 			        }
 			        
 		  }
-	}
-		  
+		        
+			/*
+			 * @GetMapping("/migrate/t_obs") public ResponseEntity<String> migrateT_T_OBS()
+			 * { try { t_OBS_Service.migrateData_T_OBS(); // Call your data migration method
+			 * here return ResponseEntity.ok("Data migration completed successfully."); }
+			 * catch (Exception e) { e.printStackTrace(); return
+			 * ResponseEntity.badRequest().body("Data migration failed."); }
+			 * 
+			 * }
+			 */
+		        @GetMapping("/migrate/t_obs")
+		        public ResponseEntity<String> migrateT_T_OBS() {
+		            try {
+		                LocalDateTime lastMigrationTimestamp = getLastMigrationTimestamp(); // Get the timestamp of the last migration
+		                LocalDateTime latestUpdateTimestamp = getLatestUpdateTimestamp(); // Get the latest timestamp from the source table
+		                
+		                if (latestUpdateTimestamp.isAfter(lastMigrationTimestamp)) {
+		                    // There are updates since the last migration
+		                    t_OBS_Service.migrateData_T_OBS(lastMigrationTimestamp, latestUpdateTimestamp);
+		                    updateLastMigrationTimestamp(latestUpdateTimestamp); // Update the last migration timestamp
+		                }
+		                
+		                return ResponseEntity.ok("Data migration completed successfully.");
+		            } catch (Exception e) {
+		                e.printStackTrace();
+		                return ResponseEntity.badRequest().body("Data migration failed.");
+		            }
+		        }
+		        private LocalDateTime getLastMigrationTimestamp() {
+		            // Implement this method to retrieve the timestamp of the last migration
+		            // You can store it in a configuration file or a database table
+		            // Return the timestamp as a LocalDateTime
+		            // If it's the first migration, return LocalDateTime.MIN or a default timestamp
+		            return LocalDateTime.MIN; // For demonstration purposes, return LocalDateTime.MIN
+		        }
+
+		        private LocalDateTime getLatestUpdateTimestamp() {
+		            // Implement this method to retrieve the latest timestamp (mod_date) from the source table
+		            // You can use a database query to get the maximum value of the mod_date column
+		            // Return the latest timestamp as a LocalDateTime
+		            return LocalDateTime.now(); // For demonstration purposes, return the current timestamp
+		        }
+
+		        private void updateLastMigrationTimestamp(LocalDateTime timestamp) {
+		            // Implement this method to update the timestamp of the last migration
+		            // Store the current timestamp in a configuration file or a database table
+		        }
+		    }
+	  
 		  
 		  
 

@@ -50,7 +50,7 @@ public class ForgotController {
     	System.out.println("OTP:"+otp);
 		//Write a code for send to email
 		
-		  String subject="OTP From Observer Portal"; 
+		  String subject="OTP From Observer Portal,Kindly don't share it with anyone."; 
 		  String message="Otp:"+otp; 
 		  String to=email;
 		  boolean flag=emailService.sendEmail(subject,message,to);

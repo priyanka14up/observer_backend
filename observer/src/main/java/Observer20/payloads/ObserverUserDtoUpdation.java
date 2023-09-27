@@ -69,6 +69,10 @@ private int id;
     private String O_AccountHolderName;
     private String OB_FromDate;
     private String OB_ToDate;
+    private String OB_CDEP;
+    private String Exp_as_RO;
+    private String Exp_as_DEO;
+    private String Exp_as_OtherElectionDuty;
     
 	public int getId() {
 		return id;
@@ -306,6 +310,31 @@ private int id;
 	public void setOB_ToDate(String oB_ToDate) {
 		OB_ToDate = oB_ToDate;
 
+	}
+	
+	public String getOB_CDEP() {
+		return OB_CDEP;
+	}
+	public void setOB_CDEP(String oB_CDEP) {
+		OB_CDEP = oB_CDEP;
+	}
+	public String getExp_as_RO() {
+		return Exp_as_RO;
+	}
+	public void setExp_as_RO(String exp_as_RO) {
+		Exp_as_RO = exp_as_RO;
+	}
+	public String getExp_as_DEO() {
+		return Exp_as_DEO;
+	}
+	public void setExp_as_DEO(String exp_as_DEO) {
+		Exp_as_DEO = exp_as_DEO;
+	}
+	public String getExp_as_OtherElectionDuty() {
+		return Exp_as_OtherElectionDuty;
+	}
+	public void setExp_as_OtherElectionDuty(String exp_as_OtherElectionDuty) {
+		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
 	}
 	public ObserverUserDtoUpdation(int id, @NotEmpty String obscode,
 			@NotEmpty @Size(min = 4, message = "user name must be greter than 4 charcter!!") String name,

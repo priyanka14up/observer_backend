@@ -31,7 +31,7 @@ public class PC_AC_DIST_ServiceIMPL implements PC_AC_DIST_Service{
 		  newEntity.setPC_NO(source.getPC_NO());
 		  newEntity.setPC_NAME(source.getPC_NAME());
 		  newEntity.setPC_TYPE(source.getPC_TYPE());
-		  newEntity.setAC_NO(source.getAC_NO());
+		  newEntity.setAcNo(source.getAC_NO());
 		  newEntity.setAC_NAME(source.getAC_NAME());
 		  newEntity.setAC_TYPE(source.getAC_TYPE());
 		  newEntity.setDIST_NO(source.getDIST_NO());

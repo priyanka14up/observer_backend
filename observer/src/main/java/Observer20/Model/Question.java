@@ -29,6 +29,11 @@ public class Question {
 	@Column(columnDefinition = "TEXT",name = "ques_name",nullable=false)
     private String qname;
 	
+	//@NotBlank(message = "Question Name is mandatory")
+	@Column(name = "ques_seq",nullable=false)
+    private Long qseq;
+	
+	
 	@NotBlank(message = "Input Type is mandatory")
 	@Column(name = "input_type",nullable=false)
     private  String inputType;
@@ -100,8 +105,6 @@ public class Question {
 		this.remarkStatus = remarkStatus;
 	}
 
-	
-
 	public String getRemarkLabel() {
 		return remarkLabel;
 	}
@@ -109,18 +112,21 @@ public class Question {
 	public void setRemarkLabel(String remarkLabel) {
 		this.remarkLabel = remarkLabel;
 	}
+	
+	public Long getQseq() {
+		return qseq;
+	}
+
+	public void setQseq(Long qseq) {
+		this.qseq = qseq;
+	}
 
 	@Override
 	public String toString() {
-		return "Question [qid=" + qid + ", qname=" + qname + ", inputType=" + inputType + ", inputLabel=" + inputLabel
-				+ ", remarkStatus=" + remarkStatus + ", remarkLabel=" + remarkLabel + ", subform=" + subform + "]";
+		return "Question [qid=" + qid + ", qname=" + qname + ", qseq=" + qseq + ", inputType=" + inputType
+				+ ", inputLabel=" + inputLabel + ", remarkStatus=" + remarkStatus + ", remarkLabel=" + remarkLabel
+				+ ", subform=" + subform + "]";
 	}
-
-	
-
-	
-	
-
 //	public SubForm getSubform() {
 //		return subform;
 //	}
@@ -128,7 +134,4 @@ public class Question {
 //	public void setSubform(SubForm subform) {
 //		this.subform = subform;
 //	}
-
-	
-	
 }

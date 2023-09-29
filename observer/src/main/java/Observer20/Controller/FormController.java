@@ -126,6 +126,7 @@ public class FormController {
 				data.add(q.getInputLabel());
 				data.add(q.isRemarkStatus());
 				data.add(q.getRemarkLabel());
+				data.add(q.getQseq());
 				array.put(data);
 				data = new ArrayList<Object>();
 			}

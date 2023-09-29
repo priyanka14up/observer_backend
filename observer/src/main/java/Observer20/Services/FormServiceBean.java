@@ -447,16 +447,16 @@ ResponseMap.put("remarks",response.getRemarks());
 					answers.get(i).setQid(answers.get(i).getQid());
 					String answerget=answers.get(i).getAnswer();
 					answers.get(i).setAnswer(answers.get(i).getAnswer());
-					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
-					{
+//					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+//					{
 						answers.get(i).setRemarks(answers.get(i).getRemarks());
 						
-					}
-					else
-					{
-						answers.get(i).setRemarks(null);
-						
-					}	
+//					}
+//					else
+//					{
+//						answers.get(i).setRemarks(null);
+//						
+//					}	
 					sid=questionRepo.findSubformSidByQid(qid);
 					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
 					formId=subFormRepo.findFormIdBySid(sid);
@@ -558,7 +558,6 @@ ResponseMap.put("remarks",response.getRemarks());
 		
 		}
 		
-		
 		@Override
 		public HashMap<String, Object> submitAllDraft(String obsType,Long fid) throws HandledException {
 			List<FinalSubmitAnswer> finalSubmitAnswers=new ArrayList<FinalSubmitAnswer>();
@@ -618,16 +617,16 @@ ResponseMap.put("remarks",response.getRemarks());
 					answers.get(i).setQid(answers.get(i).getQid());
 					String answerget=answers.get(i).getAnswer();
 					answers.get(i).setAnswer(answers.get(i).getAnswer());
-					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
-					{
+					//if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+					//{
 						answers.get(i).setRemarks(answers.get(i).getRemarks());
 						
-					}
-					else
-					{
-						answers.get(i).setRemarks(null);
-						
-					}	
+					//}
+//					else
+//					{
+//						answers.get(i).setRemarks(null);
+//						
+//					}	
 					sid=questionRepo.findSubformSidByQid(qid);
 					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
 					formId=subFormRepo.findFormIdBySid(sid);
@@ -652,16 +651,16 @@ ResponseMap.put("remarks",response.getRemarks());
 					
 					answer.setAnswer(answers.get(i).getAnswer());
 					
-					if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
-					{
+					//if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
+					//{
 						answer.setRemarks(answers.get(i).getRemarks());
 						
-					}
-					else
-					{
-						answer.setRemarks(null);
-						
-					}	
+//					}
+//					else
+//					{
+//						answer.setRemarks(null);
+//						
+//					}	
 					
 					//answer.setRemarks(answers.get(i).getRemarks());
 			                // You can update other fields if needed
@@ -935,6 +934,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
 		         msgMap.put("questionText",question.getQname());
+		         msgMap.put("questionSeq",question.getQseq());
 		         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
@@ -1038,6 +1038,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			        msgMap.put("questionId", answer.getQid());
 			        Question question=questionRepo.findByQid(answer.getQid());
 			         msgMap.put("questionText",question.getQname());
+			         msgMap.put("questionSeq",question.getQseq());
 			         msgMap.put("inputType",question.getInputType());
 			        msgMap.put("subFormId", answer.getSid());
 			        msgMap.put("answer", answer.getAnswer());
@@ -1280,7 +1281,6 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			{
 				throw new HandledException("CHECK_PARAMETERS", "not existed");
 			}
-			
 		
 		}
 

@@ -121,12 +121,12 @@ public class FormController {
 			JSONArray array = new JSONArray();
 			for(Question q: formData) {
 				data.add(q.getQid());
+				data.add(q.getQseq());
 				data.add(q.getQname());
 				data.add(q.getInputType());
 				data.add(q.getInputLabel());
 				data.add(q.isRemarkStatus());
 				data.add(q.getRemarkLabel());
-				data.add(q.getQseq());
 				array.put(data);
 				data = new ArrayList<Object>();
 			}

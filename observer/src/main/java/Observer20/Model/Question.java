@@ -33,6 +33,19 @@ public class Question {
 	@Column(name = "input_type",nullable=false)
     private  String inputType;
 	
+	//@NotBlank(message = "Input Label is mandatory")
+	@Column(name = "input_label",nullable=false)
+    private  String inputLabel;
+	
+	//@NotBlank(message = "Remark Status is mandatory")
+	@Column(name = "remark_status",nullable=false)
+    private  boolean remarkStatus;
+	
+	//@NotBlank(message = "Remark Label is mandatory")
+	@Column(name = "remark_label",nullable=false)
+    private  String remarkLabel;
+	
+	
 	@ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "s_id")
     private SubForm subform;
@@ -68,13 +81,43 @@ public class Question {
 	public void setSubform(SubForm subform) {
 		this.subform = subform;
 	}
+	
+	public String getInputLabel() {
+		return inputLabel;
+	}
 
-	@Override
-	public String toString() {
-		return "Question [qid=" + qid + ", qname=" + qname + ", inputType=" + inputType + ", subform=" + subform + "]";
+	public void setInputLabel(String inputLabel) {
+		this.inputLabel = inputLabel;
 	}
 
 	
+
+	public boolean isRemarkStatus() {
+		return remarkStatus;
+	}
+
+	public void setRemarkStatus(boolean remarkStatus) {
+		this.remarkStatus = remarkStatus;
+	}
+
+	
+
+	public String getRemarkLabel() {
+		return remarkLabel;
+	}
+
+	public void setRemarkLabel(String remarkLabel) {
+		this.remarkLabel = remarkLabel;
+	}
+
+	@Override
+	public String toString() {
+		return "Question [qid=" + qid + ", qname=" + qname + ", inputType=" + inputType + ", inputLabel=" + inputLabel
+				+ ", remarkStatus=" + remarkStatus + ", remarkLabel=" + remarkLabel + ", subform=" + subform + "]";
+	}
+
+	
+
 	
 	
 

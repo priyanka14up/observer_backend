@@ -19,7 +19,8 @@ public class T_OBS_ServiceIMPL implements T_OBS_Service {
 	@Autowired
 	T_OBS2REPO2 t_OBS2REPO2;
 	@Override
-	public void migrateData_T_OBS(LocalDateTime lastMigrationTimestamp, LocalDateTime latestUpdateTimestamp) {
+	//public void migrateData_T_OBS(LocalDateTime lastMigrationTimestamp, LocalDateTime latestUpdateTimestamp) {
+	public void migrateData_T_OBS() {
 		List<T_OBS> sourceData = t_OBSREPO.findAll(); 
 		List<T_OBS2> newData =sourceData.stream().map(this::mapToNewEntity).collect(Collectors.toList());
 		t_OBS2REPO2.saveAll(newData); } 
@@ -122,5 +123,5 @@ public class T_OBS_ServiceIMPL implements T_OBS_Service {
 			 * 
 			 * }
 			 */
-
+		
 }

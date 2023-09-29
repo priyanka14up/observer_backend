@@ -85,7 +85,8 @@ public class ObserverUser implements UserDetails{
     private String Exp_as_RO;
     private String Exp_as_DEO;
     private String Exp_as_OtherElectionDuty;
-    
+    @Column(name = "Profile_Status") 
+	  private Boolean ProfileStatus = false;
 	
 	  public String getOB_CDEP() {
 		return OB_CDEP;
@@ -120,8 +121,7 @@ public class ObserverUser implements UserDetails{
 	}
 
 
-	@Column(name = "first_time_login") 
-	  private Boolean firstTimeLogin = false;
+	
     
 	
 	public int getId() {
@@ -448,12 +448,24 @@ public class ObserverUser implements UserDetails{
 		OB_ToDate = oB_ToDate;
 	}
 
-	public Boolean getFirstTimeLogin() {
-		return firstTimeLogin;
+	
+
+
+	
+
+	
+
+	
+
+	
+
+	
+	public Boolean getProfileStatus() {
+		return ProfileStatus;
 	}
 
-	public void setFirstTimeLogin(Boolean firstTimeLogin) {
-		this.firstTimeLogin = firstTimeLogin;
+	public void setProfileStatus(Boolean profileStatus) {
+		ProfileStatus = profileStatus;
 	}
 
 	public Set<Role> getRoles() {
@@ -486,13 +498,15 @@ public class ObserverUser implements UserDetails{
 
 	
 
+
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
 			String homeState, long mobnum, int workexperience, String eCI_OBSID, String iD_NO, String oB_TITLE,
 			String oB_CADRE, String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG,
 			String oB_DESIG, String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX,
 			String r_PIN, String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String aGE,
 			String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName,
-			String oB_FromDate, String oB_ToDate, Boolean firstTimeLogin, Set<Role> roles,
+			String oB_FromDate, String oB_ToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO,
+			String exp_as_OtherElectionDuty, Boolean profileStatus, Set<Role> roles,
 			Set<UserSecurityQuestion> securityQuestions, ObserverLocalInfo localInfo) {
 		super();
 		this.id = id;
@@ -535,7 +549,11 @@ public class ObserverUser implements UserDetails{
 		O_AccountHolderName = o_AccountHolderName;
 		OB_FromDate = oB_FromDate;
 		OB_ToDate = oB_ToDate;
-		this.firstTimeLogin = firstTimeLogin;
+		OB_CDEP = oB_CDEP;
+		Exp_as_RO = exp_as_RO;
+		Exp_as_DEO = exp_as_DEO;
+		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
+		ProfileStatus = profileStatus;
 		this.roles = roles;
 		this.securityQuestions = securityQuestions;
 		this.localInfo = localInfo;
@@ -560,7 +578,7 @@ public class ObserverUser implements UserDetails{
 				+ ", O_BranchName=" + O_BranchName + ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate="
 				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
 				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty
-				+ ", firstTimeLogin=" + firstTimeLogin + ", roles=" + roles + ", securityQuestions=" + securityQuestions
+				+ ", ProfileStatus=" + ProfileStatus + ", roles=" + roles + ", securityQuestions=" + securityQuestions
 				+ ", localInfo=" + localInfo + "]";
 	}
 

@@ -14,4 +14,6 @@ public interface FormServiceRepo extends JpaRepository<Form, Long>{
 	//List<Question> findAllById(Long formId);
 	
 	//Form findById(Long id);
+	//List<Form> findAllByObsTypeAndConsistuency(String obsType,);
+	
 }

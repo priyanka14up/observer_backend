@@ -25,7 +25,7 @@ public class MigCronSchdulerController {
 
 	            if (latestUpdateTimestamp.isAfter(lastMigrationTimestamp)) {
 	                // There are updates since the last migration
-	                t_OBS_Service.migrateData_T_OBS(lastMigrationTimestamp, latestUpdateTimestamp);
+	               // t_OBS_Service.migrateData_T_OBS(lastMigrationTimestamp, latestUpdateTimestamp);
 	                lastMigrationTimestamp = latestUpdateTimestamp; // Update the last migration timestamp
 	            }
 	        } catch (Exception e) {

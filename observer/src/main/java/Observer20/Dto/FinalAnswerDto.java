@@ -13,10 +13,6 @@ public class FinalAnswerDto {
 	@Column(name = "q_id",nullable=false)
     private Long qid;
 	
-	@Column(name = "qText",nullable=false)
-    private String qText;
-	
-	
 	@NotBlank(message = "Answer is mandatory")
 	@Column(name = "answer",nullable=false)
     private String answer;
@@ -52,16 +48,6 @@ public class FinalAnswerDto {
 			this.qid = qid;
 		}
 
-	
-
-		public String getqText() {
-			return qText;
-		}
-
-		public void setqText(String qText) {
-			this.qText = qText;
-		}
-
 		public String getAnswer() {
 			return answer;
 		}
@@ -88,9 +74,10 @@ public class FinalAnswerDto {
 
 		@Override
 		public String toString() {
-			return "FinalAnswerDto [fid=" + fid + ", sid=" + sid + ", qid=" + qid + ", qText=" + qText + ", answer="
-					+ answer + ", remarks=" + remarks + ", submittedBy=" + submittedBy + "]";
+			return "FinalAnswerDto [fid=" + fid + ", sid=" + sid + ", qid=" + qid + ", answer=" + answer + ", remarks="
+					+ remarks + ", submittedBy=" + submittedBy + "]";
 		}
 
+	
 		
 }

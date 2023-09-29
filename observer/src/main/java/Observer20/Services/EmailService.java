@@ -11,8 +11,11 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.stereotype.Service;
 
+import Observer20.payloads.EmailRequest;
+
 @Service
 public class EmailService {
+	//public boolean sendEmail(String subject,String message,String to)
 	public boolean sendEmail(String subject,String message,String to)
 	{
 		boolean f=false;
@@ -28,9 +31,9 @@ public class EmailService {
 		  System.out.println("Properties"+properties); //setting important information
 		  //to properties object
 		  properties.put("mail.smtp.host", host);
-		  //properties.put("mail.smtp.port", "465"); 
+		// properties.put("mail.smtp.port", "465"); 
 		  properties.put("mail.smtp.port","25"); 
-		 // properties.put("mail.smtp.ssl.enable", "true");
+		  //properties.put("mail.smtp.ssl.enable", "true");
 		  properties.put("mail.smtp.auth", "true");
 		  
 		
@@ -58,6 +61,7 @@ public class EmailService {
 			m.setFrom(from);
 			// adding reciepent to message
 			m.addRecipient(Message.RecipientType.TO,new  InternetAddress(to));
+			//m.addRecipient(Message.RecipientType.TO,new  InternetAddress());
 			//adding subject to message
 			m.setSubject(subject);
 			//adding text to message

@@ -15,11 +15,13 @@ import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Dto.UpdateAnswerDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
+import Observer20.Model.FormDates;
 import Observer20.Model.FormStatus;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
@@ -121,6 +123,9 @@ public class FormController {
 				data.add(q.getQid());
 				data.add(q.getQname());
 				data.add(q.getInputType());
+				data.add(q.getInputLabel());
+				data.add(q.isRemarkStatus());
+				data.add(q.getRemarkLabel());
 				array.put(data);
 				data = new ArrayList<Object>();
 			}
@@ -299,14 +304,30 @@ public class FormController {
 		
 	}
 	
-	@PostMapping("/submitAnswers")
-	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto) throws HandledException {
+	
+	@GetMapping("/draftanswers/{userid}/{fid}")
+	public ResponseEntity<Object> getAllDraftAnswers(@PathVariable("userid")String userid,@PathVariable("fid") Long fid) throws HandledException {
+		try {
+
+			List<HashMap<String, Object>> result=formService.getAllDraftAnswers(userid,fid);
+	
+			if (result == null|| result.isEmpty()) {
+	            return ResponseHandler.generateResponse("No draft answers found", HttpStatus.NOT_FOUND, null);
+	        }
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+		
+	}
+	
+	@PostMapping("/submitAnswers/{consistuency}")
+	public ResponseEntity<Object> submitAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
 		
 	try {
-		
-		//List<Answer> result=formService.submitAnswers(request,answers,status);
-		HashMap<String, Object> result=formService.submitAnswers(request,answerDto);
-		//FormSubformResponseDto result=formService.submitAnswers(request,formSubformResponseDto);
+		HashMap<String, Object> result=formService.submitAnswers(request,answerDto,consistuency);
 		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 
 	} catch (HandledException e) {
@@ -315,22 +336,175 @@ public class FormController {
 	}
 }
 	
+	@PostMapping("/submitAllDraft/{userid}/{fid}")
+	public ResponseEntity<Object> submitAllDraft(@PathVariable("userid")String userid,@PathVariable("fid")Long fid) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitAllDraft(userid,fid);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
 	
-//	@GetMapping("/forms/{consistuency}")
-//	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("consistuency") String consistuency) throws HandledException {
+	 @PutMapping("/update/{fid}/{sid}")
+	    public ResponseEntity<Object> updateAnswer(HttpServletRequest request,@RequestBody AnswerDto updateAnswerDto,@PathVariable("fid")Long fid,@PathVariable("sid")Long sid) {
+	        try {
+	            // Call the service layer to update the answer
+	            HashMap<String, Object> result = formService.updateAnswer(request,updateAnswerDto,fid,sid);
+	            return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+	           
+	        } catch (HandledException e) {
+	            // Handle exceptions and return an appropriate response
+	        	return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	           
+	        }
+	    }
+
+	 @PutMapping("/submitAndUpdateAnswers/{consistuency}")
+		public ResponseEntity<Object> submitAndUpdateAnswers(HttpServletRequest request,@Valid @RequestBody AnswerDto answerDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+			
+		try {
+			HashMap<String, Object> result=formService.submitAndUpdateAnswers(request,answerDto,consistuency);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
+	 
+	 
+	 
+	
+	/*dashboard*/
+	@GetMapping("/forms/{obsType}/{consistuency}/{userId}")
+	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("obsType") String obsType,@PathVariable("consistuency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
+
+		try {
+
+			List<HashMap<String, Object>>formData = formService.allFormsByConsistuency(obsType,consistuency,userId);
+			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+			 //listOfMsgMaps.add(formData);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	
+	@PostMapping("/saveDates")
+	public ResponseEntity<Object> submitDates(HttpServletRequest request,@Valid @RequestBody FormDates formdates) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitDates(request,formdates);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
+	@PutMapping("/updateDates/{fid}")
+	public ResponseEntity<Object> updateDates(@PathVariable("fid")Long fid,@RequestBody FormDates formDates) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateDates(fid,formDates);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
+	@PutMapping("/updateForm/{fid}")
+	public ResponseEntity<Object> updateForm(@PathVariable("fid")Long fid,@RequestBody Form form) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateFormName(fid,form);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
+	@PutMapping("/updateSubForm/{sid}")
+	public ResponseEntity<Object> updateSubForm(@PathVariable("sid")Long fid,@RequestBody SubForm subForm) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateSubFormHeading(fid,subForm);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	@PutMapping("/updateSubForms/{fid}")
+	public ResponseEntity<Object> updateSubForms(@PathVariable("fid")Long fid,@RequestBody List<SubForm> subForms) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.updateSubFormHeadingsByFid(fid,subForms);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+//	@PutMapping("/updateOneAnwer/{qid}")
+//	public ResponseEntity<Object> updateAnswerByQid(@PathVariable("qid")Long qid) throws HandledException {
+//		
+//	try {
+//		HashMap<String, Object> result=formService.updateAnswerByQid(qid);
+//		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
 //
-//		try {
+//	} catch (HandledException e) {
 //
-//			List formData = (List) formService.allFormsByConsistuency(consistuency);
-//			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
-//
-//		} catch (HandledException e) {
-//
-//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
-//
-//		}
-//
+//		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 //	}
+//}
+	
+	
+	
+	@GetMapping("/getform/{formId}")
+	public ResponseEntity<Object> getFormById(@PathVariable Long formId) {
+		
+		try {
+			HashMap<String, Object> result=formService.getFormById(formId);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	
+	}
+
+	@DeleteMapping("/deleteForm/{formId}")
+    public ResponseEntity<Object> deleteForm(@PathVariable Long formId) {
+       
+        
+        try {
+
+			Map<String, Boolean> messageData = formService.deleteForm(formId);
+			return ResponseHandler.generateResponse("deleted successfully", HttpStatus.OK, messageData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+    }
 	
 	
 }

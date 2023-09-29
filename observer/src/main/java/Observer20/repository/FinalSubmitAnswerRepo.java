@@ -10,6 +10,7 @@ import Observer20.Model.FinalSubmitAnswer;
 
 public interface FinalSubmitAnswerRepo extends JpaRepository<FinalSubmitAnswer, Long>{
 	List<FinalSubmitAnswer> findAllBySid(Long sid);
+	List<FinalSubmitAnswer> findBySidAndSubmittedBy(Long sid,String submittedBy);
 	List<FinalSubmitAnswer> findAllBySubmittedBy(String submittedBy);
 	List<FinalSubmitAnswer> findByFidAndSidAndSubmittedBy(Long fid,Long sid,String submittedBy);
 	List<FinalSubmitAnswer> findByFidAndSubmittedBy(Long fid, String submittedBy);

@@ -1,14 +1,13 @@
-//package Observer20.Dto;
+////package Observer20.Dto;
+////
+////import java.util.List;
+////
+////import javax.validation.constraints.NotBlank;
+////
+////import org.springframework.beans.factory.annotation.Autowired;
 //
-//import java.util.List;
-//
-//import javax.validation.constraints.NotBlank;
-//
-//import org.springframework.beans.factory.annotation.Autowired;
-//
-//import Observer20.Model.Answer;
-//import Observer20.repository.AnswerRepo;
-//
+////import Observer20.repository.AnswerRepo;
+////
 //public class FormSubformResponseDto {
 //	
 //	private Long id;
@@ -68,11 +67,5 @@
 //	public String toString() {
 //		return "FormSubformResponseDto [id=" + id + ", answers=" + answers + ", sid=" + sid + ", status=" + status
 //				+ ", submittedBy=" + submittedBy + "]";
-//	}
-//
-//	
-//	 
-//	
-//        
-//  
+//	}  
 //}

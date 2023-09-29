@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import Observer20.Model.ChangePasswordRequest;
 import Observer20.Model.ChangePasswordRequest1;
+
 import Observer20.Model.ObserverUser;
 import Observer20.Services.EmailService;
+import Observer20.payloads.EmailRequest;
 import Observer20.repository.ObserverUserRepo;
 
 @RestController
@@ -35,40 +37,63 @@ public class ForgotController {
 	 */
 	Random random=new Random(10000);
 	
-	@PostMapping("/send-otp")
-	public String sendOtp(@RequestParam("email") String email,HttpSession session)
-	{
-		System.out.println("Email:"+ email);
-		
-		//Generate Otp 4 digit
-		
-		//int otp=random.nextInt(999999);
-		
-		int min=100000;
-    	int max=999999;
-    	int otp=(int)(Math.random()*(max-min+1)+min);
-    	System.out.println("OTP:"+otp);
-		//Write a code for send to email
-		
-		  String subject="OTP From Observer Portal,Kindly don't share it with anyone."; 
-		  String message="Otp:"+otp; 
-		  String to=email;
-		  boolean flag=emailService.sendEmail(subject,message,to);
-		 if(flag)
-		{ 
-			 session.setAttribute("myotp", otp);
-			 session.setAttribute("email", email);
-			return ("Sent OTP to your email Successfuly.....");
-			
-		}
-		else
-		{
-			session.setAttribute("message", "Check your Email id!!");
-			 return "verifiy-otp";
-			
-		}
-	}
+	/*
+	 * @PostMapping("/send-otp") public String sendOtp(@RequestBody EmailRequest
+	 * email,HttpSession session)
+	 * 
+	 * {
+	 * 
+	 * System.out.println("Email: " + email.getEmail());
+	 * 
+	 * 
+	 * int min=100000; int max=999999; int otp=(int)(Math.random()*(max-min+1)+min);
+	 * System.out.println("OTP:"+otp); //Write a code for send to email
+	 * 
+	 * String subject="OTP From Observer Portal,Kindly don't share it with anyone.";
+	 * String message="Otp:"+otp; //String to=email; String to=email.getEmail();
+	 * 
+	 * boolean flag=emailService.sendEmail(subject,message,to); if(flag) {
+	 * session.setAttribute("myotp", otp); session.setAttribute("email", email);
+	 * return ("Sent OTP to your email Successfuly.....");
+	 * 
+	 * } else { session.setAttribute("message", "Check your Email id!!"); return
+	 * "verifiy-otp";
+	 * 
+	 * } }
+	 */
 	
+	@PostMapping("/send-otp")
+	public String sendOtp(@RequestBody EmailRequest emailRequest, HttpSession session) {
+	    String email = emailRequest.getEmail();
+	    
+	    // Check if the email exists in the database
+	    ObserverUser observerUser = observerUserRepo.getObserverUserByEmail(email);
+	    if (observerUser == null) {
+	        // Email does not exist in the database, return an error response or handle it as needed
+	        session.setAttribute("message", "Email not found in the database.");
+	        return "Email not found in the database";
+	    }
+
+	    // Generate OTP and send email
+	    int min = 100000;
+	    int max = 999999;
+	    int otp = (int) (Math.random() * (max - min + 1) + min);
+	    System.out.println("OTP:" + otp);
+
+	    String subject = "OTP From Observer Portal, Kindly don't share it with anyone.";
+	    String message = "Otp:" + otp;
+	    boolean flag = emailService.sendEmail(subject, message, email);
+
+	    if (flag) {
+	        session.setAttribute("myotp", otp);
+	        session.setAttribute("email", email);
+	        return "Sent OTP to your email Successfully.....";
+	    } else {
+	        session.setAttribute("message", "Error sending OTP. Please try again.");
+	        return "verify-otp";
+	    }
+	}
+
 	  //varify otp 
 	@PostMapping("/verify-otp")
 	public String verifyotp(@RequestParam("otp") int otp,HttpSession session) { 
@@ -96,9 +121,10 @@ public class ForgotController {
 	}
 
 	
-	 
+
+	
 	@PostMapping("/change-password")
-	public String changePassword(@Valid @RequestBody ChangePasswordRequest request, HttpSession session) {
+	public String changePassword(@Valid@RequestBody ChangePasswordRequest request, HttpSession session) {
 	    // Fetch the user based on the provided obscode
 	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request.getObscode());
 
@@ -114,12 +140,18 @@ public class ForgotController {
 	        return "Old password is incorrect.";
 	    }
 
-	    observerUser.setPassword(DigestUtils.md5DigestAsHex(request.getNewpassword().getBytes()));
+	    // Check if the new password is the same as the old password
+	    String newMd5Password = DigestUtils.md5DigestAsHex(request.getNewpassword().getBytes());
+	    if (newMd5Password.equals(storedMd5Password)) {
+	        return "New password cannot be the same as the old password.";
+	    }
+
+	    // Update the password
+	    observerUser.setPassword(newMd5Password);
 	    observerUserRepo.save(observerUser);
 
 	    return "Password changed successfully.";
 	}
-	
 
 	
 	@PostMapping("/change-password1")

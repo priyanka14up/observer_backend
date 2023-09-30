@@ -1,5 +1,8 @@
 package Observer20.Model;
 
+import java.util.Date;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,84 +18,85 @@ public class MElectionSchedule2 {
 
 	  private Long id;
 
-private String ScheduleID;
-private String DT_ISS_NOM; 
-private String LDT_IS_NOM; 
-private String DT_SCR_NOM; 
-private String LDT_WD_CAN; 
-private String DATE_POLL;
-private String DATE_COUNT; 
-private String DTB_EL_COM; 
-private String DT_PRESS_ANNC;
-private String PHASE_NO;
+private Long scheduleID;
+private Date DT_ISS_NOM; 
+private Date LDT_IS_NOM; 
+private Date DT_SCR_NOM; 
+private Date LDT_WD_CAN; 
+@Column(name = "DATE_POLL") // Specify the column name if it's different from the property name
+private Date datePoll;
+private Date DATE_COUNT; 
+private Date DTB_EL_COM; 
+private Date DT_PRESS_ANNC;
+private int PHASE_NO;
 private String CURRENTELECTION;
-private String INSERTION_DATE;
+private Date INSERTION_DATE;
 private String OBSREPORTDISP;
-private String ElectionID;
+private String electionID;
 public Long getId() {
 	return id;
 }
 public void setId(Long id) {
 	this.id = id;
 }
-public String getScheduleID() {
-	return ScheduleID;
+public Long getScheduleID() {
+	return scheduleID;
 }
-public void setScheduleID(String scheduleID) {
-	ScheduleID = scheduleID;
+public void setScheduleID(Long scheduleID) {
+	this.scheduleID = scheduleID;
 }
-public String getDT_ISS_NOM() {
+public Date getDT_ISS_NOM() {
 	return DT_ISS_NOM;
 }
-public void setDT_ISS_NOM(String dT_ISS_NOM) {
+public void setDT_ISS_NOM(Date dT_ISS_NOM) {
 	DT_ISS_NOM = dT_ISS_NOM;
 }
-public String getLDT_IS_NOM() {
+public Date getLDT_IS_NOM() {
 	return LDT_IS_NOM;
 }
-public void setLDT_IS_NOM(String lDT_IS_NOM) {
+public void setLDT_IS_NOM(Date lDT_IS_NOM) {
 	LDT_IS_NOM = lDT_IS_NOM;
 }
-public String getDT_SCR_NOM() {
+public Date getDT_SCR_NOM() {
 	return DT_SCR_NOM;
 }
-public void setDT_SCR_NOM(String dT_SCR_NOM) {
+public void setDT_SCR_NOM(Date dT_SCR_NOM) {
 	DT_SCR_NOM = dT_SCR_NOM;
 }
-public String getLDT_WD_CAN() {
+public Date getLDT_WD_CAN() {
 	return LDT_WD_CAN;
 }
-public void setLDT_WD_CAN(String lDT_WD_CAN) {
+public void setLDT_WD_CAN(Date lDT_WD_CAN) {
 	LDT_WD_CAN = lDT_WD_CAN;
 }
-public String getDATE_POLL() {
-	return DATE_POLL;
+public Date getDatePoll() {
+	return datePoll;
 }
-public void setDATE_POLL(String dATE_POLL) {
-	DATE_POLL = dATE_POLL;
+public void setDatePoll(Date datePoll) {
+	this.datePoll = datePoll;
 }
-public String getDATE_COUNT() {
+public Date getDATE_COUNT() {
 	return DATE_COUNT;
 }
-public void setDATE_COUNT(String dATE_COUNT) {
+public void setDATE_COUNT(Date dATE_COUNT) {
 	DATE_COUNT = dATE_COUNT;
 }
-public String getDTB_EL_COM() {
+public Date getDTB_EL_COM() {
 	return DTB_EL_COM;
 }
-public void setDTB_EL_COM(String dTB_EL_COM) {
+public void setDTB_EL_COM(Date dTB_EL_COM) {
 	DTB_EL_COM = dTB_EL_COM;
 }
-public String getDT_PRESS_ANNC() {
+public Date getDT_PRESS_ANNC() {
 	return DT_PRESS_ANNC;
 }
-public void setDT_PRESS_ANNC(String dT_PRESS_ANNC) {
+public void setDT_PRESS_ANNC(Date dT_PRESS_ANNC) {
 	DT_PRESS_ANNC = dT_PRESS_ANNC;
 }
-public String getPHASE_NO() {
+public int getPHASE_NO() {
 	return PHASE_NO;
 }
-public void setPHASE_NO(String pHASE_NO) {
+public void setPHASE_NO(int pHASE_NO) {
 	PHASE_NO = pHASE_NO;
 }
 public String getCURRENTELECTION() {
@@ -101,10 +105,10 @@ public String getCURRENTELECTION() {
 public void setCURRENTELECTION(String cURRENTELECTION) {
 	CURRENTELECTION = cURRENTELECTION;
 }
-public String getINSERTION_DATE() {
+public Date getINSERTION_DATE() {
 	return INSERTION_DATE;
 }
-public void setINSERTION_DATE(String iNSERTION_DATE) {
+public void setINSERTION_DATE(Date iNSERTION_DATE) {
 	INSERTION_DATE = iNSERTION_DATE;
 }
 public String getOBSREPORTDISP() {
@@ -114,10 +118,11 @@ public void setOBSREPORTDISP(String oBSREPORTDISP) {
 	OBSREPORTDISP = oBSREPORTDISP;
 }
 public String getElectionID() {
-	return ElectionID;
+	return electionID;
 }
 public void setElectionID(String electionID) {
-	ElectionID = electionID;
+	this.electionID = electionID;
 }
+
 
 }

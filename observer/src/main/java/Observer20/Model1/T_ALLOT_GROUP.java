@@ -20,14 +20,14 @@ import Observer20.Model.ObserverUser;
       private String OBS_CODE; 
   @Id
   private String CCODE;
-  private String StatePhaseNo;
+  private int StatePhaseNo;
   private String CURRENTELECTION; 
-  private String SCHEDULEID;
+  private Long SCHEDULEID;
   private String AdjournedPoll; 
   
   
 public T_ALLOT_GROUP(String sT_CODE, String cONST_GROUP_NO, String gROUP_TYPE, String cONST_COVERED, String sCHEDULENO,
-		String oBS_CODE, String cCODE, String statePhaseNo, String cURRENTELECTION, String sCHEDULEID,
+		String oBS_CODE, String cCODE, int statePhaseNo, String cURRENTELECTION, Long sCHEDULEID,
 		String adjournedPoll) {
 	super();
 	ST_CODE = sT_CODE;
@@ -117,12 +117,12 @@ public void setCCODE(String cCODE) {
 }
 
 
-public String getStatePhaseNo() {
+public int getStatePhaseNo() {
 	return StatePhaseNo;
 }
 
 
-public void setStatePhaseNo(String statePhaseNo) {
+public void setStatePhaseNo(int statePhaseNo) {
 	StatePhaseNo = statePhaseNo;
 }
 
@@ -137,12 +137,12 @@ public void setCURRENTELECTION(String cURRENTELECTION) {
 }
 
 
-public String getSCHEDULEID() {
+public Long getSCHEDULEID() {
 	return SCHEDULEID;
 }
 
 
-public void setSCHEDULEID(String sCHEDULEID) {
+public void setSCHEDULEID(Long sCHEDULEID) {
 	SCHEDULEID = sCHEDULEID;
 }
 

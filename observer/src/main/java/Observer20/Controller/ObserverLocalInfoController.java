@@ -24,6 +24,7 @@ import Observer20.Response.ApiResponse;
 import Observer20.Services.ObserverLocalInfoService;
 import Observer20.Services.ObserverService;
 import Observer20.Services.T_Allot_Group_Servcie;
+import Observer20.payloads.MElectionDetailsDataDTO;
 import Observer20.payloads.ObserverLocalInfoDTO;
 import Observer20.payloads.ObserverUserDto;
 import Observer20.payloads.ObserverUserDtoUpdation;
@@ -72,13 +73,18 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
   			ObserverLocalInfoDTO updatedObserverLocalInfo = observerLocalInfoService.updateObserverLocalInfo(observerLocalInfoDTO, ObsCode);
 		    return ResponseEntity.ok(updatedObserverLocalInfo);
 		}
-  		@PreAuthorize("hasRole('ADMIN')")
+  		//@PreAuthorize("hasRole('ADMIN')")
   		@GetMapping("/allot/{ObsCode}")
   		public ResponseEntity<List<Obs_Allot>> getSingleObsAllot(@PathVariable String ObsCode)
   		{
   			return ResponseEntity.ok(t_Allot_Group_Servcie.getObsAllotByObscode(ObsCode));
   			
   		}
+  		@GetMapping("/electionDetails/{obsCode}")
+  		public MElectionDetailsDataDTO getElectionData(@PathVariable String obsCode) {
+  	        return t_Allot_Group_Servcie.getElectionData(obsCode);
+  	    }
+  	
 }
 
 

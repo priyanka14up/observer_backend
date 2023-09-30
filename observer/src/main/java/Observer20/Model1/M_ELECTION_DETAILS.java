@@ -16,8 +16,8 @@
   private String ST_CODE;
   private String INSERTION_DATE; 
   private String VotesReg_49O; 
-  private String StatePHASE_NO;
-  private String PHASE_NO;
+  private int StatePHASE_NO;
+  private int PHASE_NO;
   private String AdjournedPol;
 public String getCCODE() {
 	return CCODE;
@@ -73,16 +73,16 @@ public String getVotesReg_49O() {
 public void setVotesReg_49O(String votesReg_49O) {
 	VotesReg_49O = votesReg_49O;
 }
-public String getStatePHASE_NO() {
+public int getStatePHASE_NO() {
 	return StatePHASE_NO;
 }
-public void setStatePHASE_NO(String statePHASE_NO) {
+public void setStatePHASE_NO(int statePHASE_NO) {
 	StatePHASE_NO = statePHASE_NO;
 }
-public String getPHASE_NO() {
+public int getPHASE_NO() {
 	return PHASE_NO;
 }
-public void setPHASE_NO(String pHASE_NO) {
+public void setPHASE_NO(int pHASE_NO) {
 	PHASE_NO = pHASE_NO;
 }
 public String getAdjournedPol() {
@@ -91,7 +91,7 @@ public String getAdjournedPol() {
 public void setAdjournedPol(String adjournedPol) {
 	AdjournedPol = adjournedPol;
 }
-  
+
   
   }
  

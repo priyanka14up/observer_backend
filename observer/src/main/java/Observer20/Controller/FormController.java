@@ -505,6 +505,25 @@ public class FormController {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 		}
     }
+	@GetMapping("/form/{userId}/{sid}")
+	public ResponseEntity<Object> getFormsStatusByConsistuency(@PathVariable("userId")String userId,@PathVariable("sid")Long sid) throws HandledException {
+
+		try {
+
+			boolean result = formService.FormByConsistuency(userId,sid);
+			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+			 //listOfMsgMaps.add(formData);
+			
+			
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+			//return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
 	
 	
-}
+}}

@@ -63,7 +63,7 @@ public interface FormService {
 	HashMap<String, Object> updateSubFormHeadingsByFid(Long sid,List<SubForm> subForms) throws HandledException;
 	HashMap<String, Object> getFormById(Long fid)throws HandledException;
 	Map<String, Boolean> deleteForm(Long fid)throws HandledException;
-	
+	public boolean FormByConsistuency(String userId,Long sid)throws HandledException;
 	
 	
 	

@@ -1365,6 +1365,20 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			        }
 			   
 		}
+		
+		@Override
+		public boolean FormByConsistuency(String userId,Long sid) throws HandledException 
+		{
+			List<DraftAnswer> result=draftAnswerRepo.findBySidAndSubmittedBy(sid, userId);
+			
+			if(result == null|| result.isEmpty())
+			
+				return false;
+			else
+			return true;
+		
+		
+		}
 
 		
 		

@@ -2,12 +2,14 @@ package Observer20.Controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.util.DigestUtils;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -19,13 +21,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Model.ChangePasswordRequest;
 import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 import Observer20.Services.ObserverService;
-
-
+import Observer20.payloads.ChangeProfileStatusRequest;
+import Observer20.payloads.LoginProfileStatusResponse;
+import Observer20.payloads.LoginRequest;
 import Observer20.payloads.ObserverUserDto;
 import Observer20.payloads.ObserverUserDtoUpdation;
 import Observer20.repository.ObserverLocalInfoRepository;
@@ -47,6 +51,52 @@ public class ObserverUserController {
 	    private ObserverLocalInfoRepository observerLocalInfoRepository;
 		@Autowired
 		private ObserverUserRepo observerUserRepo;
+		
+	    
+	
+		@PostMapping("/profilelogin")
+		public LoginProfileStatusResponse login(@RequestBody LoginRequest loginRequest, HttpSession session) {
+		    // Fetch the user based on the provided obscode
+		    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(loginRequest.getObscode());
+
+		    LoginProfileStatusResponse response = new LoginProfileStatusResponse();
+
+		    if (observerUser == null) {
+		        response.setProfileStatus(true);
+		        return response;
+		    }
+
+		    String storedMd5Password = observerUser.getPassword();
+		    String oldPasswordMd5 = DigestUtils.md5DigestAsHex(loginRequest.getPassword().getBytes());
+
+		    if (!storedMd5Password.equals(oldPasswordMd5)) {
+		        response.setProfileStatus(true);
+		        return response;
+		    } else {
+		        response.setProfileStatus(observerUser.getProfileStatus());
+		        response.setName(observerUser.getName());
+		        response.setEmail(observerUser.getEmail());
+		        response.setMobnum(observerUser.getMobnum());
+		        return response;
+		    }
+		}
+
+		@PutMapping("/change-profile-status")
+		public String changeProfileStatus(@RequestBody ChangeProfileStatusRequest request) {
+		    // Fetch the user based on the provided obscode
+		    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request.getObscode());
+
+		    if (observerUser == null) {
+		        return "User does not exist.";
+		    }
+
+		    // Update the profile status
+		    observerUser.setProfileStatus(request.getNewProfileStatus());
+		    observerUserRepo.save(observerUser);
+
+		    return "Profile status changed successfully.";
+		}
+
 		
 		//POST -create user
 		@PreAuthorize("hasRole('ADMIN')")

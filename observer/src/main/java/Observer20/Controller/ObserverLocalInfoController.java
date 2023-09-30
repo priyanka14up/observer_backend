@@ -72,13 +72,19 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
   			ObserverLocalInfoDTO updatedObserverLocalInfo = observerLocalInfoService.updateObserverLocalInfo(observerLocalInfoDTO, ObsCode);
 		    return ResponseEntity.ok(updatedObserverLocalInfo);
 		}
-  		@PreAuthorize("hasRole('ADMIN')")
+  		//@PreAuthorize("hasRole('ADMIN')")
   		@GetMapping("/allot/{ObsCode}")
   		public ResponseEntity<List<Obs_Allot>> getSingleObsAllot(@PathVariable String ObsCode)
   		{
   			return ResponseEntity.ok(t_Allot_Group_Servcie.getObsAllotByObscode(ObsCode));
   			
   		}
+		/*
+		 * @GetMapping("/electionDetails/{obsCode}") public MElectionDetailsDataDTO
+		 * getElectionData(@PathVariable String obsCode) { return
+		 * t_Allot_Group_Servcie.getElectionData(obsCode); }
+		 */
+  	
 }
 
 

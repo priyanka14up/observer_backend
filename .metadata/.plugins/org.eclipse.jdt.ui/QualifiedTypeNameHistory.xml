@@ -57,7 +57,7 @@
     <fullyQualifiedTypeName name="java.util.Optional"/>
     <fullyQualifiedTypeName name="java.time.LocalDate"/>
     <fullyQualifiedTypeName name="Observer20.Enum.ObsStatus"/>
-    <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="Observer20.Dto.UpdateAnswerDto"/>
     <fullyQualifiedTypeName name="javax.transaction.Transactional"/>
+    <fullyQualifiedTypeName name="java.util.Date"/>
 </qualifiedTypeNameHistroy>

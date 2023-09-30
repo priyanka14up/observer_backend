@@ -31,5 +31,5 @@ public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	@Query("Select u from ObserverUser u where u.obscode=:obsecode")
 	 ObserverUser getObserverUserByobscode(@Param("obscode") String obscode);
 
-	//Optional<ObserverUser> findById(String obscode);
+	
 }

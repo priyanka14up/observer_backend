@@ -201,8 +201,7 @@ public class FormServiceBean implements FormService {
 			List<Form> FormForGeneral=new ArrayList<Form>();
 			List<FormStatus> formStatuses=new ArrayList<FormStatus>();
 			try{
-				
-				
+		
 				 FormForGeneral=formServiceRepo.findAllByObsType(obsType);
 				 //formStatusRepo.findAllBySubmittedBy(userId);
 			}catch(Exception e) {
@@ -247,6 +246,11 @@ public class FormServiceBean implements FormService {
 		
 		}
 
+		
+		
+		
+		
+		
 		//custom response
 		private HashMap<String, Object> customResponseForm( Form formData,boolean status) {
 			
@@ -934,7 +938,9 @@ ResponseMap.put("remarks",response.getRemarks());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
 		         msgMap.put("questionText",question.getQname());
-		         msgMap.put("questionSeq",question.getQseq());
+		         
+		        // msgMap.put("questionSeq",question.getQseq());
+		         
 		         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
@@ -1038,7 +1044,9 @@ ResponseMap.put("remarks",response.getRemarks());
 			        msgMap.put("questionId", answer.getQid());
 			        Question question=questionRepo.findByQid(answer.getQid());
 			         msgMap.put("questionText",question.getQname());
-			         msgMap.put("questionSeq",question.getQseq());
+			         
+			         //msgMap.put("questionSeq",question.getQseq());
+			         
 			         msgMap.put("inputType",question.getInputType());
 			        msgMap.put("subFormId", answer.getSid());
 			        msgMap.put("answer", answer.getAnswer());
@@ -1142,7 +1150,27 @@ ResponseMap.put("remarks",response.getRemarks());
 		
 		}
 
+		@Override
+		public boolean FormByConsistuency(String userId,Long sid) throws HandledException 
+		{
+			List<DraftAnswer> result=draftAnswerRepo.findBySidAndSubmittedBy(sid, userId);
+			
+			if(result == null|| result.isEmpty())
+			
+				return false;
+			else
+			return true;
+		
+		
+		}
 
+		
+		
+		
+		
+		
+		
+		
 private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStatus status,Date submitDate) {
 	
 	HashMap<String, Object> formMap =  new HashMap<>();
@@ -1362,6 +1390,8 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			        }
 			   
 		}
+
+		
 
 		
 		

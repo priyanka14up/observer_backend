@@ -11,6 +11,7 @@ import Observer20.Model.Question;
 @Repository
 public interface FormServiceRepo extends JpaRepository<Form, Long>{
 	List<Form> findAllByObsType(String obsType);
+	//Form findByUserIdAndSid(String userId,Long sid);
 	//List<Question> findAllById(Long formId);
 	
 	//Form findById(Long id);

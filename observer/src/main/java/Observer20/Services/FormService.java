@@ -10,6 +10,7 @@ import Observer20.Dto.AnswerDto;
 import Observer20.Dto.UpdateAnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
+import Observer20.Model.DraftAnswer;
 //import Observer20.Model.Answer;
 import Observer20.Model.Form;
 import Observer20.Model.FormDates;
@@ -26,6 +27,8 @@ public interface FormService {
 	public List allForms() throws HandledException;
 	public List allFormsByObsType(String obsType) throws HandledException;
 	public List allFormsByObsType1(String obsType,String userId) throws HandledException;
+	
+	
 	public List<Question> allQuestionsBySid(Long sid) throws HandledException;
 	public Form createForm(HttpServletRequest request, @Valid Form form)throws HandledException;
 	public List<SubForm> allSubformsByfid(Long fid)throws HandledException;
@@ -56,6 +59,9 @@ public interface FormService {
 	public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException;
 	public List<HashMap<String, Object>> getAllDraftAnswers(String userid, Long fid) throws HandledException;
 	public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId)throws HandledException;
+	
+	public boolean FormByConsistuency(String userId,Long sid)throws HandledException;
+	
 	HashMap<String, Object> submitDates(HttpServletRequest request,FormDates formDates) throws HandledException;
 	HashMap<String, Object> updateDates(Long fid,FormDates formDates) throws HandledException;
 	HashMap<String, Object> updateFormName(Long fid,Form form) throws HandledException;

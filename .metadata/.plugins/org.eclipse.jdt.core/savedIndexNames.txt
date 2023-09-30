@@ -72,7 +72,6 @@ INDEX VERSION 1.132+D:\1807\observer\.metadata\.plugins\org.eclipse.jdt.core
 3598766762.index
 2313636700.index
 1940218116.index
-2351054146.index
 3540133969.index
 144601765.index
 871269566.index

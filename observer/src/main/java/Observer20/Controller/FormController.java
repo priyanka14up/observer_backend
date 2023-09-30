@@ -95,6 +95,8 @@ public class FormController {
 	}
 	
 	
+	
+	
 	@PostMapping("/createform")
 	public ResponseEntity<Object> createForm(HttpServletRequest request, @Valid @RequestBody Form form) throws HandledException {
 		try {
@@ -121,7 +123,9 @@ public class FormController {
 			JSONArray array = new JSONArray();
 			for(Question q: formData) {
 				data.add(q.getQid());
-				data.add(q.getQseq());
+				
+				//data.add(q.getQseq());
+				
 				data.add(q.getQname());
 				data.add(q.getInputType());
 				data.add(q.getInputLabel());
@@ -399,6 +403,28 @@ public class FormController {
 
 	}
 	
+	
+	@GetMapping("/form/{userId}/{sid}")
+	public ResponseEntity<Object> getFormsStatusByConsistuency(@PathVariable("userId")String userId,@PathVariable("sid")Long sid) throws HandledException {
+
+		try {
+
+			boolean result = formService.FormByConsistuency(userId,sid);
+			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+			 //listOfMsgMaps.add(formData);
+			
+			
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+			//return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
 	
 	@PostMapping("/saveDates")
 	public ResponseEntity<Object> submitDates(HttpServletRequest request,@Valid @RequestBody FormDates formdates) throws HandledException {

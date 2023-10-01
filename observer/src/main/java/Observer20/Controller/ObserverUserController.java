@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Exception.ApiException;
 import Observer20.Model.ChangePasswordRequest;
 import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
@@ -53,7 +54,7 @@ public class ObserverUserController {
 		private ObserverUserRepo observerUserRepo;
 		
 	    
-	
+
 		@PostMapping("/profilelogin")
 		public LoginProfileStatusResponse login(@RequestBody LoginRequest loginRequest, HttpSession session) {
 		    // Fetch the user based on the provided obscode
@@ -70,16 +71,25 @@ public class ObserverUserController {
 		    String oldPasswordMd5 = DigestUtils.md5DigestAsHex(loginRequest.getPassword().getBytes());
 
 		    if (!storedMd5Password.equals(oldPasswordMd5)) {
-		        response.setProfileStatus(true);
-		        return response;
+		        // Invalid credentials, throw custom exception
+		    	throw new ApiException("Invalid username or password");
 		    } else {
 		        response.setProfileStatus(observerUser.getProfileStatus());
-		        response.setName(observerUser.getName());
+		        
+		        // Convert Long to String, then extract the last 3 digits
+		        String fullMobileNumber = String.valueOf(observerUser.getMobnum());
+		        int length = fullMobileNumber.length();
+		        String last3Digits = length <= 3 ? fullMobileNumber : fullMobileNumber.substring(length - 3);
+
+		        // Convert back to Long and set in the response object
+		        response.setMobnum(Long.parseLong(last3Digits));
+		        
 		        response.setEmail(observerUser.getEmail());
-		        response.setMobnum(observerUser.getMobnum());
 		        return response;
 		    }
 		}
+
+
 
 		@PutMapping("/change-profile-status")
 		public String changeProfileStatus(@RequestBody ChangeProfileStatusRequest request) {

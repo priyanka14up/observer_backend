@@ -93,7 +93,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setO_BranchName(observerUserDto.getO_BranchName());
 		observerUser.setO_AccountHolderName(observerUserDto.getO_AccountHolderName());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
-		observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
+		//observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
 		return observerUser;
 	}
@@ -141,7 +141,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setO_AccountHolderName(observerUser.getO_AccountHolderName());
 		
 		// observerUserDto.setPassword(passwordEncoder.encode(observerUser.getPassword()));
-		observerUserDto.setPassword(DigestUtils.md5DigestAsHex(observerUser.getPassword().getBytes()));
+		//observerUserDto.setPassword(DigestUtils.md5DigestAsHex(observerUser.getPassword().getBytes()));
 
 		return observerUserDto;
 	}

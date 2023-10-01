@@ -3,7 +3,7 @@ package Observer20.payloads;
 public class LoginProfileStatusResponse {
 
 	private Boolean profileStatus=false;
-    private String name;
+   
     private String email;
     private long mobnum;
 	public Boolean getProfileStatus() {
@@ -12,12 +12,7 @@ public class LoginProfileStatusResponse {
 	public void setProfileStatus(Boolean profileStatus) {
 		this.profileStatus = profileStatus;
 	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
+	
 	public String getEmail() {
 		return email;
 	}
@@ -33,22 +28,22 @@ public class LoginProfileStatusResponse {
 	public void setMobnum(long mobnum) {
 		this.mobnum = mobnum;
 	}
-	public LoginProfileStatusResponse(Boolean profileStatus, String name, String email, long mobileNumber) {
+	public LoginProfileStatusResponse(Boolean profileStatus, String email, long mobnum) {
 		super();
 		this.profileStatus = profileStatus;
-		this.name = name;
 		this.email = email;
-		this.mobnum = mobileNumber;
+		this.mobnum = mobnum;
 	}
 	@Override
 	public String toString() {
-		return "LoginProfileStatusResponse [profileStatus=" + profileStatus + ", name=" + name + ", email=" + email
-				+ ", mobileNumber=" + mobnum + "]";
+		return "LoginProfileStatusResponse [profileStatus=" + profileStatus + ", email=" + email + ", mobnum=" + mobnum
+				+ "]";
 	}
 	public LoginProfileStatusResponse() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
     
     
 }

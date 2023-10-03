@@ -137,8 +137,9 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 				if (observerUser != null) {
 					obsAllot.setName(observerUser.getName());
 					obsAllot.setService(observerUser.getService());
-					obsAllot.setOb_From_Date(observerUser.getOB_FromDate());
-					obsAllot.setOb_To_Date(observerUser.getOB_ToDate());
+					obsAllot.setOBFromDate(observerUser.getOBFromDate());
+					obsAllot.setOBToDate(observerUser.getOBToDate());
+					obsAllot.setRole(observerUser.getRole());
 				} else {
 					obsAllot.setName("Observer Name Not Found");
 					obsAllot.setService("Service Not Found");

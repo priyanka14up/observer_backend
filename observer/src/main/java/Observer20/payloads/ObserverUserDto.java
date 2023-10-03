@@ -27,17 +27,17 @@ public class ObserverUserDto {
     @Email(message="your email adress is not valid!!")
 	private String email;
 
-	/*
-	 * @NotEmpty
-	 * 
-	 * @Size(min=8, max=20, message="Password must be between 8 and 20 characters")
-	 * 
-	 * @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
-	 * message="Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@#$%^&+=)"
-	 * )
-	 * 
-	 * private String password;
-	 */
+	
+	  @NotEmpty
+	  
+	  @Size(min=8, max=20, message="Password must be between 8 and 20 characters")
+	  
+	  @Pattern(regexp="^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$",
+	  message="Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@#$%^&+=)"
+	  )
+	  
+	  private String password;
+	 
 	@NotEmpty
 	 private String role;
 	@NotEmpty

@@ -1,5 +1,7 @@
 package Observer20.Model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -14,13 +16,15 @@ public class Obs_Allot {
 	    private String Const_Group_No;
 	    private String Ac_No;
 	    private String obscode;
-	    private String Ob_From_Date;
-	    private String Ob_To_Date;
+	    private String role;
+	    private Date OBFromDate;
+	    private Date OBToDate;
 	    private String name;
 	    private String service;
 	    private String PC_NAME;
 	    private String DIST_NAME;
-	    private int statePhaseNo;
+	   // private int statePhaseNo;
+	    private int statePhaseNo = 0;
 	    private String CURRENTELECTION;
 	    private Long scheduleID;
 		public Long getId() {
@@ -54,19 +58,21 @@ public class Obs_Allot {
 		public void setObscode(String obscode) {
 			this.obscode = obscode;
 		}
-		public String getOb_From_Date() {
-			return Ob_From_Date;
-		}
-		public void setOb_From_Date(String ob_From_Date) {
-			Ob_From_Date = ob_From_Date;
-		}
-		public String getOb_To_Date() {
-			return Ob_To_Date;
-		}
-		public void setOb_To_Date(String ob_To_Date) {
-			Ob_To_Date = ob_To_Date;
-		}
 		
+		
+		
+		public Date getOBFromDate() {
+			return OBFromDate;
+		}
+		public void setOBFromDate(Date oBFromDate) {
+			OBFromDate = oBFromDate;
+		}
+		public Date getOBToDate() {
+			return OBToDate;
+		}
+		public void setOBToDate(Date oBToDate) {
+			OBToDate = oBToDate;
+		}
 		public String getName() {
 			return name;
 		}
@@ -109,28 +115,49 @@ public class Obs_Allot {
 		public void setCURRENTELECTION(String cURRENTELECTION) {
 			CURRENTELECTION = cURRENTELECTION;
 		}
-		public Long getSCHEDULEID() {
+	
+		
+		public String getRole() {
+			return role;
+		}
+		public void setRole(String role) {
+			this.role = role;
+		}
+		public Long getScheduleID() {
 			return scheduleID;
 		}
-		public void setSCHEDULEID(Long sCHEDULEID) {
-			scheduleID = sCHEDULEID;
+		public void setScheduleID(Long scheduleID) {
+			this.scheduleID = scheduleID;
 		}
 		@Override
 		public String toString() {
 			return "Obs_Allot [id=" + id + ", St_Code=" + St_Code + ", Const_Group_No=" + Const_Group_No + ", Ac_No="
-					+ Ac_No + ", obs_code=" + obscode + ", Ob_From_Date=" + Ob_From_Date + ", Ob_To_Date=" + Ob_To_Date
-					+ "]";
+					+ Ac_No + ", obscode=" + obscode + ", role=" + role + ", OBFromDate=" + OBFromDate + ", OBToDate="
+					+ OBToDate + ", name=" + name + ", service=" + service + ", PC_NAME=" + PC_NAME + ", DIST_NAME="
+					+ DIST_NAME + ", statePhaseNo=" + statePhaseNo + ", CURRENTELECTION=" + CURRENTELECTION
+					+ ", scheduleID=" + scheduleID + "]";
 		}
-		public Obs_Allot(Long id, String st_Code, String const_Group_No, String ac_No, String obs_code,
-				String ob_From_Date, String ob_To_Date) {
+		
+		
+		public Obs_Allot(Long id, String st_Code, String const_Group_No, String ac_No, String obscode, String role,
+				Date oBFromDate, Date oBToDate, String name, String service, String pC_NAME, String dIST_NAME,
+				int statePhaseNo, String cURRENTELECTION, Long scheduleID) {
 			super();
 			this.id = id;
 			St_Code = st_Code;
 			Const_Group_No = const_Group_No;
 			Ac_No = ac_No;
-			this.obscode = obs_code;
-			Ob_From_Date = ob_From_Date;
-			Ob_To_Date = ob_To_Date;
+			this.obscode = obscode;
+			this.role = role;
+			OBFromDate = oBFromDate;
+			OBToDate = oBToDate;
+			this.name = name;
+			this.service = service;
+			PC_NAME = pC_NAME;
+			DIST_NAME = dIST_NAME;
+			this.statePhaseNo = statePhaseNo;
+			CURRENTELECTION = cURRENTELECTION;
+			this.scheduleID = scheduleID;
 		}
 		public Obs_Allot() {
 			super();

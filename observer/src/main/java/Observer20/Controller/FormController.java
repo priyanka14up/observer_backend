@@ -122,6 +122,9 @@ public class FormController {
 			for(Question q: formData) {
 				data.add(q.getQid());
 				data.add(q.getQname());
+				
+				//data.add(q.getQseq());
+				
 				data.add(q.getInputType());
 				data.add(q.getInputLabel());
 				data.add(q.isRemarkStatus());
@@ -526,4 +529,19 @@ public class FormController {
 		}
 	
 	
-}}
+}
+	@GetMapping("/download")
+	public ResponseEntity<Object> getAllFolder() throws HandledException {
+
+		try {
+
+			List downloadData = (List) formService.allDownload();
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, downloadData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}}

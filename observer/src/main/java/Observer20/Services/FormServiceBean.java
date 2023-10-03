@@ -44,6 +44,7 @@ import Observer20.Model.FormDates;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FormStatus;
@@ -55,6 +56,7 @@ import Observer20.repository.FormServiceRepo;
 import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.SubFormRepo;
+import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FormDatesRepo;
@@ -88,6 +90,8 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public FormStatusRepo formStatusRepo;
+	@Autowired
+	public DownloadRepo downloadRepo;
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -938,6 +942,9 @@ ResponseMap.put("remarks",response.getRemarks());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
 		         msgMap.put("questionText",question.getQname());
+		         
+		       //msgMap.put("questionSeq",question.getQseq());
+		         
 		         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
@@ -1041,6 +1048,9 @@ ResponseMap.put("remarks",response.getRemarks());
 			        msgMap.put("questionId", answer.getQid());
 			        Question question=questionRepo.findByQid(answer.getQid());
 			         msgMap.put("questionText",question.getQname());
+			         
+			       //msgMap.put("questionSeq",question.getQseq()); 
+			         
 			         msgMap.put("inputType",question.getInputType());
 			        msgMap.put("subFormId", answer.getSid());
 			        msgMap.put("answer", answer.getAnswer());
@@ -1379,7 +1389,43 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 		
 		
 		}
-
 		
+
+		@Override
+		public List allDownload() throws HandledException {
+			// TODO Auto-generated method stub
+			List<DownloadPdf> downloadData=new ArrayList<DownloadPdf>();
+			try{
+				downloadData=downloadRepo.findAll();
+				//formData = formServiceRepo.findAll();
+				
+			}catch(Exception e) {
+				
+				 System.out.println(e);
+			return null;
+			
+		}
+			List downloadList = new ArrayList<>() ;
+			
+			for (int i = 0; i < downloadData.size(); i++){  
+				
+				downloadList.add(customResponseDownload(downloadData.get(i)));  
+			}  
+			
+			return downloadList;
+		}
+
+private HashMap<String, Object> customResponseDownload( DownloadPdf downloadData) {
+			
+			HashMap<String, Object> formMap =  new HashMap<>();
+			
+			formMap.put("id", downloadData.getId());
+			formMap.put("foldName", downloadData.getFoldName());
+			formMap.put("fileName", downloadData.getFileName());
+			formMap.put("fileText",downloadData.getFileText());
+
+			return formMap;
+			
+		}
 		
 }

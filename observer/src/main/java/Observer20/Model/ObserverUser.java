@@ -1,6 +1,7 @@
 package Observer20.Model;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -21,6 +22,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -53,7 +55,7 @@ public class ObserverUser implements UserDetails{
     private String service;
     private String homeState;
     private long mobnum;
-    private int workexperience;
+   // private int workexperience;
     private String ECI_OBSID;
     private String ID_NO;
     private String OB_TITLE;
@@ -82,8 +84,11 @@ public class ObserverUser implements UserDetails{
     private String O_BankName;
     private String O_BranchName;
     private String O_AccountHolderName;
-    private String OB_FromDate;
-    private String OB_ToDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date OBFromDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date OBToDate;
+    
     private String OB_CDEP;
     private String Exp_as_RO;
     private String Exp_as_DEO;
@@ -199,13 +204,7 @@ public class ObserverUser implements UserDetails{
 		this.mobnum = mobnum;
 	}
 
-	public int getWorkexperience() {
-		return workexperience;
-	}
-
-	public void setWorkexperience(int workexperience) {
-		this.workexperience = workexperience;
-	}
+	
 	
 	
 
@@ -435,34 +434,23 @@ public class ObserverUser implements UserDetails{
 		O_AccountHolderName = o_AccountHolderName;
 	}
 
-	public String getOB_FromDate() {
-		return OB_FromDate;
+	
+	public Date getOBFromDate() {
+		return OBFromDate;
 	}
 
-	public void setOB_FromDate(String oB_FromDate) {
-		OB_FromDate = oB_FromDate;
+	public void setOBFromDate(Date oBFromDate) {
+		OBFromDate = oBFromDate;
 	}
 
-	public String getOB_ToDate() {
-		return OB_ToDate;
+	public Date getOBToDate() {
+		return OBToDate;
 	}
 
-	public void setOB_ToDate(String oB_ToDate) {
-		OB_ToDate = oB_ToDate;
+	public void setOBToDate(Date oBToDate) {
+		OBToDate = oBToDate;
 	}
 
-	
-
-
-	
-
-	
-
-	
-
-	
-
-	
 	public Boolean getProfileStatus() {
 		return ProfileStatus;
 	}
@@ -502,13 +490,14 @@ public class ObserverUser implements UserDetails{
 	
 
 
+
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
 			String homeState, long mobnum, int workexperience, String eCI_OBSID, String iD_NO, String oB_TITLE,
 			String oB_CADRE, String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG,
 			String oB_DESIG, String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX,
 			String r_PIN, String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String aGE,
 			String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName,
-			String oB_FromDate, String oB_ToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO,
+			Date oBFromDate, Date oBToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO,
 			String exp_as_OtherElectionDuty, Boolean profileStatus, Set<Role> roles,
 			Set<UserSecurityQuestion> securityQuestions, ObserverLocalInfo localInfo) {
 		super();
@@ -521,7 +510,7 @@ public class ObserverUser implements UserDetails{
 		this.service = service;
 		this.homeState = homeState;
 		this.mobnum = mobnum;
-		this.workexperience = workexperience;
+		//this.workexperience = workexperience;
 		ECI_OBSID = eCI_OBSID;
 		ID_NO = iD_NO;
 		OB_TITLE = oB_TITLE;
@@ -550,8 +539,8 @@ public class ObserverUser implements UserDetails{
 		O_BankName = o_BankName;
 		O_BranchName = o_BranchName;
 		O_AccountHolderName = o_AccountHolderName;
-		OB_FromDate = oB_FromDate;
-		OB_ToDate = oB_ToDate;
+		OBFromDate = oBFromDate;
+		OBToDate = oBToDate;
 		OB_CDEP = oB_CDEP;
 		Exp_as_RO = exp_as_RO;
 		Exp_as_DEO = exp_as_DEO;
@@ -571,18 +560,17 @@ public class ObserverUser implements UserDetails{
 	public String toString() {
 		return "ObserverUser [id=" + id + ", obscode=" + obscode + ", name=" + name + ", email=" + email + ", password="
 				+ password + ", role=" + role + ", service=" + service + ", homeState=" + homeState + ", mobnum="
-				+ mobnum + ", workexperience=" + workexperience + ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO
-				+ ", OB_TITLE=" + OB_TITLE + ", OB_CADRE=" + OB_CADRE + ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX
-				+ ", OB_DOB=" + OB_DOB + ", OB_STATUS=" + OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG
-				+ ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY=" + O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN
-				+ ", O_STD=" + O_STD + ", O_FAX=" + O_FAX + ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO
-				+ ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE
-				+ ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode=" + O_IFCSCode + ", O_BankName=" + O_BankName
-				+ ", O_BranchName=" + O_BranchName + ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate="
-				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
-				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty
-				+ ", ProfileStatus=" + ProfileStatus + ", roles=" + roles + ", securityQuestions=" + securityQuestions
-				+ ", localInfo=" + localInfo + "]";
+				+ mobnum + ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE="
+				+ OB_CADRE + ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS="
+				+ OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY="
+				+ O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX
+				+ ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME="
+				+ EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE + ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode="
+				+ O_IFCSCode + ", O_BankName=" + O_BankName + ", O_BranchName=" + O_BranchName
+				+ ", O_AccountHolderName=" + O_AccountHolderName + ", OBFromDate=" + OBFromDate + ", OBToDate="
+				+ OBToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO + ", Exp_as_DEO=" + Exp_as_DEO
+				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", ProfileStatus=" + ProfileStatus
+				+ ", roles=" + roles + ", securityQuestions=" + securityQuestions + ", localInfo=" + localInfo + "]";
 	}
 
 	

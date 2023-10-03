@@ -63,7 +63,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setHomeState(observerUserDto.getHomeState());
 		observerUser.setMobnum(observerUserDto.getMobnum());
 		observerUser.setService(observerUserDto.getService());
-		observerUser.setWorkexperience(observerUserDto.getWorkexperience());
+		//observerUser.setWorkexperience(observerUserDto.getWorkexperience());
 		observerUser.setRole(observerUserDto.getRole());
 		observerUser.setECI_OBSID(observerUserDto.getECI_OBSID());
         observerUser.setID_NO(observerUserDto.getID_NO());
@@ -108,12 +108,12 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setHomeState(observerUser.getHomeState());
 		observerUserDto.setMobnum(observerUser.getMobnum());
 		observerUserDto.setService(observerUser.getService());
-		observerUserDto.setWorkexperience(observerUser.getWorkexperience());
+		//observerUserDto.setWorkexperience(observerUser.getWorkexperience());
 		observerUserDto.setRole(observerUser.getRole());
 		observerUserDto.setECI_OBSID(observerUser.getECI_OBSID());
 		observerUserDto.setID_NO(observerUser.getID_NO());
 		observerUserDto.setOB_TITLE(observerUser.getOB_TITLE());
-		observerUserDto.setWorkexperience(observerUser.getWorkexperience());
+		//observerUserDto.setWorkexperience(observerUser.getWorkexperience());
 		observerUserDto.setOB_CADRE(observerUser.getOB_CADRE());
 		observerUserDto.setOB_YEAR(observerUser.getOB_YEAR());
 		observerUserDto.setOB_SEX(observerUser.getOB_SEX());
@@ -188,7 +188,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
 		    //observerUser.setService(observerUserDtoUpdation.getService());
-		    observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
+		    //observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
 		    observerUser.setOB_LANG(observerUserDtoUpdation.getOB_LANG());
 		    observerUser.setO_ADR_L1(observerUserDtoUpdation.getO_ADR_L1());
 		    observerUser.setO_CITY(observerUserDtoUpdation.getO_CITY());

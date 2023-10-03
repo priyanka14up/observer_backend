@@ -45,10 +45,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/mobileNo").permitAll()
             .antMatchers("/api/observers/verify-otp").permitAll()
             .antMatchers("/api/observers/otp").permitAll()
+            .antMatchers("/api/observers/change-profile-status").permitAll()
             //.antMatchers("/api/observers/change-password").permitAll()
             .antMatchers("/api/observers/change-password1").permitAll()
             .antMatchers("/api/observers/profilelogin").permitAll()
-            .antMatchers("api/observers/change-profile-status").permitAll()
+            
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

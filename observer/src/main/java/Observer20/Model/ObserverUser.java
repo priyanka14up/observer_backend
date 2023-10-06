@@ -78,6 +78,42 @@ public class ObserverUser implements UserDetails{
     private String R_FAX;
     private String EMG_NAME;
     private String SPONSOR;
+    private String OB_HM_STAT;
+    private String SP_HM_STAT;
+    private String SPON_OBSID;
+    private String DELHIBASED;
+    private String SPLOBSERVER;
+    private String SPLOBSPLACE;
+    private String NOMNSTATUS;
+    private String DEPSTATUS;
+    private String BRIEFINGNO;
+    private String BRIEFED;
+    private String DETAILEDFORMRECVD;
+    private Date   MOD_DATE;
+    private String OB_NODAL_ID;
+    private String EMG_TEL;
+    private String OB_NA_DFROM;
+    private String OB_NA_DTO;
+    private String OB_REMARK;
+    private String OB_BRREMARK;
+    private String OB_REQ_STATUS;
+    private String MOD_BY;
+    private String DISPLAY;
+    private String CONST_NO;
+    private String OB_RATING;
+    private String OLDDEPSTATUS;
+    private String O_MOBILE1;
+    private String ROWID;
+    private String O_Amount;
+    private String SMS_SENT;
+    private String DEPSTATUS_COUNTING;
+    private String CONST_NO_COUNTING;
+    private String Amount_Credited;
+    private String SMS_Amount;
+    private Date OB_2ndFromDate;
+    private Date OB_2ndToDate;
+    private String Mobile_ObsDuty;
+    private String SMS_Sent_AccountDetails;
     private String AGE;
     private String O_AccountNo;
     private String O_IFCSCode;
@@ -93,6 +129,9 @@ public class ObserverUser implements UserDetails{
     private String Exp_as_RO;
     private String Exp_as_DEO;
     private String Exp_as_OtherElectionDuty;
+    private Date OB_NewFromDate;
+    private Date OB_NewToDate;
+    private String DISPLAY_Counting;
     @Column(name = "Profile_Status") 
 	  private Boolean ProfileStatus = false;
 	
@@ -457,6 +496,323 @@ public class ObserverUser implements UserDetails{
 
 	public void setProfileStatus(Boolean profileStatus) {
 		ProfileStatus = profileStatus;
+	}
+
+	
+	
+	
+	
+	
+	public String getOB_HM_STAT() {
+		return OB_HM_STAT;
+	}
+
+	public void setOB_HM_STAT(String oB_HM_STAT) {
+		OB_HM_STAT = oB_HM_STAT;
+	}
+
+	public String getSP_HM_STAT() {
+		return SP_HM_STAT;
+	}
+
+	public void setSP_HM_STAT(String sP_HM_STAT) {
+		SP_HM_STAT = sP_HM_STAT;
+	}
+
+	public String getSPON_OBSID() {
+		return SPON_OBSID;
+	}
+
+	public void setSPON_OBSID(String sPON_OBSID) {
+		SPON_OBSID = sPON_OBSID;
+	}
+
+	public String getDELHIBASED() {
+		return DELHIBASED;
+	}
+
+	public void setDELHIBASED(String dELHIBASED) {
+		DELHIBASED = dELHIBASED;
+	}
+
+	public String getSPLOBSERVER() {
+		return SPLOBSERVER;
+	}
+
+	public void setSPLOBSERVER(String sPLOBSERVER) {
+		SPLOBSERVER = sPLOBSERVER;
+	}
+
+	public String getSPLOBSPLACE() {
+		return SPLOBSPLACE;
+	}
+
+	public void setSPLOBSPLACE(String sPLOBSPLACE) {
+		SPLOBSPLACE = sPLOBSPLACE;
+	}
+
+	public String getNOMNSTATUS() {
+		return NOMNSTATUS;
+	}
+
+	public void setNOMNSTATUS(String nOMNSTATUS) {
+		NOMNSTATUS = nOMNSTATUS;
+	}
+
+	public String getDEPSTATUS() {
+		return DEPSTATUS;
+	}
+
+	public void setDEPSTATUS(String dEPSTATUS) {
+		DEPSTATUS = dEPSTATUS;
+	}
+
+	public String getBRIEFINGNO() {
+		return BRIEFINGNO;
+	}
+
+	public void setBRIEFINGNO(String bRIEFINGNO) {
+		BRIEFINGNO = bRIEFINGNO;
+	}
+
+	public String getBRIEFED() {
+		return BRIEFED;
+	}
+
+	public void setBRIEFED(String bRIEFED) {
+		BRIEFED = bRIEFED;
+	}
+
+	public String getDETAILEDFORMRECVD() {
+		return DETAILEDFORMRECVD;
+	}
+
+	public void setDETAILEDFORMRECVD(String dETAILEDFORMRECVD) {
+		DETAILEDFORMRECVD = dETAILEDFORMRECVD;
+	}
+
+	public Date getMOD_DATE() {
+		return MOD_DATE;
+	}
+
+	public void setMOD_DATE(Date mOD_DATE) {
+		MOD_DATE = mOD_DATE;
+	}
+
+	public String getOB_NODAL_ID() {
+		return OB_NODAL_ID;
+	}
+
+	public void setOB_NODAL_ID(String oB_NODAL_ID) {
+		OB_NODAL_ID = oB_NODAL_ID;
+	}
+
+	public String getEMG_TEL() {
+		return EMG_TEL;
+	}
+
+	public void setEMG_TEL(String eMG_TEL) {
+		EMG_TEL = eMG_TEL;
+	}
+
+	public String getOB_NA_DFROM() {
+		return OB_NA_DFROM;
+	}
+
+	public void setOB_NA_DFROM(String oB_NA_DFROM) {
+		OB_NA_DFROM = oB_NA_DFROM;
+	}
+
+	public String getOB_NA_DTO() {
+		return OB_NA_DTO;
+	}
+
+	public void setOB_NA_DTO(String oB_NA_DTO) {
+		OB_NA_DTO = oB_NA_DTO;
+	}
+
+	public String getOB_REMARK() {
+		return OB_REMARK;
+	}
+
+	public void setOB_REMARK(String oB_REMARK) {
+		OB_REMARK = oB_REMARK;
+	}
+
+	public String getOB_BRREMARK() {
+		return OB_BRREMARK;
+	}
+
+	public void setOB_BRREMARK(String oB_BRREMARK) {
+		OB_BRREMARK = oB_BRREMARK;
+	}
+
+	public String getOB_REQ_STATUS() {
+		return OB_REQ_STATUS;
+	}
+
+	public void setOB_REQ_STATUS(String oB_REQ_STATUS) {
+		OB_REQ_STATUS = oB_REQ_STATUS;
+	}
+
+	public String getMOD_BY() {
+		return MOD_BY;
+	}
+
+	public void setMOD_BY(String mOD_BY) {
+		MOD_BY = mOD_BY;
+	}
+
+	public String getDISPLAY() {
+		return DISPLAY;
+	}
+
+	public void setDISPLAY(String dISPLAY) {
+		DISPLAY = dISPLAY;
+	}
+
+	public String getCONST_NO() {
+		return CONST_NO;
+	}
+
+	public void setCONST_NO(String cONST_NO) {
+		CONST_NO = cONST_NO;
+	}
+
+	public String getOB_RATING() {
+		return OB_RATING;
+	}
+
+	public void setOB_RATING(String oB_RATING) {
+		OB_RATING = oB_RATING;
+	}
+
+	public String getOLDDEPSTATUS() {
+		return OLDDEPSTATUS;
+	}
+
+	public void setOLDDEPSTATUS(String oLDDEPSTATUS) {
+		OLDDEPSTATUS = oLDDEPSTATUS;
+	}
+
+	public String getO_MOBILE1() {
+		return O_MOBILE1;
+	}
+
+	public void setO_MOBILE1(String o_MOBILE1) {
+		O_MOBILE1 = o_MOBILE1;
+	}
+
+	public String getROWID() {
+		return ROWID;
+	}
+
+	public void setROWID(String rOWID) {
+		ROWID = rOWID;
+	}
+
+	public String getO_Amount() {
+		return O_Amount;
+	}
+
+	public void setO_Amount(String o_Amount) {
+		O_Amount = o_Amount;
+	}
+
+	public String getSMS_SENT() {
+		return SMS_SENT;
+	}
+
+	public void setSMS_SENT(String sMS_SENT) {
+		SMS_SENT = sMS_SENT;
+	}
+
+	public String getDEPSTATUS_COUNTING() {
+		return DEPSTATUS_COUNTING;
+	}
+
+	public void setDEPSTATUS_COUNTING(String dEPSTATUS_COUNTING) {
+		DEPSTATUS_COUNTING = dEPSTATUS_COUNTING;
+	}
+
+	public String getCONST_NO_COUNTING() {
+		return CONST_NO_COUNTING;
+	}
+
+	public void setCONST_NO_COUNTING(String cONST_NO_COUNTING) {
+		CONST_NO_COUNTING = cONST_NO_COUNTING;
+	}
+
+	public String getAmount_Credited() {
+		return Amount_Credited;
+	}
+
+	public void setAmount_Credited(String amount_Credited) {
+		Amount_Credited = amount_Credited;
+	}
+
+	public String getSMS_Amount() {
+		return SMS_Amount;
+	}
+
+	public void setSMS_Amount(String sMS_Amount) {
+		SMS_Amount = sMS_Amount;
+	}
+
+	public Date getOB_2ndFromDate() {
+		return OB_2ndFromDate;
+	}
+
+	public void setOB_2ndFromDate(Date oB_2ndFromDate) {
+		OB_2ndFromDate = oB_2ndFromDate;
+	}
+
+	public Date getOB_2ndToDate() {
+		return OB_2ndToDate;
+	}
+
+	public void setOB_2ndToDate(Date oB_2ndToDate) {
+		OB_2ndToDate = oB_2ndToDate;
+	}
+
+	public String getMobile_ObsDuty() {
+		return Mobile_ObsDuty;
+	}
+
+	public void setMobile_ObsDuty(String mobile_ObsDuty) {
+		Mobile_ObsDuty = mobile_ObsDuty;
+	}
+
+	public String getSMS_Sent_AccountDetails() {
+		return SMS_Sent_AccountDetails;
+	}
+
+	public void setSMS_Sent_AccountDetails(String sMS_Sent_AccountDetails) {
+		SMS_Sent_AccountDetails = sMS_Sent_AccountDetails;
+	}
+
+	public Date getOB_NewFromDate() {
+		return OB_NewFromDate;
+	}
+
+	public void setOB_NewFromDate(Date oB_NewFromDate) {
+		OB_NewFromDate = oB_NewFromDate;
+	}
+
+	public Date getOB_NewToDate() {
+		return OB_NewToDate;
+	}
+
+	public void setOB_NewToDate(Date oB_NewToDate) {
+		OB_NewToDate = oB_NewToDate;
+	}
+
+	public String getDISPLAY_Counting() {
+		return DISPLAY_Counting;
+	}
+
+	public void setDISPLAY_Counting(String dISPLAY_Counting) {
+		DISPLAY_Counting = dISPLAY_Counting;
 	}
 
 	public Set<Role> getRoles() {

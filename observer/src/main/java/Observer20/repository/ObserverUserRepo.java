@@ -1,5 +1,6 @@
 package Observer20.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 
@@ -30,6 +31,14 @@ public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	
 	@Query("Select u from ObserverUser u where u.obscode=:obsecode")
 	 ObserverUser getObserverUserByobscode(@Param("obscode") String obscode);
-
 	
+		
+		/*
+		 * @Query("SELECT u.DEPStatus FROM ObserverUser u WHERE u.obscode = :obscode")
+		 * String findDEPStatusByObscode(@Param("obscode") String obscode);
+		 */
+		 
+
+	@Query("SELECT u.depStatusCounting FROM ObserverUser u WHERE u.obscode = :obscode")
+	ObserverUser findDEPStatusCountingByObscode(@Param("obscode") String obscode);
 }

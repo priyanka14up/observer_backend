@@ -21,7 +21,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
-@Table(name="formsDates")
+@Table(name="forms_dates")
 @EntityListeners(AuditingEntityListener.class)
 public class FormDates {
 	
@@ -111,11 +111,6 @@ public class FormDates {
 	public void setActiveStatus(String activeStatus) {
 		this.activeStatus = activeStatus;
 	}
-
-	
-	
-	
-	
 	
 	public String getState() {
 		return state;

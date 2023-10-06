@@ -185,7 +185,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setName(observerUserDtoUpdation.getName());
 		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
 		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
-		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+		    observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
 		    //observerUser.setService(observerUserDtoUpdation.getService());
 		    //observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());
@@ -203,6 +203,29 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setO_BankName(observerUserDtoUpdation.getO_BankName());
 		    observerUser.setO_BranchName(observerUserDtoUpdation.getO_BranchName());
 		    observerUser.setO_AccountHolderName(observerUserDtoUpdation.getO_AccountHolderName());
+		    observerUser.setOB_CDEP(observerUserDtoUpdation.getOB_CDEP());
+		    observerUser.setExp_as_RO(observerUserDtoUpdation.getExp_as_RO());
+		    observerUser.setExp_as_DEO(observerUserDtoUpdation.getExp_as_DEO());
+		    observerUser.setExp_as_OtherElectionDuty(observerUserDtoUpdation.getExp_as_OtherElectionDuty());
+		    observerUser.setOB_YEAR(observerUserDtoUpdation.getOB_YEAR());
+		    observerUser.setOB_SEX(observerUserDtoUpdation.getOB_SEX());
+		    observerUser.setOB_DOB(observerUserDtoUpdation.getOB_DOB());
+		    observerUser.setOB_DESIG(observerUserDtoUpdation.getOB_DESIG());
+		    observerUser.setR_PIN(observerUserDtoUpdation.getR_PIN());
+		    observerUser.setR_STD(observerUserDtoUpdation.getR_STD());
+		    observerUser.setR_TNO(observerUserDtoUpdation.getR_TNO());
+		    observerUser.setR_FAX(observerUserDtoUpdation.getR_FAX());
+		    observerUser.setEMG_NAME(observerUserDtoUpdation.getEMG_NAME());
+		    observerUser.setSPONSOR(observerUserDtoUpdation.getSPONSOR());
+		    observerUser.setAGE(observerUserDtoUpdation.getAGE());
+		    
+		    observerUser.setOB_DESIG(observerUserDtoUpdation.getOB_DESIG());
+		    observerUser.setR_PIN(observerUserDtoUpdation.getR_PIN());
+		    observerUser.setR_STD(observerUserDtoUpdation.getR_STD());
+		    observerUser.setR_TNO(observerUserDtoUpdation.getR_TNO());
+		    observerUser.setR_FAX(observerUserDtoUpdation.getR_FAX());
+		    
+		
 		    
 
 		    // Save the updated entity back to the database

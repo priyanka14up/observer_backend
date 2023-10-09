@@ -37,30 +37,7 @@ public class ForgotController {
 	 */
 	Random random=new Random(10000);
 	
-	/*
-	 * @PostMapping("/send-otp") public String sendOtp(@RequestBody EmailRequest
-	 * email,HttpSession session)
-	 * 
-	 * {
-	 * 
-	 * System.out.println("Email: " + email.getEmail());
-	 * 
-	 * 
-	 * int min=100000; int max=999999; int otp=(int)(Math.random()*(max-min+1)+min);
-	 * System.out.println("OTP:"+otp); //Write a code for send to email
-	 * 
-	 * String subject="OTP From Observer Portal,Kindly don't share it with anyone.";
-	 * String message="Otp:"+otp; //String to=email; String to=email.getEmail();
-	 * 
-	 * boolean flag=emailService.sendEmail(subject,message,to); if(flag) {
-	 * session.setAttribute("myotp", otp); session.setAttribute("email", email);
-	 * return ("Sent OTP to your email Successfuly.....");
-	 * 
-	 * } else { session.setAttribute("message", "Check your Email id!!"); return
-	 * "verifiy-otp";
-	 * 
-	 * } }
-	 */
+	
 	
 	@PostMapping("/send-otp")
 	public String sendOtp(@RequestBody EmailRequest emailRequest, HttpSession session) {
@@ -169,6 +146,9 @@ public class ForgotController {
 
 	    return "Password changed successfully.";
 	}
+
+	
+	
 
 
 

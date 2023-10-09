@@ -23,8 +23,8 @@ public class Obs_Allot {
 	    private String service;
 	    private String PC_NAME;
 	    private String DIST_NAME;
-	   // private int statePhaseNo;
-	    private int statePhaseNo = 0;
+	   private int statePhaseNo;
+	   //private int statePhaseNo = 0;
 	    private String CURRENTELECTION;
 	    private Long scheduleID;
 		public Long getId() {
@@ -103,11 +103,12 @@ public class Obs_Allot {
 		}
 		
 		
+		
 		public int getStatePhaseNo() {
 			return statePhaseNo;
 		}
 		public void setStatePhaseNo(int statePhaseNo) {
-			statePhaseNo = statePhaseNo;
+			this.statePhaseNo = statePhaseNo;
 		}
 		public String getCURRENTELECTION() {
 			return CURRENTELECTION;

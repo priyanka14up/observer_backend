@@ -73,7 +73,41 @@ private int id;
     private String Exp_as_RO;
     private String Exp_as_DEO;
     private String Exp_as_OtherElectionDuty;
+    private String EMG_TEL;
+    private String OB_image;
     
+    
+    
+	public String getOB_image() {
+		return OB_image;
+	}
+	public void setOB_image(String oB_image) {
+		OB_image = oB_image;
+	}
+	public String getEMG_TEL() {
+		return EMG_TEL;
+	}
+	public void setEMG_TEL(String eMG_TEL) {
+		EMG_TEL = eMG_TEL;
+	}
+	public String getExp_as_RO() {
+		return Exp_as_RO;
+	}
+	public void setExp_as_RO(String exp_as_RO) {
+		Exp_as_RO = exp_as_RO;
+	}
+	public String getExp_as_DEO() {
+		return Exp_as_DEO;
+	}
+	public void setExp_as_DEO(String exp_as_DEO) {
+		Exp_as_DEO = exp_as_DEO;
+	}
+	public String getExp_as_OtherElectionDuty() {
+		return Exp_as_OtherElectionDuty;
+	}
+	public void setExp_as_OtherElectionDuty(String exp_as_OtherElectionDuty) {
+		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
+	}
 	public int getId() {
 		return id;
 	}
@@ -318,24 +352,8 @@ private int id;
 	public void setOB_CDEP(String oB_CDEP) {
 		OB_CDEP = oB_CDEP;
 	}
-	public String getExp_as_RO() {
-		return Exp_as_RO;
-	}
-	public void setExp_as_RO(String exp_as_RO) {
-		Exp_as_RO = exp_as_RO;
-	}
-	public String getExp_as_DEO() {
-		return Exp_as_DEO;
-	}
-	public void setExp_as_DEO(String exp_as_DEO) {
-		Exp_as_DEO = exp_as_DEO;
-	}
-	public String getExp_as_OtherElectionDuty() {
-		return Exp_as_OtherElectionDuty;
-	}
-	public void setExp_as_OtherElectionDuty(String exp_as_OtherElectionDuty) {
-		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
-	}
+	
+	
 	public ObserverUserDtoUpdation(int id, @NotEmpty String obscode,
 			@NotEmpty @Size(min = 4, message = "user name must be greter than 4 charcter!!") String name,
 			@Email(message = "your email adress is not valid!!") String email, @NotEmpty String role,

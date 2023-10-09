@@ -1,5 +1,8 @@
 package Observer20.Services.ServiceIMPL;
 
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -92,6 +95,16 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setO_BankName(observerUserDto.getO_BankName());
 		observerUser.setO_BranchName(observerUserDto.getO_BranchName());
 		observerUser.setO_AccountHolderName(observerUserDto.getO_AccountHolderName());
+		
+		observerUser.setEMG_TEL(observerUserDto.getEMG_TEL());
+		observerUser.setO_TEL_DRCT(observerUserDto.getO_TEL_DRCT());
+		observerUser.setO_TEL_PBX(observerUserDto.getO_TEL_PBX());
+		observerUser.setO_TEL_EXT(observerUserDto.getO_TEL_EXT());
+		observerUser.setOB_CDEP(observerUserDto.getOB_CDEP());
+		observerUser.setOB_REQ_STATUS(observerUserDto.getOB_REQ_STATUS());
+		observerUser.setExp_as_RO(observerUserDto.getExp_as_RO());
+		observerUser.setExp_as_DEO(observerUserDto.getExp_as_DEO());
+		observerUser.setExp_as_OtherElectionDuty(observerUserDto.getExp_as_OtherElectionDuty());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
 		//observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
@@ -139,6 +152,18 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setO_BankName(observerUser.getO_BankName());
 		observerUserDto.setO_BranchName(observerUser.getO_BranchName());
 		observerUserDto.setO_AccountHolderName(observerUser.getO_AccountHolderName());
+		
+		observerUserDto.setOB_CDEP(observerUser.getOB_CDEP());
+		observerUserDto.setExp_as_RO(observerUser.getExp_as_RO());
+		observerUserDto.setExp_as_DEO(observerUser.getExp_as_DEO());
+		observerUserDto.setExp_as_OtherElectionDuty(observerUser.getExp_as_OtherElectionDuty());
+		
+		observerUserDto.setO_TEL_DRCT(observerUser.getO_TEL_DRCT());
+		observerUserDto.setO_TEL_PBX(observerUser.getO_TEL_PBX());
+		observerUserDto.setO_TEL_EXT(observerUser.getO_TEL_EXT());
+		observerUserDto.setEMG_TEL(observerUser.getEMG_TEL());
+		observerUserDto.setOB_REQ_STATUS(observerUser.getOB_REQ_STATUS());
+		
 		
 		// observerUserDto.setPassword(passwordEncoder.encode(observerUser.getPassword()));
 		//observerUserDto.setPassword(DigestUtils.md5DigestAsHex(observerUser.getPassword().getBytes()));
@@ -219,13 +244,34 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setSPONSOR(observerUserDtoUpdation.getSPONSOR());
 		    observerUser.setAGE(observerUserDtoUpdation.getAGE());
 		    
-		    observerUser.setOB_DESIG(observerUserDtoUpdation.getOB_DESIG());
-		    observerUser.setR_PIN(observerUserDtoUpdation.getR_PIN());
-		    observerUser.setR_STD(observerUserDtoUpdation.getR_STD());
-		    observerUser.setR_TNO(observerUserDtoUpdation.getR_TNO());
-		    observerUser.setR_FAX(observerUserDtoUpdation.getR_FAX());
+		   // observerUser.setOB_STATUS(observerUserDtoUpdation.getOB_STATUS());
+		    observerUser.setEMG_TEL(observerUserDtoUpdation.getEMG_TEL());
 		    
-		
+		    
+		    String base64Image = observerUserDtoUpdation.getOB_image(); // Assuming you have a getImage() method in your DTO
+	        if (base64Image != null && !base64Image.isEmpty()) {
+	            try {
+	                // Decode base64 image data
+	                byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
+	                
+	                // Set your image file path where you want to save the image
+	                String imagePath = "path/to/your/image/folder/" + observerUser.getObscode() + ".png";
+	                
+	                // Save the image to the specified path
+	                try (FileOutputStream fos = new FileOutputStream(imagePath)) {
+	                    fos.write(decodedBytes);
+	                }
+
+	                // Update the image path in your database
+	                observerUser.setOB_image(imagePath); // Assuming you have a setImagePath() method in your entity class
+	            } catch (IOException e) {
+	                // Handle exception if image upload fails
+	                throw new ApiException("Failed to upload image");
+	            }
+	        }
+		   
+		    
+		   
 		    
 
 		    // Save the updated entity back to the database

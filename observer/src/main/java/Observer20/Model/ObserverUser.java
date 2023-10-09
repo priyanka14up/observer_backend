@@ -132,10 +132,53 @@ public class ObserverUser implements UserDetails{
     private Date OB_NewFromDate;
     private Date OB_NewToDate;
     private String DISPLAY_Counting;
-    @Column(name = "Profile_Status") 
+    private String O_TEL_DRCT;
+    private String O_TEL_PBX;
+    private String O_TEL_EXT;
+    private String OB_image;
+    
+    
+   
+    
+    public String getOB_image() {
+		return OB_image;
+	}
+
+	public void setOB_image(String oB_image) {
+		OB_image = oB_image;
+	}
+
+
+	@Column(name = "Profile_Status") 
 	  private Boolean ProfileStatus = false;
 	
-	  public String getOB_CDEP() {
+    
+    
+	  public String getO_TEL_DRCT() {
+		return O_TEL_DRCT;
+	}
+
+	public void setO_TEL_DRCT(String o_TEL_DRCT) {
+		O_TEL_DRCT = o_TEL_DRCT;
+	}
+
+	public String getO_TEL_PBX() {
+		return O_TEL_PBX;
+	}
+
+	public void setO_TEL_PBX(String o_TEL_PBX) {
+		O_TEL_PBX = o_TEL_PBX;
+	}
+
+	public String getO_TEL_EXT() {
+		return O_TEL_EXT;
+	}
+
+	public void setO_TEL_EXT(String o_TEL_EXT) {
+		O_TEL_EXT = o_TEL_EXT;
+	}
+
+	public String getOB_CDEP() {
 		return OB_CDEP;
 	}
 
@@ -143,6 +186,11 @@ public class ObserverUser implements UserDetails{
 		OB_CDEP = oB_CDEP;
 	}
 
+	
+	
+    
+	
+	
 	public String getExp_as_RO() {
 		return Exp_as_RO;
 	}
@@ -167,10 +215,6 @@ public class ObserverUser implements UserDetails{
 		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
 	}
 
-
-	
-    
-	
 	public int getId() {
 		return id;
 	}
@@ -847,15 +891,24 @@ public class ObserverUser implements UserDetails{
 
 
 
+
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
-			String homeState, long mobnum, int workexperience, String eCI_OBSID, String iD_NO, String oB_TITLE,
-			String oB_CADRE, String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG,
-			String oB_DESIG, String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX,
-			String r_PIN, String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String aGE,
+			String homeState, long mobnum, String eCI_OBSID, String iD_NO, String oB_TITLE, String oB_CADRE,
+			String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG, String oB_DESIG,
+			String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX, String r_PIN,
+			String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String oB_HM_STAT,
+			String sP_HM_STAT, String sPON_OBSID, String dELHIBASED, String sPLOBSERVER, String sPLOBSPLACE,
+			String nOMNSTATUS, String dEPSTATUS, String bRIEFINGNO, String bRIEFED, String dETAILEDFORMRECVD,
+			Date mOD_DATE, String oB_NODAL_ID, String eMG_TEL, String oB_NA_DFROM, String oB_NA_DTO, String oB_REMARK,
+			String oB_BRREMARK, String oB_REQ_STATUS, String mOD_BY, String dISPLAY, String cONST_NO, String oB_RATING,
+			String oLDDEPSTATUS, String o_MOBILE1, String rOWID, String o_Amount, String sMS_SENT,
+			String dEPSTATUS_COUNTING, String cONST_NO_COUNTING, String amount_Credited, String sMS_Amount,
+			Date oB_2ndFromDate, Date oB_2ndToDate, String mobile_ObsDuty, String sMS_Sent_AccountDetails, String aGE,
 			String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName,
-			Date oBFromDate, Date oBToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO,
-			String exp_as_OtherElectionDuty, Boolean profileStatus, Set<Role> roles,
-			Set<UserSecurityQuestion> securityQuestions, ObserverLocalInfo localInfo) {
+			Date oBFromDate, Date oBToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO, String exp_as_OtherElectionDuty,
+			Date oB_NewFromDate, Date oB_NewToDate, String dISPLAY_Counting, String o_TEL_DRCT, String o_TEL_PBX,
+			String o_TEL_EXT, Boolean profileStatus, Set<Role> roles, Set<UserSecurityQuestion> securityQuestions,
+			ObserverLocalInfo localInfo) {
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -866,7 +919,6 @@ public class ObserverUser implements UserDetails{
 		this.service = service;
 		this.homeState = homeState;
 		this.mobnum = mobnum;
-		//this.workexperience = workexperience;
 		ECI_OBSID = eCI_OBSID;
 		ID_NO = iD_NO;
 		OB_TITLE = oB_TITLE;
@@ -889,6 +941,42 @@ public class ObserverUser implements UserDetails{
 		R_FAX = r_FAX;
 		EMG_NAME = eMG_NAME;
 		SPONSOR = sPONSOR;
+		OB_HM_STAT = oB_HM_STAT;
+		SP_HM_STAT = sP_HM_STAT;
+		SPON_OBSID = sPON_OBSID;
+		DELHIBASED = dELHIBASED;
+		SPLOBSERVER = sPLOBSERVER;
+		SPLOBSPLACE = sPLOBSPLACE;
+		NOMNSTATUS = nOMNSTATUS;
+		DEPSTATUS = dEPSTATUS;
+		BRIEFINGNO = bRIEFINGNO;
+		BRIEFED = bRIEFED;
+		DETAILEDFORMRECVD = dETAILEDFORMRECVD;
+		MOD_DATE = mOD_DATE;
+		OB_NODAL_ID = oB_NODAL_ID;
+		EMG_TEL = eMG_TEL;
+		OB_NA_DFROM = oB_NA_DFROM;
+		OB_NA_DTO = oB_NA_DTO;
+		OB_REMARK = oB_REMARK;
+		OB_BRREMARK = oB_BRREMARK;
+		OB_REQ_STATUS = oB_REQ_STATUS;
+		MOD_BY = mOD_BY;
+		DISPLAY = dISPLAY;
+		CONST_NO = cONST_NO;
+		OB_RATING = oB_RATING;
+		OLDDEPSTATUS = oLDDEPSTATUS;
+		O_MOBILE1 = o_MOBILE1;
+		ROWID = rOWID;
+		O_Amount = o_Amount;
+		SMS_SENT = sMS_SENT;
+		DEPSTATUS_COUNTING = dEPSTATUS_COUNTING;
+		CONST_NO_COUNTING = cONST_NO_COUNTING;
+		Amount_Credited = amount_Credited;
+		SMS_Amount = sMS_Amount;
+		OB_2ndFromDate = oB_2ndFromDate;
+		OB_2ndToDate = oB_2ndToDate;
+		Mobile_ObsDuty = mobile_ObsDuty;
+		SMS_Sent_AccountDetails = sMS_Sent_AccountDetails;
 		AGE = aGE;
 		O_AccountNo = o_AccountNo;
 		O_IFCSCode = o_IFCSCode;
@@ -901,6 +989,12 @@ public class ObserverUser implements UserDetails{
 		Exp_as_RO = exp_as_RO;
 		Exp_as_DEO = exp_as_DEO;
 		Exp_as_OtherElectionDuty = exp_as_OtherElectionDuty;
+		OB_NewFromDate = oB_NewFromDate;
+		OB_NewToDate = oB_NewToDate;
+		DISPLAY_Counting = dISPLAY_Counting;
+		O_TEL_DRCT = o_TEL_DRCT;
+		O_TEL_PBX = o_TEL_PBX;
+		O_TEL_EXT = o_TEL_EXT;
 		ProfileStatus = profileStatus;
 		this.roles = roles;
 		this.securityQuestions = securityQuestions;
@@ -921,12 +1015,27 @@ public class ObserverUser implements UserDetails{
 				+ OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY="
 				+ O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX
 				+ ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME="
-				+ EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE + ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode="
+				+ EMG_NAME + ", SPONSOR=" + SPONSOR + ", OB_HM_STAT=" + OB_HM_STAT + ", SP_HM_STAT=" + SP_HM_STAT
+				+ ", SPON_OBSID=" + SPON_OBSID + ", DELHIBASED=" + DELHIBASED + ", SPLOBSERVER=" + SPLOBSERVER
+				+ ", SPLOBSPLACE=" + SPLOBSPLACE + ", NOMNSTATUS=" + NOMNSTATUS + ", DEPSTATUS=" + DEPSTATUS
+				+ ", BRIEFINGNO=" + BRIEFINGNO + ", BRIEFED=" + BRIEFED + ", DETAILEDFORMRECVD=" + DETAILEDFORMRECVD
+				+ ", MOD_DATE=" + MOD_DATE + ", OB_NODAL_ID=" + OB_NODAL_ID + ", EMG_TEL=" + EMG_TEL + ", OB_NA_DFROM="
+				+ OB_NA_DFROM + ", OB_NA_DTO=" + OB_NA_DTO + ", OB_REMARK=" + OB_REMARK + ", OB_BRREMARK=" + OB_BRREMARK
+				+ ", OB_REQ_STATUS=" + OB_REQ_STATUS + ", MOD_BY=" + MOD_BY + ", DISPLAY=" + DISPLAY + ", CONST_NO="
+				+ CONST_NO + ", OB_RATING=" + OB_RATING + ", OLDDEPSTATUS=" + OLDDEPSTATUS + ", O_MOBILE1=" + O_MOBILE1
+				+ ", ROWID=" + ROWID + ", O_Amount=" + O_Amount + ", SMS_SENT=" + SMS_SENT + ", DEPSTATUS_COUNTING="
+				+ DEPSTATUS_COUNTING + ", CONST_NO_COUNTING=" + CONST_NO_COUNTING + ", Amount_Credited="
+				+ Amount_Credited + ", SMS_Amount=" + SMS_Amount + ", OB_2ndFromDate=" + OB_2ndFromDate
+				+ ", OB_2ndToDate=" + OB_2ndToDate + ", Mobile_ObsDuty=" + Mobile_ObsDuty + ", SMS_Sent_AccountDetails="
+				+ SMS_Sent_AccountDetails + ", AGE=" + AGE + ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode="
 				+ O_IFCSCode + ", O_BankName=" + O_BankName + ", O_BranchName=" + O_BranchName
 				+ ", O_AccountHolderName=" + O_AccountHolderName + ", OBFromDate=" + OBFromDate + ", OBToDate="
 				+ OBToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO + ", Exp_as_DEO=" + Exp_as_DEO
-				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", ProfileStatus=" + ProfileStatus
-				+ ", roles=" + roles + ", securityQuestions=" + securityQuestions + ", localInfo=" + localInfo + "]";
+				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", OB_NewFromDate=" + OB_NewFromDate
+				+ ", OB_NewToDate=" + OB_NewToDate + ", DISPLAY_Counting=" + DISPLAY_Counting + ", O_TEL_DRCT="
+				+ O_TEL_DRCT + ", O_TEL_PBX=" + O_TEL_PBX + ", O_TEL_EXT=" + O_TEL_EXT + ", ProfileStatus="
+				+ ProfileStatus + ", roles=" + roles + ", securityQuestions=" + securityQuestions + ", localInfo="
+				+ localInfo + "]";
 	}
 
 	

@@ -1096,6 +1096,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String Consistuency,String userId) throws HandledException 
 		{
 			Long fid=null,phaseNo=null;
+			boolean isSubmitted=false;
 			LocalDate sdate,ldate;
 			String state=null;
 			LocalDate currentLocalDate;
@@ -1111,14 +1112,15 @@ ResponseMap.put("remarks",response.getRemarks());
 			{
 				if(formStatus.isStatus()==true)
 				{
-					
-					formDatesMap=customResponseFormStatusSubmit(form,ObsStatus.submitted,formStatus.getDate());
+					isSubmitted=true;
+					formDatesMap=customResponseFormStatusSubmit(form,ObsStatus.submitted,formStatus.getDate(),isSubmitted);
 				}
 				else if(formStatus.isStatus()==false)
 				{ 
 					
 					//status=false;
-					formDatesMap=customResponseFormStatusDraft(form,ObsStatus.draft,formStatus.getDate()); 
+					isSubmitted=false;
+					formDatesMap=customResponseFormStatusDraft(form,ObsStatus.draft,formStatus.getDate(),isSubmitted); 
 				}
 			}
 			else
@@ -1130,18 +1132,20 @@ ResponseMap.put("remarks",response.getRemarks());
 				if(formDatesDetails.getLdate().isAfter(currentLocalDate))
 				{
 				System.out.println("pending");	
-				formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate()); 
+				isSubmitted=false;
+				formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate(),isSubmitted); 
 				}
 				else if(formDatesDetails.getLdate().isBefore(currentLocalDate))
 			{
 				System.out.println("due");	
-				formDatesMap=customResponseFormStatusDue(form,ObsStatus.due,formDatesDetails.getLdate()); 
+				isSubmitted=false;
+				formDatesMap=customResponseFormStatusDue(form,ObsStatus.due,formDatesDetails.getLdate(),isSubmitted); 
 //					 state=formDatesDetails.getState();
 //						 phaseNo=formDatesDetails.getPhaseNo();				
 				}
 				else
-				{
-					formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate()); 
+				{isSubmitted=false;
+					formDatesMap=customResponseFormStatusPending(form,ObsStatus.pending,formDatesDetails.getSdate(),formDatesDetails.getLdate(),isSubmitted); 
 				}
 				//customResponseForm(form); 
 			
@@ -1151,11 +1155,10 @@ ResponseMap.put("remarks",response.getRemarks());
 		//return null;
 		return listOfMsgMaps;
 		
-		
 		}
 
 
-private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStatus status,Date submitDate) {
+private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStatus status,Date submitDate,boolean isSubmitted) {
 	
 	HashMap<String, Object> formMap =  new HashMap<>();
 	
@@ -1163,13 +1166,13 @@ private HashMap<String, Object> customResponseFormStatusSubmit(Form form,ObsStat
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
 	formMap.put("Submitted_On",submitDate);
-	
+	formMap.put("isSubmitted",isSubmitted);
 
 	return formMap;
 	
 }
 
-private HashMap<String, Object> customResponseFormStatusDraft(Form form,ObsStatus status,Date draftDate) {
+private HashMap<String, Object> customResponseFormStatusDraft(Form form,ObsStatus status,Date draftDate,boolean isSubmitted) {
 	
 	HashMap<String, Object> formMap =  new HashMap<>();
 	
@@ -1177,12 +1180,13 @@ private HashMap<String, Object> customResponseFormStatusDraft(Form form,ObsStatu
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
 	formMap.put("Last_Submitted_On",draftDate);
-	
+	formMap.put("isSubmitted",isSubmitted);
+
 
 	return formMap;
 	
 }
-private HashMap<String, Object> customResponseFormStatusPending(Form form,ObsStatus status,LocalDate startDate,LocalDate lastdate) {
+private HashMap<String, Object> customResponseFormStatusPending(Form form,ObsStatus status,LocalDate startDate,LocalDate lastdate,boolean isSubmitted) {
 	
 	HashMap<String, Object> formMap =  new HashMap<>();
 	
@@ -1191,12 +1195,13 @@ private HashMap<String, Object> customResponseFormStatusPending(Form form,ObsSta
 	formMap.put("FormStatus",status);
 	formMap.put("Pending_Since",startDate);
 	formMap.put("Last_date",lastdate);
-	
+	formMap.put("isSubmitted",isSubmitted);
+
 
 	return formMap;
 	
 }
-private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus status,LocalDate lastDate) {
+private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus status,LocalDate lastDate,boolean isSubmitted) {
 	
 	HashMap<String, Object> formMap =  new HashMap<>();
 	
@@ -1204,7 +1209,8 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 	formMap.put("FormName",form.getName());
 	formMap.put("FormStatus",status);
 	formMap.put("Due_On",lastDate);
-	
+	formMap.put("isSubmitted",isSubmitted);
+
 
 	return formMap;
 	

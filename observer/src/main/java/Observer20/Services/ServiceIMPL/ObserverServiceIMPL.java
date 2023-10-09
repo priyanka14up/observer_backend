@@ -248,7 +248,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setEMG_TEL(observerUserDtoUpdation.getEMG_TEL());
 		    
 		    
-		    String base64Image = observerUserDtoUpdation.getOB_image(); // Assuming you have a getImage() method in your DTO
+		    String base64Image = observerUserDtoUpdation.getOB_image();
 	        if (base64Image != null && !base64Image.isEmpty()) {
 	            try {
 	                // Decode base64 image data

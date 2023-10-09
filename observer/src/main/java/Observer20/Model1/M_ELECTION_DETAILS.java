@@ -1,14 +1,15 @@
 
   package Observer20.Model1;
   
-  import javax.persistence.Entity; import javax.persistence.Id;
+  import javax.persistence.Column;
+import javax.persistence.Entity; import javax.persistence.Id;
   
   @Entity 
   public class M_ELECTION_DETAILS {
   
   @Id 
   private String CCODE;
-  private String ScheduleID;
+  private Long ScheduleID;
   private String CONST_NO; 
   private String CONST_TYPE; 
   private String DELIM_TYPE; 
@@ -18,17 +19,19 @@
   private String VotesReg_49O; 
   private int StatePHASE_NO;
   private int PHASE_NO;
-  private String AdjournedPol;
+ 
+  private String AdjournedPoll;
 public String getCCODE() {
 	return CCODE;
 }
 public void setCCODE(String cCODE) {
 	CCODE = cCODE;
 }
-public String getScheduleID() {
+
+public Long getScheduleID() {
 	return ScheduleID;
 }
-public void setScheduleID(String scheduleID) {
+public void setScheduleID(Long scheduleID) {
 	ScheduleID = scheduleID;
 }
 public String getCONST_NO() {
@@ -85,12 +88,14 @@ public int getPHASE_NO() {
 public void setPHASE_NO(int pHASE_NO) {
 	PHASE_NO = pHASE_NO;
 }
-public String getAdjournedPol() {
-	return AdjournedPol;
+public String getAdjournedPoll() {
+	return AdjournedPoll;
 }
-public void setAdjournedPol(String adjournedPol) {
-	AdjournedPol = adjournedPol;
+public void setAdjournedPoll(String adjournedPoll) {
+	AdjournedPoll = adjournedPoll;
 }
+
+
 
   
   }

@@ -1,7 +1,9 @@
 package Observer20.Services.ServiceIMPL;
 
+import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -22,9 +24,10 @@ import Observer20.Model.STATE_LIST2;
 import Observer20.Model1.T_ALLOT_GROUP;
 import Observer20.Repo1.T_ALLOT_GROUP_REPO;
 import Observer20.Services.T_Allot_Group_Servcie;
-
+import Observer20.payloads.MElectionDetailsDataDTO;
 import Observer20.repository.AC_LIST2_REPO2;
-
+import Observer20.repository.MElectionDetailsREPO2;
+import Observer20.repository.MElectionScheduleREPO2;
 import Observer20.repository.Obs_AllotREPO;
 import Observer20.repository.ObserverUserRepo;
 import Observer20.repository.PC_AC_DIST_REPO2;
@@ -44,11 +47,12 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	AC_LIST2_REPO2 aC_LIST2_REPO2;
 	@Autowired
 	PC_AC_DIST_REPO2 pC_AC_DIST_REPO2; // Inject the PC_AC_DIST repository
-	/*
-	 * @Autowired MElectionScheduleREPO2 mElectionScheduleREPO2;
-	 * 
-	 * @Autowired MElectionDetailsREPO2 mElectionDetailsREPO2;
-	 */
+	
+	  @Autowired MElectionScheduleREPO2 mElectionScheduleREPO2;
+	  
+	  @Autowired MElectionDetailsREPO2 mElectionDetailsREPO2;
+	  
+	 
 
 	@Override
 	public void migrateT_allot_group_Service() {
@@ -157,5 +161,97 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	}
 
 
+
+	/*
+	 * @Override public MElectionDetailsDataDTO getElectionData(String obsCode) {
+	 * List<Object[]> electionDetailsList =
+	 * mElectionDetailsREPO2.findDetailsByObsCode(obsCode); List<String>
+	 * datePollStrings = mElectionScheduleREPO2.findDatePollByObsCode(obsCode);
+	 * 
+	 * MElectionDetailsDataDTO mElectionDetailsDataDTO = new
+	 * MElectionDetailsDataDTO();
+	 * 
+	 * if (electionDetailsList != null && !electionDetailsList.isEmpty() &&
+	 * datePollStrings != null && !datePollStrings.isEmpty()) { // Handle multiple
+	 * results by iterating through the list for (Object[] electionDetails :
+	 * electionDetailsList) { mElectionDetailsDataDTO.setConstType((String)
+	 * electionDetails[0]); mElectionDetailsDataDTO.setElectionType((String)
+	 * electionDetails[1]);
+	 * 
+	 * // Convert String to int //int statePhaseNo = Integer.parseInt((String)
+	 * electionDetails[2]); int statePhaseNo = (int) electionDetails[2];
+	 * 
+	 * 
+	 * mElectionDetailsDataDTO.setStatePhaseNO(statePhaseNo);
+	 * 
+	 * // Convert String to int // int phaseNo = Integer.parseInt((String)
+	 * electionDetails[3]); int phaseNo = (int) electionDetails[3];
+	 * mElectionDetailsDataDTO.setPhaseNo(phaseNo);
+	 * 
+	 * // Parse String date to Date object SimpleDateFormat dateFormat = new
+	 * SimpleDateFormat("yyyy-MM-dd"); // Adjust the format according to your date
+	 * string try { Date datePoll = dateFormat.parse(datePollStrings.get(0)); //
+	 * Assuming you want the first datePoll value from the list
+	 * mElectionDetailsDataDTO.setDatePoll(datePoll); } catch (ParseException e) {
+	 * // Handle the exception according to your needs e.printStackTrace(); }
+	 * 
+	 * // Break the loop after processing the first result if you only want one
+	 * result break; } }
+	 * 
+	 * return mElectionDetailsDataDTO; }
+	 */
+	
+	@Override
+	public MElectionDetailsDataDTO getElectionData(String obsCode) {
+	    List<Object[]> electionDetailsList = mElectionDetailsREPO2.findDetailsByObsCode(obsCode);
+	    List<Object[]> datePollAndCurrentElectionList = mElectionScheduleREPO2.findDatePollAndCurrentElectionByObsCode(obsCode);
+	    ObserverUser observerUser = observerUserRepo.findDEPStatusCountingByObscode(obsCode);
+	    
+	    MElectionDetailsDataDTO mElectionDetailsDataDTO = new MElectionDetailsDataDTO();
+
+	    if (electionDetailsList != null && !electionDetailsList.isEmpty() &&
+	        datePollAndCurrentElectionList != null && !datePollAndCurrentElectionList.isEmpty() &&
+	        observerUser != null) {
+
+	        // Handle multiple results by iterating through the list
+	        for (Object[] electionDetails : electionDetailsList) {
+	            mElectionDetailsDataDTO.setConstType((String) electionDetails[0]);
+	            mElectionDetailsDataDTO.setElectionType((String) electionDetails[1]);
+
+	            // Convert Object to Integer
+	            int statePhaseNo = (Integer) electionDetails[2];
+	            mElectionDetailsDataDTO.setStatePhaseNO(statePhaseNo);
+
+	            // Convert Object to Integer
+	            int phaseNo = (Integer) electionDetails[3];
+	            mElectionDetailsDataDTO.setPhaseNo(phaseNo);
+
+	            // Extract datePoll and currentElection from the list of Object arrays
+	            Object[] datePollAndCurrentElection = datePollAndCurrentElectionList.get(0);
+
+	            // Handle Timestamp object properly (convert to Date)
+	            Timestamp timestamp = (Timestamp) datePollAndCurrentElection[0];
+	            Date datePoll = new Date(timestamp.getTime());
+	            mElectionDetailsDataDTO.setDatePoll(datePoll);
+
+	            // Assuming currentElection is a String, cast it accordingly
+	            String currentElection = (String) datePollAndCurrentElection[1];
+	            mElectionDetailsDataDTO.setCurrentElection(currentElection);
+
+	            // Get depStatusCounting from ObserverUser object
+	            String depStatusCounting = observerUser.getDEPSTATUS_COUNTING();
+	            mElectionDetailsDataDTO.setDEPSTATUS_COUNTING(depStatusCounting);
+
+	            // Break the loop after processing the first result if you only want one result
+	            break;
+	        }
+	    }
+
+	    return mElectionDetailsDataDTO;
+	}
+
 }
+
+
+
 

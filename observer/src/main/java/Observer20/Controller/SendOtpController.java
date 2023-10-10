@@ -43,7 +43,7 @@ public class SendOtpController {
         int max = 9999;
         int otp = (int) (Math.random() * (max - min + 1) + min);
 
-        String smsMessage = "Your OTP code is " + otp;
+        String smsMessage = "OTP From Observer Portal, Kindly don't share it with anyone. " + otp;
 
         boolean gupshupApiSuccess = sendOtpViaGupshupApi(observerUser.getMobnum(), smsMessage);
         boolean emailServiceSuccess = sendOtpViaEmail(observerUser.getEmail(), "Your OTP Code", smsMessage);

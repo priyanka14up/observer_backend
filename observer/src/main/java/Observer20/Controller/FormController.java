@@ -111,6 +111,8 @@ public class FormController {
 		}
 	}
 	/*getting questions by subform id*/
+	
+	
 	@GetMapping("/questions/{sid}")
 	public ResponseEntity<Object> getAllQuestionsBySid(@PathVariable("sid") Long sid) throws HandledException {
 
@@ -146,12 +148,42 @@ public class FormController {
 
 	}
 	
+	
+	
+	@GetMapping("/questionsV2/{sid}")
+	public ResponseEntity<Object> getAllQuestionsBySidJson(@PathVariable("sid") Long sid) throws HandledException {
+	    try {
+	        System.out.println("starting controller");
+	        List<Question> formData = formService.allQuestionsBySid(sid);
+	        List<Object> data = new ArrayList<>();
+
+	        for (Question q : formData) {
+	            Map<String, Object> questionData = new HashMap<>();
+	            questionData.put("qid", q.getQid());
+	            questionData.put("qname", q.getQname());
+	            questionData.put("inputType", q.getInputType());
+	            questionData.put("inputLabel", q.getInputLabel());
+	            questionData.put("remarkStatus", q.isRemarkStatus());
+	            questionData.put("remarkLabel", q.getRemarkLabel());
+	            data.add(questionData);
+	        }
+
+	        return ResponseHandler.generateResponse("success", HttpStatus.OK,data);
+	        //return data;
+	    } catch (Exception e) {
+	        System.out.println(e);
+	        return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
+	        //throw new HandledException(e.getMessage(), "CHECK_PARAMETERS");
+	    }
+	}
+	
 	/*Getting subforms by form id*/
 	
 	@GetMapping("/subforms/{id}")
-		public ResponseEntity<Object> getAllSubFormsByFid(@PathVariable("id") Long id) throws HandledException, JsonProcessingException {
+	
+	public ResponseEntity<Object> getAllSubFormsByFid(@PathVariable("id") Long id) throws HandledException, JsonProcessingException {
 		try {
-			System.out.println("starting controller");
+			
 			List<SubForm> formData =formService.allSubformsByfid(id);
 			List<Object> data = new ArrayList<Object>();
 			JSONArray array = new JSONArray();
@@ -174,7 +206,32 @@ public class FormController {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
 
 		}
+	}
+	
+@GetMapping("/subformsV2/{id}")
+	
+	public ResponseEntity<Object> getAllSubFormsByFidJson(@PathVariable("id") Long id) throws HandledException, JsonProcessingException {
+		
+		 try {
+		        System.out.println("starting controller");
+		        List<SubForm> formData =formService.allSubformsByfid(id);
+		        List<Object> data = new ArrayList<>();
 
+		        for (SubForm s : formData) {
+		            Map<String, Object> subformData = new HashMap<>();
+		            subformData.put("sid",s.getSid());
+		            subformData.put("heading",s.getHeading());
+		           
+		            data.add(subformData);
+		        }
+
+		        return ResponseHandler.generateResponse("success", HttpStatus.OK,data);
+		        //return data;
+		    } catch (Exception e) {
+		        System.out.println(e);
+		        return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST,null);
+		        
+		    }
 	}
 	
 	@GetMapping("/subformid/{qid}")
@@ -383,8 +440,8 @@ public class FormController {
 	 
 	
 	/*dashboard*/
-	@GetMapping("/forms/{obsType}/{consistuency}/{userId}")
-	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("obsType") String obsType,@PathVariable("consistuency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
+	@GetMapping("/forms/{obsType}/{constituency}/{userId}")
+	public ResponseEntity<Object> getAllFormsStatusByConsistuency(@PathVariable("obsType") String obsType,@PathVariable("constituency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
 
 		try {
 

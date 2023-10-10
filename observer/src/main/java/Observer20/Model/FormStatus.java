@@ -41,8 +41,9 @@ public class FormStatus {
 			@Column(name = "submitted_by",nullable=false)
 		    private String submittedBy;
 			
-	@Column(name = "consistuency")
-	private String Consistuency;
+	@Column(name = "constituency")
+	private String constituency;
+	
 			
 	public Long getStid() {
 		return stid;
@@ -90,18 +91,20 @@ public class FormStatus {
 	
 	
 	
-	public String getConsistuency() {
-		return Consistuency;
+	
+
+	public String getConstituency() {
+		return constituency;
 	}
 
-	public void setConsistuency(String consistuency) {
-		Consistuency = consistuency;
+	public void setConstituency(String constituency) {
+		this.constituency = constituency;
 	}
 
 	@Override
 	public String toString() {
 		return "FormStatus [stid=" + stid + ", fid=" + fid + ", status=" + status + ", date=" + date + ", submittedBy="
-				+ submittedBy + ", Consistuency=" + Consistuency + "]";
+				+ submittedBy + ", constituency=" + constituency + "]";
 	}
 
 	

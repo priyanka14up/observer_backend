@@ -1,12 +1,18 @@
 package Observer20.Controller;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
+import org.hibernate.engine.jdbc.StreamUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.DigestUtils;
@@ -19,7 +25,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import Observer20.Exception.ApiException;
 import Observer20.Model.ChangePasswordRequest;
@@ -27,6 +35,7 @@ import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
+import Observer20.Services.FileService;
 import Observer20.Services.ObserverService;
 import Observer20.payloads.ChangeProfileStatusRequest;
 import Observer20.payloads.LoginProfileStatusResponse;
@@ -52,7 +61,11 @@ public class ObserverUserController {
 	    private ObserverLocalInfoRepository observerLocalInfoRepository;
 		@Autowired
 		private ObserverUserRepo observerUserRepo;
+		@Autowired
+		private FileService fileService;
 		
+		@Value("${project.image}")
+		private String path;
 	    
 
 		@PostMapping("/profilelogin")
@@ -155,9 +168,58 @@ public class ObserverUserController {
 		}
 		
 		
+	
 		
+// post image
+		
+		@PostMapping("/image/upload/{obscode}") // Updated the path variable name
+		public ResponseEntity<ObserverUserDto> uploadPostImage(@RequestParam("image") MultipartFile image, @PathVariable String obscode) throws IOException {
+		    ObserverUserDto observerUserDto = observerService.getObserverUserById(obscode);
+		    String fileName = fileService.uploadImage(path, image);
+		    observerUserDto.setOB_image(fileName);
+		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, obscode); // Fixed the variable name
+
+		    return new ResponseEntity<ObserverUserDto>(updatedUser, HttpStatus.OK); // Fixed the return type and variable name
+		}
+
+
+// server image
+		@GetMapping(value="/profiles/{imageName}",produces=MediaType.IMAGE_JPEG_VALUE)
+		public void DownloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)throws IOException
+		{
+			InputStream resource=fileService.getResource(path, imageName);
+			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+			StreamUtils.copy(resource,response.getOutputStream());
+		}
+		
+		
+		    @PutMapping("/image/{obscode}")
+		    public ResponseEntity<ObserverUserDto> editProfilePicture(
+		            @RequestParam("image") MultipartFile image,
+		            @PathVariable String obscode) throws IOException {
+
+		        ObserverUserDto observerUserDto = observerService.getObserverUserById(obscode);
+
+		        // Check if the user exists based on the obscode
+		        if (observerUserDto == null) {
+		            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+		        }
+
+		        // Upload the new profile picture
+		        String fileName = fileService.uploadImage(path, image);
+
+		        // Set the new profile picture filename to the user object
+		        observerUserDto.setOB_image(fileName);
+
+		        // Update the user's profile picture
+		        ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, obscode);
+
+		        return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+		    }
+		}
+
+		 
 	
-	
-}
+
 
 

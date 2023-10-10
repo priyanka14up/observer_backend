@@ -23,6 +23,8 @@ public interface ObserverService {
 	ApiResponse deleteObserverUser(String obscode);
 
 	ObserverUserDto updateObserverUser(ObserverUserDtoUpdation user, String obsCode);
+
+	ObserverUserDto updateObserverUser(ObserverUserDto observerUserDto, String obscode);
 	
 
 	

@@ -46,6 +46,7 @@ public class ObserverUser implements UserDetails{
 	
 
 	@Column(name="observer_name",nullable=false,length=100)
+	//@Column(name="observer_name",length=100)
 	private String name;
 	
     private String email;
@@ -53,7 +54,7 @@ public class ObserverUser implements UserDetails{
     private String password;
     private String role;
     private String service;
-    private String homeState;
+   // private String homeState;
     private long mobnum;
    // private int workexperience;
     private String ECI_OBSID;
@@ -271,13 +272,7 @@ public class ObserverUser implements UserDetails{
 		this.service = service;
 	}
 
-	public String getHomeState() {
-		return homeState;
-	}
-
-	public void setHomeState(String homeState) {
-		this.homeState = homeState;
-	}
+	
 
 	public long getMobnum() {
 		return mobnum;
@@ -892,23 +887,24 @@ public class ObserverUser implements UserDetails{
 
 
 
+	
 	public ObserverUser(int id, String obscode, String name, String email, String password, String role, String service,
-			String homeState, long mobnum, String eCI_OBSID, String iD_NO, String oB_TITLE, String oB_CADRE,
-			String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG, String oB_DESIG,
-			String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX, String r_PIN,
-			String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String oB_HM_STAT,
-			String sP_HM_STAT, String sPON_OBSID, String dELHIBASED, String sPLOBSERVER, String sPLOBSPLACE,
-			String nOMNSTATUS, String dEPSTATUS, String bRIEFINGNO, String bRIEFED, String dETAILEDFORMRECVD,
-			Date mOD_DATE, String oB_NODAL_ID, String eMG_TEL, String oB_NA_DFROM, String oB_NA_DTO, String oB_REMARK,
+			long mobnum, String eCI_OBSID, String iD_NO, String oB_TITLE, String oB_CADRE, String oB_YEAR,
+			String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG, String oB_DESIG, String o_ADR_L1,
+			String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX, String r_PIN, String r_STD,
+			String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String oB_HM_STAT, String sP_HM_STAT,
+			String sPON_OBSID, String dELHIBASED, String sPLOBSERVER, String sPLOBSPLACE, String nOMNSTATUS,
+			String dEPSTATUS, String bRIEFINGNO, String bRIEFED, String dETAILEDFORMRECVD, Date mOD_DATE,
+			String oB_NODAL_ID, String eMG_TEL, String oB_NA_DFROM, String oB_NA_DTO, String oB_REMARK,
 			String oB_BRREMARK, String oB_REQ_STATUS, String mOD_BY, String dISPLAY, String cONST_NO, String oB_RATING,
 			String oLDDEPSTATUS, String o_MOBILE1, String rOWID, String o_Amount, String sMS_SENT,
 			String dEPSTATUS_COUNTING, String cONST_NO_COUNTING, String amount_Credited, String sMS_Amount,
 			Date oB_2ndFromDate, Date oB_2ndToDate, String mobile_ObsDuty, String sMS_Sent_AccountDetails, String aGE,
 			String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName,
-			Date oBFromDate, Date oBToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO, String exp_as_OtherElectionDuty,
-			Date oB_NewFromDate, Date oB_NewToDate, String dISPLAY_Counting, String o_TEL_DRCT, String o_TEL_PBX,
-			String o_TEL_EXT, Boolean profileStatus, Set<Role> roles, Set<UserSecurityQuestion> securityQuestions,
-			ObserverLocalInfo localInfo) {
+			Date oBFromDate, Date oBToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO,
+			String exp_as_OtherElectionDuty, Date oB_NewFromDate, Date oB_NewToDate, String dISPLAY_Counting,
+			String o_TEL_DRCT, String o_TEL_PBX, String o_TEL_EXT, String oB_image, Boolean profileStatus,
+			Set<Role> roles, Set<UserSecurityQuestion> securityQuestions, ObserverLocalInfo localInfo) {
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -917,7 +913,6 @@ public class ObserverUser implements UserDetails{
 		this.password = password;
 		this.role = role;
 		this.service = service;
-		this.homeState = homeState;
 		this.mobnum = mobnum;
 		ECI_OBSID = eCI_OBSID;
 		ID_NO = iD_NO;
@@ -995,6 +990,7 @@ public class ObserverUser implements UserDetails{
 		O_TEL_DRCT = o_TEL_DRCT;
 		O_TEL_PBX = o_TEL_PBX;
 		O_TEL_EXT = o_TEL_EXT;
+		OB_image = oB_image;
 		ProfileStatus = profileStatus;
 		this.roles = roles;
 		this.securityQuestions = securityQuestions;
@@ -1009,18 +1005,18 @@ public class ObserverUser implements UserDetails{
 	@Override
 	public String toString() {
 		return "ObserverUser [id=" + id + ", obscode=" + obscode + ", name=" + name + ", email=" + email + ", password="
-				+ password + ", role=" + role + ", service=" + service + ", homeState=" + homeState + ", mobnum="
-				+ mobnum + ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE="
-				+ OB_CADRE + ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS="
-				+ OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY="
-				+ O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX
-				+ ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME="
-				+ EMG_NAME + ", SPONSOR=" + SPONSOR + ", OB_HM_STAT=" + OB_HM_STAT + ", SP_HM_STAT=" + SP_HM_STAT
-				+ ", SPON_OBSID=" + SPON_OBSID + ", DELHIBASED=" + DELHIBASED + ", SPLOBSERVER=" + SPLOBSERVER
-				+ ", SPLOBSPLACE=" + SPLOBSPLACE + ", NOMNSTATUS=" + NOMNSTATUS + ", DEPSTATUS=" + DEPSTATUS
-				+ ", BRIEFINGNO=" + BRIEFINGNO + ", BRIEFED=" + BRIEFED + ", DETAILEDFORMRECVD=" + DETAILEDFORMRECVD
-				+ ", MOD_DATE=" + MOD_DATE + ", OB_NODAL_ID=" + OB_NODAL_ID + ", EMG_TEL=" + EMG_TEL + ", OB_NA_DFROM="
-				+ OB_NA_DFROM + ", OB_NA_DTO=" + OB_NA_DTO + ", OB_REMARK=" + OB_REMARK + ", OB_BRREMARK=" + OB_BRREMARK
+				+ password + ", role=" + role + ", service=" + service + ", mobnum=" + mobnum + ", ECI_OBSID="
+				+ ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE=" + OB_CADRE + ", OB_YEAR="
+				+ OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS=" + OB_STATUS + ", OB_LANG="
+				+ OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY=" + O_CITY + ", O_STATE="
+				+ O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX + ", R_PIN=" + R_PIN
+				+ ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME + ", SPONSOR="
+				+ SPONSOR + ", OB_HM_STAT=" + OB_HM_STAT + ", SP_HM_STAT=" + SP_HM_STAT + ", SPON_OBSID=" + SPON_OBSID
+				+ ", DELHIBASED=" + DELHIBASED + ", SPLOBSERVER=" + SPLOBSERVER + ", SPLOBSPLACE=" + SPLOBSPLACE
+				+ ", NOMNSTATUS=" + NOMNSTATUS + ", DEPSTATUS=" + DEPSTATUS + ", BRIEFINGNO=" + BRIEFINGNO
+				+ ", BRIEFED=" + BRIEFED + ", DETAILEDFORMRECVD=" + DETAILEDFORMRECVD + ", MOD_DATE=" + MOD_DATE
+				+ ", OB_NODAL_ID=" + OB_NODAL_ID + ", EMG_TEL=" + EMG_TEL + ", OB_NA_DFROM=" + OB_NA_DFROM
+				+ ", OB_NA_DTO=" + OB_NA_DTO + ", OB_REMARK=" + OB_REMARK + ", OB_BRREMARK=" + OB_BRREMARK
 				+ ", OB_REQ_STATUS=" + OB_REQ_STATUS + ", MOD_BY=" + MOD_BY + ", DISPLAY=" + DISPLAY + ", CONST_NO="
 				+ CONST_NO + ", OB_RATING=" + OB_RATING + ", OLDDEPSTATUS=" + OLDDEPSTATUS + ", O_MOBILE1=" + O_MOBILE1
 				+ ", ROWID=" + ROWID + ", O_Amount=" + O_Amount + ", SMS_SENT=" + SMS_SENT + ", DEPSTATUS_COUNTING="
@@ -1033,9 +1029,9 @@ public class ObserverUser implements UserDetails{
 				+ OBToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO + ", Exp_as_DEO=" + Exp_as_DEO
 				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", OB_NewFromDate=" + OB_NewFromDate
 				+ ", OB_NewToDate=" + OB_NewToDate + ", DISPLAY_Counting=" + DISPLAY_Counting + ", O_TEL_DRCT="
-				+ O_TEL_DRCT + ", O_TEL_PBX=" + O_TEL_PBX + ", O_TEL_EXT=" + O_TEL_EXT + ", ProfileStatus="
-				+ ProfileStatus + ", roles=" + roles + ", securityQuestions=" + securityQuestions + ", localInfo="
-				+ localInfo + "]";
+				+ O_TEL_DRCT + ", O_TEL_PBX=" + O_TEL_PBX + ", O_TEL_EXT=" + O_TEL_EXT + ", OB_image=" + OB_image
+				+ ", ProfileStatus=" + ProfileStatus + ", roles=" + roles + ", securityQuestions=" + securityQuestions
+				+ ", localInfo=" + localInfo + "]";
 	}
 
 	

@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import javax.validation.Validation;
 import javax.xml.validation.Validator;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
@@ -105,6 +106,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setExp_as_RO(observerUserDto.getExp_as_RO());
 		observerUser.setExp_as_DEO(observerUserDto.getExp_as_DEO());
 		observerUser.setExp_as_OtherElectionDuty(observerUserDto.getExp_as_OtherElectionDuty());
+		observerUser.setOB_image(observerUserDto.getOB_image());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
 		//observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
@@ -163,6 +165,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setO_TEL_EXT(observerUser.getO_TEL_EXT());
 		observerUserDto.setEMG_TEL(observerUser.getEMG_TEL());
 		observerUserDto.setOB_REQ_STATUS(observerUser.getOB_REQ_STATUS());
+		observerUserDto.setOB_image(observerUser.getOB_image());
 		
 		
 		// observerUserDto.setPassword(passwordEncoder.encode(observerUser.getPassword()));
@@ -246,29 +249,9 @@ public class ObserverServiceIMPL implements ObserverService {
 		    
 		   // observerUser.setOB_STATUS(observerUserDtoUpdation.getOB_STATUS());
 		    observerUser.setEMG_TEL(observerUserDtoUpdation.getEMG_TEL());
+		    observerUser.setOB_image(observerUserDtoUpdation.getOB_image());
 		    
-		    
-		    String base64Image = observerUserDtoUpdation.getOB_image();
-	        if (base64Image != null && !base64Image.isEmpty()) {
-	            try {
-	                // Decode base64 image data
-	                byte[] decodedBytes = Base64.getDecoder().decode(base64Image);
-	                
-	                // Set your image file path where you want to save the image
-	                String imagePath = "path/to/your/image/folder/" + observerUser.getObscode() + ".png";
-	                
-	                // Save the image to the specified path
-	                try (FileOutputStream fos = new FileOutputStream(imagePath)) {
-	                    fos.write(decodedBytes);
-	                }
-
-	                // Update the image path in your database
-	                observerUser.setOB_image(imagePath); // Assuming you have a setImagePath() method in your entity class
-	            } catch (IOException e) {
-	                // Handle exception if image upload fails
-	                throw new ApiException("Failed to upload image");
-	            }
-	        }
+		   
 		   
 		    
 		   
@@ -303,6 +286,25 @@ public class ObserverServiceIMPL implements ObserverService {
 		}
 
 	}
+
+
+	@Override
+	public ObserverUserDto updateObserverUser(ObserverUserDto observerUserDto, String obscode) {
+	    
+	    ObserverUser observerUser = observerUserRepo.findByObscode(obscode);
+	    
+	    
+	    observerUser.setOB_image(observerUserDto.getOB_image()); 
+
+	    
+	    observerUserRepo.save(observerUser);
+
+	    // Convert the updated ObserverUser entity back to ObserverUserDto and return it
+	    ObserverUserDto updatedUserDto = new ObserverUserDto();
+	    BeanUtils.copyProperties(observerUser, updatedUserDto);
+	    return updatedUserDto;
+	}
+
 
 
 

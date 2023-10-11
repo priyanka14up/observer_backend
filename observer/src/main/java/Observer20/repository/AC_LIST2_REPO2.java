@@ -11,6 +11,7 @@ public interface AC_LIST2_REPO2 extends JpaRepository<AC_LIST2,Long> {
 	AC_LIST2 findByAcNo(String acNo);
 	 AC_LIST2 findByStCode(String stCode);
 	 List<AC_LIST2> findAllByStCodeAndAcNo(String stCode, String acNo);
-	
-	 
+
+	AC_LIST2 findByAcNameEnAndStCode(String acNameEn, String stCode);
+
 }

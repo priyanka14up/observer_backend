@@ -107,6 +107,17 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setExp_as_DEO(observerUserDto.getExp_as_DEO());
 		observerUser.setExp_as_OtherElectionDuty(observerUserDto.getExp_as_OtherElectionDuty());
 		observerUser.setOB_image(observerUserDto.getOB_image());
+		
+		observerUser.setEMG_TEL(observerUserDto.getEMG_TEL());
+		observerUser.setO_TEL_DRCT(observerUserDto.getO_TEL_DRCT());
+		observerUser.setO_TEL_PBX(observerUserDto.getO_TEL_PBX());
+		observerUser.setO_TEL_EXT(observerUserDto.getO_TEL_EXT());
+		observerUser.setOB_CDEP(observerUserDto.getOB_CDEP());
+		observerUser.setOB_REQ_STATUS(observerUserDto.getOB_REQ_STATUS());
+		observerUser.setExp_as_RO(observerUserDto.getExp_as_RO());
+		observerUser.setExp_as_DEO(observerUserDto.getExp_as_DEO());
+		observerUser.setExp_as_OtherElectionDuty(observerUserDto.getExp_as_OtherElectionDuty());
+		observerUser.setOB_image(observerUserDto.getOB_image());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
 		//observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
@@ -213,7 +224,11 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setName(observerUserDtoUpdation.getName());
 		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
 		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
+
+		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+
 		   // observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
 		    //observerUser.setService(observerUserDtoUpdation.getService());
 		    //observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());

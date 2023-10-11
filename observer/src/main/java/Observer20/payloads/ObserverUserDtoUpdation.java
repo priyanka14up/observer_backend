@@ -28,19 +28,23 @@ private int id;
 	/*
 	 * @NotEmpty private String homeState;
 	 */
-	  @NotNull
-	  
-		
-		  @NotNull(message = "Mobnum cannot be null")
-		  
-		  @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
-		  
-		  @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
-		 
+	
+	/*
+	 * @NotNull
+	 * 
+	 * @NotNull(message = "Mobnum cannot be null")
+	 * 
+	 * @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
+	 * 
+	 * @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	 */
+
+	 
 	 
 	private long mobnum;
-	@NotNull
-	private int workexperience;
+	/*
+	 * @NotNull private int workexperience;
+	 */
 	private String ECI_OBSID;
     private String ID_NO;
     private String OB_TITLE;
@@ -153,12 +157,7 @@ private int id;
 	public void setMobnum(long mobnum) {
 		this.mobnum = mobnum;
 	}
-	public int getWorkexperience() {
-		return workexperience;
-	}
-	public void setWorkexperience(int workexperience) {
-		this.workexperience = workexperience;
-	}
+	
 	
 	
 	public String getECI_OBSID() {
@@ -352,17 +351,20 @@ private int id;
 	
 	
 	
-	
+
 	public ObserverUserDtoUpdation(int id, @NotEmpty String obscode,
 			@NotEmpty @Size(min = 4, message = "user name must be greter than 4 charcter!!") String name,
 			@Email(message = "your email adress is not valid!!") String email, @NotEmpty String role,
-			@NotEmpty String service, @NotNull long mobnum, @NotNull int workexperience, String eCI_OBSID, String iD_NO,
-			String oB_TITLE, String oB_CADRE, String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS,
-			String oB_LANG, String oB_DESIG, String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD,
-			String o_FAX, String r_PIN, String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR,
-			String aGE, String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName,
-			String o_AccountHolderName, String oB_FromDate, String oB_ToDate, String oB_CDEP, String exp_as_RO,
-			String exp_as_DEO, String exp_as_OtherElectionDuty, String eMG_TEL, String oB_image) {
+			@NotEmpty String service, long mobnum, String eCI_OBSID, String iD_NO, String oB_TITLE, String oB_CADRE,
+			String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS, String oB_LANG, String oB_DESIG,
+			String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD, String o_FAX, String r_PIN,
+			String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR, String aGE, String o_AccountNo,
+			String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName, String oB_FromDate,
+			String oB_ToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO, String exp_as_OtherElectionDuty,
+			String eMG_TEL, String oB_image) {
+
+	
+
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -371,7 +373,6 @@ private int id;
 		this.role = role;
 		this.service = service;
 		this.mobnum = mobnum;
-		this.workexperience = workexperience;
 		ECI_OBSID = eCI_OBSID;
 		ID_NO = iD_NO;
 		OB_TITLE = oB_TITLE;
@@ -412,18 +413,20 @@ private int id;
 	@Override
 	public String toString() {
 		return "ObserverUserDtoUpdation [id=" + id + ", obscode=" + obscode + ", name=" + name + ", email=" + email
-				+ ", role=" + role + ", service=" + service + ", mobnum=" + mobnum + ", workexperience="
-				+ workexperience + ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE
-				+ ", OB_CADRE=" + OB_CADRE + ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB
-				+ ", OB_STATUS=" + OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1="
-				+ O_ADR_L1 + ", O_CITY=" + O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD
-				+ ", O_FAX=" + O_FAX + ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX
-				+ ", EMG_NAME=" + EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE + ", O_AccountNo=" + O_AccountNo
-				+ ", O_IFCSCode=" + O_IFCSCode + ", O_BankName=" + O_BankName + ", O_BranchName=" + O_BranchName
-				+ ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate=" + OB_FromDate + ", OB_ToDate="
-				+ OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO + ", Exp_as_DEO=" + Exp_as_DEO
-				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", EMG_TEL=" + EMG_TEL + ", OB_image="
-				+ OB_image + "]";
+
+				+ ", role=" + role + ", service=" + service + ", mobnum=" + mobnum + ", ECI_OBSID=" + ECI_OBSID
+				+ ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE=" + OB_CADRE + ", OB_YEAR=" + OB_YEAR
+				+ ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS=" + OB_STATUS + ", OB_LANG=" + OB_LANG
+				+ ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY=" + O_CITY + ", O_STATE=" + O_STATE
+				+ ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX + ", R_PIN=" + R_PIN + ", R_STD=" + R_STD
+				+ ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE="
+				+ AGE + ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode=" + O_IFCSCode + ", O_BankName=" + O_BankName
+				+ ", O_BranchName=" + O_BranchName + ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate="
+				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
+				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", EMG_TEL="
+				+ EMG_TEL + ", OB_image=" + OB_image + "]";
+
+				
 	}
 	public ObserverUserDtoUpdation() {
 		super();

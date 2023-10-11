@@ -1,5 +1,7 @@
 package Observer20.Model;
 
+import java.util.Date;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -21,7 +23,7 @@ private String constType;
 private String delimType;
 private String electionType;
 private String stCode;
-private String insertionDate;
+private Date insertionDate;
 private String votesReg49O; // Updated variable name to camelCase
 private int statePhaseNo;
 //private int statePhaseNo = 0;
@@ -109,12 +111,12 @@ public void setStCode(String stCode) {
 }
 
 
-public String getInsertionDate() {
+public Date getInsertionDate() {
 	return insertionDate;
 }
 
 
-public void setInsertionDate(String insertionDate) {
+public void setInsertionDate(Date insertionDate) {
 	this.insertionDate = insertionDate;
 }
 

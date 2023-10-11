@@ -5,8 +5,10 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,8 +48,8 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	@Autowired
 	AC_LIST2_REPO2 aC_LIST2_REPO2;
 	@Autowired
-	PC_AC_DIST_REPO2 pC_AC_DIST_REPO2; // Inject the PC_AC_DIST repository
-	
+	PC_AC_DIST_REPO2 pC_AC_DIST_REPO2; 
+
 	  @Autowired MElectionScheduleREPO2 mElectionScheduleREPO2;
 	  
 	  @Autowired MElectionDetailsREPO2 mElectionDetailsREPO2;
@@ -66,6 +68,9 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 		newEntity.setSt_Code(source.getST_CODE());
 		newEntity.setConst_Group_No(source.getCONST_GROUP_NO());
 		newEntity.setAc_No(source.getCONST_COVERED());
+		newEntity.setObscode(source.getOBS_CODE());
+		newEntity.setStatePhaseNo(source.getStatePhaseNo());
+		newEntity.setCURRENTELECTION(source.getCURRENTELECTION());
 		newEntity.setObscode(source.getOBS_CODE());
 		newEntity.setStatePhaseNo(source.getStatePhaseNo());
 		newEntity.setCURRENTELECTION(source.getCURRENTELECTION());
@@ -162,44 +167,7 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 
 
-	/*
-	 * @Override public MElectionDetailsDataDTO getElectionData(String obsCode) {
-	 * List<Object[]> electionDetailsList =
-	 * mElectionDetailsREPO2.findDetailsByObsCode(obsCode); List<String>
-	 * datePollStrings = mElectionScheduleREPO2.findDatePollByObsCode(obsCode);
-	 * 
-	 * MElectionDetailsDataDTO mElectionDetailsDataDTO = new
-	 * MElectionDetailsDataDTO();
-	 * 
-	 * if (electionDetailsList != null && !electionDetailsList.isEmpty() &&
-	 * datePollStrings != null && !datePollStrings.isEmpty()) { // Handle multiple
-	 * results by iterating through the list for (Object[] electionDetails :
-	 * electionDetailsList) { mElectionDetailsDataDTO.setConstType((String)
-	 * electionDetails[0]); mElectionDetailsDataDTO.setElectionType((String)
-	 * electionDetails[1]);
-	 * 
-	 * // Convert String to int //int statePhaseNo = Integer.parseInt((String)
-	 * electionDetails[2]); int statePhaseNo = (int) electionDetails[2];
-	 * 
-	 * 
-	 * mElectionDetailsDataDTO.setStatePhaseNO(statePhaseNo);
-	 * 
-	 * // Convert String to int // int phaseNo = Integer.parseInt((String)
-	 * electionDetails[3]); int phaseNo = (int) electionDetails[3];
-	 * mElectionDetailsDataDTO.setPhaseNo(phaseNo);
-	 * 
-	 * // Parse String date to Date object SimpleDateFormat dateFormat = new
-	 * SimpleDateFormat("yyyy-MM-dd"); // Adjust the format according to your date
-	 * string try { Date datePoll = dateFormat.parse(datePollStrings.get(0)); //
-	 * Assuming you want the first datePoll value from the list
-	 * mElectionDetailsDataDTO.setDatePoll(datePoll); } catch (ParseException e) {
-	 * // Handle the exception according to your needs e.printStackTrace(); }
-	 * 
-	 * // Break the loop after processing the first result if you only want one
-	 * result break; } }
-	 * 
-	 * return mElectionDetailsDataDTO; }
-	 */
+	
 	
 	@Override
 	public MElectionDetailsDataDTO getElectionData(String obsCode) {
@@ -250,7 +218,45 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	    return mElectionDetailsDataDTO;
 	}
 
+	
+
+
+	
+	@Override
+	public Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn, String stCode) {
+	    // Fetch AC_LIST2 details based on acNameEn and stCode
+	    AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEnAndStCode(acNameEn, stCode);
+
+	    // Create a map to store the results
+	    Map<String, String> resultMap = new HashMap<>();
+
+	    // If AC_LIST2 details are found, put districtName and stateName in the resultMap
+	    if (acDetails != null) {
+	        // Fetch state name using stCode from STATE_LIST2 table
+	        STATE_LIST2 stateDetails = sTATE_LIST2_Repo.findByStCode(stCode);
+	        if (stateDetails != null) {
+	           // resultMap.put("districtName", acDetails.getDistrictName());
+	           resultMap.put("stateName", stateDetails.getStCode());
+	        } else {
+	            // If state details are not found, put appropriate message in the resultMap
+	            resultMap.put("districtName", "District Name Not Found");
+	            resultMap.put("stateName", "State Name Not Found");
+	        }
+	    } else {
+	        // If AC_LIST2 details are not found, put appropriate messages in the resultMap
+	        resultMap.put("districtName", "District Name Not Found");
+	        resultMap.put("stateName", "State Name Not Found");
+	    }
+
+	    return resultMap;
+	}
 }
+
+
+
+
+
+
 
 
 

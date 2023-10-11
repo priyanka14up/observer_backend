@@ -183,8 +183,8 @@ public class ObserverUserController {
 		}
 
 
-// server image
-		@GetMapping(value="/profiles/{imageName}",produces=MediaType.IMAGE_JPEG_VALUE)
+// serve image
+		@GetMapping(value="/imageFetch/{imageName}",produces=MediaType.IMAGE_JPEG_VALUE)
 		public void DownloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)throws IOException
 		{
 			InputStream resource=fileService.getResource(path, imageName);

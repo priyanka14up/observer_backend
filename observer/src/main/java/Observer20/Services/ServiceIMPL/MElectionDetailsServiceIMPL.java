@@ -36,7 +36,7 @@ public class MElectionDetailsServiceIMPL implements  MElectionDetailsService {
 		  newEntity.setDelimType(source.getDELIM_TYPE());
 		  newEntity.setElectionType(source.getELECTION_TYPE());
 		  newEntity.setStCode(source.getST_CODE());
-		  newEntity.setInsertionDate(source.getINSERTION_DATE());
+		 // newEntity.setInsertionDate(source.getINSERTION_DATE());
 		  newEntity.setVotesReg49O(source.getVotesReg_49O());
 		  newEntity.setStatePhaseNo(source.getStatePHASE_NO());
 		  newEntity.setPhaseNo(source.getPHASE_NO());

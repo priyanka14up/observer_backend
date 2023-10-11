@@ -2,10 +2,12 @@ package Observer20.Controller;
 
 
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,9 +23,11 @@ import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
+import Observer20.Response.DistrictStateResponse;
 import Observer20.Services.ObserverLocalInfoService;
 import Observer20.Services.ObserverService;
 import Observer20.Services.T_Allot_Group_Servcie;
+import Observer20.payloads.ACRequest;
 import Observer20.payloads.MElectionDetailsDataDTO;
 import Observer20.payloads.ObserverLocalInfoDTO;
 import Observer20.payloads.ObserverUserDto;
@@ -84,8 +88,28 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
 		  @GetMapping("/electionDetails/{obsCode}") public MElectionDetailsDataDTO
 		  getElectionData(@PathVariable String obsCode) { return
 		  t_Allot_Group_Servcie.getElectionData(obsCode); }
-		 
-  	
+		  
+		  @PostMapping("/get-district-state")
+		  public ResponseEntity<DistrictStateResponse> getDistrictAndStateNames(@RequestBody ACRequest acRequest) {
+		      try {
+		          Map<String, String> result = t_Allot_Group_Servcie.getDistrictAndStateNames(acRequest.getObsCode(), acRequest.getAcNameEn());
+		          String stateName = result.get("stateName");
+		          String districtName = result.get("districtName");
+		          String stateCode = result.get("stateCode");
+		          String districtCode = result.get("distNoHdqt"); // Assuming distNoHdqt is the district code
+
+		          DistrictStateResponse response = new DistrictStateResponse();
+		          response.setStateName(stateName);
+		          response.setDistrictName(districtName);
+		          response.setStateCode(stateCode);
+		          response.setDistrictCode(districtCode);
+
+		          return ResponseEntity.ok(response);
+		      } catch (Exception e) {
+		          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+		      }
+		  }
 }
+		
 
 

@@ -12,7 +12,8 @@ public interface T_Allot_Group_Servcie {
 	List<Obs_Allot> getObsAllotByObscode(String obsCode);
 	MElectionDetailsDataDTO getElectionData(String obsCode);
 	//Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn);
-	Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn, String stCode);
+	//Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn, String stCode);
+	Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn);
 	
 
 	

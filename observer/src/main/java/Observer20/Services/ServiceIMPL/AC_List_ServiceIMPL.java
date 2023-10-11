@@ -36,7 +36,7 @@ public class AC_List_ServiceIMPL implements AC_LIST_Service  {
 		  newEntity.setAC_TYPE(source.getAC_TYPE());
 		  newEntity.setEPIC_PREFIX(source.getEPIC_PREFIX());
 		  newEntity.setPC_NO(source.getPC_NO());
-		  newEntity.setDIST_NO_HDQTR(source.getDIST_NO_HDQTR());
+		  newEntity.setDistNoHdqtr(source.getDIST_NO_HDQTR());
 		  newEntity.setUPDATED_DATE(source.getUPDATED_DATE());
 		  newEntity.setAC_NAME_HI(source.getAC_NAME_HI());
 		 

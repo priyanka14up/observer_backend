@@ -1,6 +1,6 @@
 package Observer20.payloads;
 
-public class DistrictStateRequest {
+public class ACRequest {
 	private String obsCode;
     private String acNameEn;
 	public String getObsCode() {

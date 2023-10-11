@@ -24,9 +24,9 @@ public class DIST_LIST_ServiceIMPL implements DIST_LIST_Service {
 		  { 
 			  DIST_LIST2 newEntity = new DIST_LIST2();
 		  newEntity.setCCODE(source.getCCODE());
-		  newEntity.setST_CODE(source.getST_CODE());
-		  newEntity.setDIST_NO(source.getDIST_NO());
-		  newEntity.setDIST_NAME_EN(source.getDIST_NAME_EN());
+		  newEntity.setStCode(source.getST_CODE());
+		  newEntity.setDistNo(source.getDIST_NO());
+		  newEntity.setDistNameEn(source.getDIST_NAME_EN());
 		  newEntity.setDIST_NAME_V1(source.getDIST_NAME_V1());
 		  newEntity.setDIST_NAME_V2(source.getDIST_NAME_V2());
 		  newEntity.setDIST_NAME_V3(source.getDIST_NAME_V3());

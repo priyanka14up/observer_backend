@@ -21,65 +21,61 @@ import Observer20.Security.JwtTokenHelper;
 import Observer20.repository.ObserverUserRepo;
 
 @RestController
-
 @RequestMapping("/api/auth")
 public class JwtAuthController {
 
-	@Autowired
-	private JwtTokenHelper jwtTokenHelper;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
-	@Autowired
-	private UserDetailsService userDetailsService;
+    @Autowired
+    private JwtTokenHelper jwtTokenHelper;
 
-	@Autowired
-	AuthenticationManager authenticationManager;
-	@Autowired
-	ObserverUserRepo ObserverUserRepo;
+    @Autowired
+    private ObserverUserRepo observerUserRepo;
 
-	
-	
-	
-	 @PostMapping("/login")
-	    public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
-	        authenticate(request.getObscode(), request.getPassword());
-	        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getObscode());
-	        String token = jwtTokenHelper.generateToken(userDetails);
+    @Autowired
+    private UserDetailsService userDetailsService;
 
-	        // Get the user from the database
-	        ObserverUser user = getUserByUsername(request.getObscode());
-	        
-	        String obscode = user.getObscode();
-	        String name = user.getName();
-	        String email = user.getEmail();
-	        String role = user.getRole();
-	        
-	        JwtAuthResponse response = new JwtAuthResponse(token, obscode, name, email, role);
-	        response.setToken(token);
+    @PostMapping("/login")
+    public ResponseEntity<JwtAuthResponse> createToken(@RequestBody JwtAuthRequest request) throws Exception {
+        authenticate(request.getObscode(), request.getPassword());
+        UserDetails userDetails = userDetailsService.loadUserByUsername(request.getObscode());
+        String token = jwtTokenHelper.generateToken(userDetails);
 
-	        return new ResponseEntity<>(response, HttpStatus.OK);
-	    }
+        ObserverUser user = getUserByUsername(request.getObscode());
 
-	    
+        String obscode = user.getObscode();
+        String name = user.getName();
+        String email = user.getEmail();
+        String role = user.getRole();
 
-	    // Helper method to retrieve the user by obscode from the database
-	    private ObserverUser getUserByUsername(String obscode) {
-	        
-	        return ObserverUserRepo.findByObscode(obscode); 
-	    }
-	
+        JwtAuthResponse response = new JwtAuthResponse(token, obscode, name, email, role);
+        response.setToken(token);
 
-	 private void authenticate(String obscode, String password) throws Exception {
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
 
-		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(obscode,
-				password);
-		try {
-			authenticationManager.authenticate(authenticationToken);
-		}
+    private ObserverUser getUserByUsername(String obscode) {
+        return observerUserRepo.findByObscode(obscode);
+    }
 
-		catch (BadCredentialsException e) {
-			throw new ApiException("Invalid username or password");
-		}
+    private void authenticate(String obscode, String password) throws Exception {
+        ObserverUser user = getUserByUsername(obscode);
 
-	}
+        if (user == null) {
+            throw new ApiException("User not found");
+        }
 
+        if (!user.getDISPLAY().equalsIgnoreCase("yes")) {
+            throw new ApiException("User is not allowed to log in");
+        }
+
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(obscode, password);
+
+        try {
+            authenticationManager.authenticate(authenticationToken);
+        } catch (BadCredentialsException e) {
+            throw new ApiException("Invalid username or password");
+        }
+    }
 }

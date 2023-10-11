@@ -38,6 +38,8 @@ private int id;
 	 * 
 	 * @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
 	 */
+
+	 
 	 
 	private long mobnum;
 	/*
@@ -349,6 +351,7 @@ private int id;
 	
 	
 	
+
 	public ObserverUserDtoUpdation(int id, @NotEmpty String obscode,
 			@NotEmpty @Size(min = 4, message = "user name must be greter than 4 charcter!!") String name,
 			@Email(message = "your email adress is not valid!!") String email, @NotEmpty String role,
@@ -359,6 +362,9 @@ private int id;
 			String o_IFCSCode, String o_BankName, String o_BranchName, String o_AccountHolderName, String oB_FromDate,
 			String oB_ToDate, String oB_CDEP, String exp_as_RO, String exp_as_DEO, String exp_as_OtherElectionDuty,
 			String eMG_TEL, String oB_image) {
+
+	
+
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -407,6 +413,7 @@ private int id;
 	@Override
 	public String toString() {
 		return "ObserverUserDtoUpdation [id=" + id + ", obscode=" + obscode + ", name=" + name + ", email=" + email
+
 				+ ", role=" + role + ", service=" + service + ", mobnum=" + mobnum + ", ECI_OBSID=" + ECI_OBSID
 				+ ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE=" + OB_CADRE + ", OB_YEAR=" + OB_YEAR
 				+ ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS=" + OB_STATUS + ", OB_LANG=" + OB_LANG
@@ -418,6 +425,8 @@ private int id;
 				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
 				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", EMG_TEL="
 				+ EMG_TEL + ", OB_image=" + OB_image + "]";
+
+				
 	}
 	public ObserverUserDtoUpdation() {
 		super();

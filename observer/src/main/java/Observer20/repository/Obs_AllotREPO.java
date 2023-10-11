@@ -21,4 +21,5 @@ public interface Obs_AllotREPO extends JpaRepository<Obs_Allot,Long> {
 		 * @Query("SELECT oa.currentElection FROM Obs_Allot oa WHERE oa.obscode = :obsCode"
 		 * ) List<String> findCurrentElectionByObscode(String obsCode);
 		 */
+	 //Obs_Allot findByObscode(String obsCode);
 }

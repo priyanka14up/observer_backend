@@ -21,7 +21,9 @@ import Observer20.Model.Form;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
+import Observer20.Model.STATE_LIST2;
 import Observer20.Model.SubForm;
+import Observer20.Repo1.STATE_LIST_REPO;
 //import Observer20.repository.AnswerRepo;
 //import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
@@ -29,6 +31,7 @@ import Observer20.repository.FormServiceRepo;
 //import Observer20.repository.FormSubformResponsesRepo;
 import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
+import Observer20.repository.STATE_LIST2_Repo;
 import Observer20.repository.SubFormRepo;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.AnswerDto;
@@ -44,10 +47,13 @@ import Observer20.Model.FormDates;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.Model.AC_LIST2;
 import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Obs_Allot;
+import Observer20.Model.ObserverUser;
 //import Observer20.repository.AnswerRepo;
 //import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
@@ -56,11 +62,14 @@ import Observer20.repository.FormServiceRepo;
 import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.SubFormRepo;
+import Observer20.repository.AC_LIST2_REPO2;
 import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FormDatesRepo;
 import Observer20.repository.FormStatusRepo;
+import Observer20.repository.Obs_AllotREPO;
+import Observer20.repository.ObserverUserRepo;
 
 
 
@@ -90,8 +99,22 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public FormStatusRepo formStatusRepo;
+	
 	@Autowired
 	public DownloadRepo downloadRepo;
+	
+	@Autowired
+	public ObserverUserRepo observerUserRepo;
+
+	@Autowired
+	public Obs_AllotREPO obs_AllotREPO;
+	
+	@Autowired
+	public AC_LIST2_REPO2 aC_LIST2_REPO2;
+
+	@Autowired
+	public STATE_LIST2_Repo sTATE_LIST2_Repo;
+	
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -1450,6 +1473,54 @@ private HashMap<String, Object> customResponseDownload( DownloadPdf downloadData
 			formMap.put("fileName", downloadData.getFileName());
 			formMap.put("fileText",downloadData.getFileText());
 
+			return formMap;
+			
+		}
+
+@Override
+public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,String district,String state) throws HandledException {
+	
+	ObserverUser observer=observerUserRepo.getObserverUserByobscode(userid);
+	String name=observer.getName();
+	
+	String email=observer.getEmail();
+	
+	Long mobile=observer.getMobnum();
+	
+	String fax=observer.getO_FAX();
+	
+	
+	List<Obs_Allot> obs_AllotList=obs_AllotREPO.findAllByObscode(userid);
+	
+	
+	
+	//String acNo=Obs_Allot.getAc_No();
+	//AC_LIST2 aC_LIST2=aC_LIST2_REPO2.findByAcNo(acNo);
+	
+	//String constituencyName=aC_LIST2.getAC_NAME_HI();
+	
+	//String district=Obs_Allot.getDIST_NAME();
+	
+	//String stCode=Obs_Allot.getSt_Code();
+	
+	//STATE_LIST2 sTATE_LIST2=sTATE_LIST2_Repo.findByStCode(stCode);
+	
+	//String state=sTATE_LIST2.getST_NAME_HI();
+	
+		return customResponseArrivalDeparture(userid,name,email,mobile,fax,constituency,district,state);
+	
+}
+//custom response
+		private HashMap<String, Object> customResponseArrivalDeparture(String userid,String name,String email,Long mob,String fax,String constituency,String district,String state) {
+			
+			HashMap<String, Object> formMap =  new HashMap<>();
+			
+			formMap.put("ObserverNameAndCode",name+" "+userid);
+			formMap.put("Email",email);
+			formMap.put("Constituency",constituency);
+			formMap.put("DistrictAndState",district+" "+state);
+			formMap.put("MobileNo",mob);
+			formMap.put("FaxNo",fax);
 			return formMap;
 			
 		}

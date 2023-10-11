@@ -37,7 +37,9 @@ public class AC_LIST2 {
 	private String AC_TYPE;
 	private String EPIC_PREFIX;
 	private String PC_NO;
-	private String DIST_NO_HDQTR;
+	
+	@Column(name = "DIST_NO_HDQTR")
+	private String distNoHdqtr;
 	private String UPDATED_DATE;
 	private String AC_NAME_HI;
 	public Long getId() {
@@ -130,11 +132,15 @@ public class AC_LIST2 {
 	public void setPC_NO(String pC_NO) {
 		PC_NO = pC_NO;
 	}
-	public String getDIST_NO_HDQTR() {
-		return DIST_NO_HDQTR;
+	
+	
+	
+	
+	public String getDistNoHdqtr() {
+		return distNoHdqtr;
 	}
-	public void setDIST_NO_HDQTR(String dIST_NO_HDQTR) {
-		DIST_NO_HDQTR = dIST_NO_HDQTR;
+	public void setDistNoHdqtr(String distNoHdqtr) {
+		this.distNoHdqtr = distNoHdqtr;
 	}
 	public String getUPDATED_DATE() {
 		return UPDATED_DATE;

@@ -1,5 +1,6 @@
 package Observer20.Model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -12,11 +13,19 @@ public class DIST_LIST2 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) 
 
+	
+
+   
 	private Long id;
 	private String CCODE;
-	private String ST_CODE;
-	private String DIST_NO;
-	private String DIST_NAME_EN;
+	@Column(name = "ST_CODE")
+	 private String stCode;
+
+	@Column(name = "DIST_NO")
+	private String distNo;
+
+    @Column(name = "DIST_NAME_EN")
+	private String distNameEn;
 	private String DIST_NAME_V1;
 	private String DIST_NAME_V2;
 	private String DIST_NAME_V3;
@@ -38,23 +47,29 @@ public class DIST_LIST2 {
 	public void setCCODE(String cCODE) {
 		CCODE = cCODE;
 	}
-	public String getST_CODE() {
-		return ST_CODE;
+	
+	
+	
+	
+	
+	
+	public String getDistNo() {
+		return distNo;
 	}
-	public void setST_CODE(String sT_CODE) {
-		ST_CODE = sT_CODE;
+	public void setDistNo(String distNo) {
+		this.distNo = distNo;
 	}
-	public String getDIST_NO() {
-		return DIST_NO;
+	public String getStCode() {
+		return stCode;
 	}
-	public void setDIST_NO(String dIST_NO) {
-		DIST_NO = dIST_NO;
+	public void setStCode(String stCode) {
+		this.stCode = stCode;
 	}
-	public String getDIST_NAME_EN() {
-		return DIST_NAME_EN;
+	public String getDistNameEn() {
+		return distNameEn;
 	}
-	public void setDIST_NAME_EN(String dIST_NAME_EN) {
-		DIST_NAME_EN = dIST_NAME_EN;
+	public void setDistNameEn(String distNameEn) {
+		this.distNameEn = distNameEn;
 	}
 	public String getDIST_NAME_V1() {
 		return DIST_NAME_V1;

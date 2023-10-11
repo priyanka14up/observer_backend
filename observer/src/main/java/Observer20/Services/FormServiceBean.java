@@ -1445,7 +1445,7 @@ private HashMap<String, Object> customResponseFormStatusDue(Form form,ObsStatus 
 			List<DownloadPdf> downloadData=new ArrayList<DownloadPdf>();
 			try{
 				//downloadData=downloadRepo.findAll();
-				downloadData=downloadRepo.findAllByOrderByIdAsc();
+				downloadData=downloadRepo.findAllByOrderByOrdering();
 				//formData = formServiceRepo.findAll();
 				
 			}catch(Exception e) {
@@ -1472,6 +1472,7 @@ private HashMap<String, Object> customResponseDownload( DownloadPdf downloadData
 			formMap.put("foldName", downloadData.getFoldName());
 			formMap.put("fileName", downloadData.getFileName());
 			formMap.put("fileText",downloadData.getFileText());
+			formMap.put("orderBy",downloadData.getOrdering());
 
 			return formMap;
 			

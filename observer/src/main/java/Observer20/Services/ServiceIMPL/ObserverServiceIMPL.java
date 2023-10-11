@@ -64,7 +64,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setObscode(observerUserDto.getObscode());
 		observerUser.setName(observerUserDto.getName());
 		observerUser.setEmail(observerUserDto.getEmail());
-		observerUser.setHomeState(observerUserDto.getHomeState());
+		//observerUser.setHomeState(observerUserDto.getHomeState());
 		observerUser.setMobnum(observerUserDto.getMobnum());
 		observerUser.setService(observerUserDto.getService());
 		//observerUser.setWorkexperience(observerUserDto.getWorkexperience());
@@ -120,7 +120,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setEmail(observerUser.getEmail());
 		observerUserDto.setObscode(observerUser.getObscode());
 		observerUserDto.setName(observerUser.getName());
-		observerUserDto.setHomeState(observerUser.getHomeState());
+		//observerUserDto.setHomeState(observerUser.getHomeState());
 		observerUserDto.setMobnum(observerUser.getMobnum());
 		observerUserDto.setService(observerUser.getService());
 		//observerUserDto.setWorkexperience(observerUser.getWorkexperience());
@@ -213,7 +213,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		    observerUser.setName(observerUserDtoUpdation.getName());
 		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
 		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
-		    observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
+		   // observerUser.setHomeState(observerUserDtoUpdation.getHomeState());
 		    observerUser.setMobnum(observerUserDtoUpdation.getMobnum());
 		    //observerUser.setService(observerUserDtoUpdation.getService());
 		    //observerUser.setWorkexperience(observerUserDtoUpdation.getWorkexperience());

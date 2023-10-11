@@ -27,6 +27,10 @@ public class Obs_Allot {
 	   //private int statePhaseNo = 0;
 	    private String CURRENTELECTION;
 	    private Long scheduleID;
+	    private String GROUP_TYPE;
+	    private String SCHEDULENO;
+	    private String AdjournedPoll;
+	    
 		public Long getId() {
 			return id;
 		}
@@ -130,19 +134,42 @@ public class Obs_Allot {
 		public void setScheduleID(Long scheduleID) {
 			this.scheduleID = scheduleID;
 		}
+		
+		
+		public String getGROUP_TYPE() {
+			return GROUP_TYPE;
+		}
+		public void setGROUP_TYPE(String gROUP_TYPE) {
+			GROUP_TYPE = gROUP_TYPE;
+		}
+		public String getSCHEDULENO() {
+			return SCHEDULENO;
+		}
+		public void setSCHEDULENO(String sCHEDULENO) {
+			SCHEDULENO = sCHEDULENO;
+		}
+		public String getAdjournedPoll() {
+			return AdjournedPoll;
+		}
+		public void setAdjournedPoll(String adjournedPoll) {
+			AdjournedPoll = adjournedPoll;
+		}
 		@Override
 		public String toString() {
 			return "Obs_Allot [id=" + id + ", St_Code=" + St_Code + ", Const_Group_No=" + Const_Group_No + ", Ac_No="
 					+ Ac_No + ", obscode=" + obscode + ", role=" + role + ", OBFromDate=" + OBFromDate + ", OBToDate="
 					+ OBToDate + ", name=" + name + ", service=" + service + ", PC_NAME=" + PC_NAME + ", DIST_NAME="
 					+ DIST_NAME + ", statePhaseNo=" + statePhaseNo + ", CURRENTELECTION=" + CURRENTELECTION
-					+ ", scheduleID=" + scheduleID + "]";
+					+ ", scheduleID=" + scheduleID + ", GROUP_TYPE=" + GROUP_TYPE + ", SCHEDULENO=" + SCHEDULENO
+					+ ", AdjournedPoll=" + AdjournedPoll + "]";
 		}
+		
 		
 		
 		public Obs_Allot(Long id, String st_Code, String const_Group_No, String ac_No, String obscode, String role,
 				Date oBFromDate, Date oBToDate, String name, String service, String pC_NAME, String dIST_NAME,
-				int statePhaseNo, String cURRENTELECTION, Long scheduleID) {
+				int statePhaseNo, String cURRENTELECTION, Long scheduleID, String gROUP_TYPE, String sCHEDULENO,
+				String adjournedPoll) {
 			super();
 			this.id = id;
 			St_Code = st_Code;
@@ -159,6 +186,9 @@ public class Obs_Allot {
 			this.statePhaseNo = statePhaseNo;
 			CURRENTELECTION = cURRENTELECTION;
 			this.scheduleID = scheduleID;
+			GROUP_TYPE = gROUP_TYPE;
+			SCHEDULENO = sCHEDULENO;
+			AdjournedPoll = adjournedPoll;
 		}
 		public Obs_Allot() {
 			super();

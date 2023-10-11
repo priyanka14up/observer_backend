@@ -51,8 +51,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/profilelogin").permitAll()
             .antMatchers("/api/observers/send-otp/{obscode}").permitAll()
             .antMatchers("/api/observers/verify-otp1").permitAll()
-           
+
             .antMatchers("/api/observers/imageFetch/{imageName}").permitAll()
+            
+
             .anyRequest().authenticated()
             .and()
             .exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint)

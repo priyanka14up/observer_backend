@@ -45,22 +45,26 @@ public class ObserverUserDto {
 	/*
 	 * @NotEmpty private String homeState;
 	 */
+
 	
-	  @NotNull
-	  
-	  
-		
-		  @NotNull(message = "Mobnum cannot be null")
-		  
-		  @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
-		  
-		  @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	/*
+	 * @NotNull
+	 * 
+	 * 
+	 * 
+	 * @NotNull(message = "Mobnum cannot be null")
+	 * 
+	 * @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
+	 * 
+	 * @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	 */
 		 
 		 
 	 
 	private long mobnum;
-	@NotNull
-	private int workexperience;
+	/*
+	 * @NotNull private int workexperience;
+	 */
 	private String ECI_OBSID;
     private String ID_NO;
     private String OB_TITLE;
@@ -188,12 +192,7 @@ public class ObserverUserDto {
 	public void setMobnum(long l) {
 		this.mobnum = l;
 	}
-	public int getWorkexperience() {
-		return workexperience;
-	}
-	public void setWorkexperience(int workexperience) {
-		this.workexperience = workexperience;
-	}
+	
 	
 	
 	public String getECI_OBSID() {
@@ -406,31 +405,35 @@ public class ObserverUserDto {
 	public String toString() {
 		return "ObserverUserDto [id=" + id + ", obscode=" + obscode + ", name=" + name + ", email=" + email
 				+ ", password=" + password + ", role=" + role + ", service=" + service + ", mobnum=" + mobnum
-				+ ", workexperience=" + workexperience + ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE="
-				+ OB_TITLE + ", OB_CADRE=" + OB_CADRE + ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB="
-				+ OB_DOB + ", OB_STATUS=" + OB_STATUS + ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG
-				+ ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY=" + O_CITY + ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN
-				+ ", O_STD=" + O_STD + ", O_FAX=" + O_FAX + ", R_PIN=" + R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO
-				+ ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME + ", SPONSOR=" + SPONSOR + ", AGE=" + AGE
-				+ ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode=" + O_IFCSCode + ", O_BankName=" + O_BankName
-				+ ", O_BranchName=" + O_BranchName + ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate="
-				+ OB_FromDate + ", OB_ToDate=" + OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO
-				+ ", Exp_as_DEO=" + Exp_as_DEO + ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty
-				+ ", O_TEL_DRCT=" + O_TEL_DRCT + ", O_TEL_PBX=" + O_TEL_PBX + ", O_TEL_EXT=" + O_TEL_EXT + ", EMG_TEL="
-				+ EMG_TEL + ", OB_REQ_STATUS=" + OB_REQ_STATUS + ", OB_image=" + OB_image + "]";
+
+				+ ", ECI_OBSID=" + ECI_OBSID + ", ID_NO=" + ID_NO + ", OB_TITLE=" + OB_TITLE + ", OB_CADRE=" + OB_CADRE
+				+ ", OB_YEAR=" + OB_YEAR + ", OB_SEX=" + OB_SEX + ", OB_DOB=" + OB_DOB + ", OB_STATUS=" + OB_STATUS
+				+ ", OB_LANG=" + OB_LANG + ", OB_DESIG=" + OB_DESIG + ", O_ADR_L1=" + O_ADR_L1 + ", O_CITY=" + O_CITY
+				+ ", O_STATE=" + O_STATE + ", O_PIN=" + O_PIN + ", O_STD=" + O_STD + ", O_FAX=" + O_FAX + ", R_PIN="
+				+ R_PIN + ", R_STD=" + R_STD + ", R_TNO=" + R_TNO + ", R_FAX=" + R_FAX + ", EMG_NAME=" + EMG_NAME
+				+ ", SPONSOR=" + SPONSOR + ", AGE=" + AGE + ", O_AccountNo=" + O_AccountNo + ", O_IFCSCode="
+				+ O_IFCSCode + ", O_BankName=" + O_BankName + ", O_BranchName=" + O_BranchName
+				+ ", O_AccountHolderName=" + O_AccountHolderName + ", OB_FromDate=" + OB_FromDate + ", OB_ToDate="
+				+ OB_ToDate + ", OB_CDEP=" + OB_CDEP + ", Exp_as_RO=" + Exp_as_RO + ", Exp_as_DEO=" + Exp_as_DEO
+				+ ", Exp_as_OtherElectionDuty=" + Exp_as_OtherElectionDuty + ", O_TEL_DRCT=" + O_TEL_DRCT
+				+ ", O_TEL_PBX=" + O_TEL_PBX + ", O_TEL_EXT=" + O_TEL_EXT + ", EMG_TEL=" + EMG_TEL + ", OB_REQ_STATUS="
+				+ OB_REQ_STATUS + ", OB_image=" + OB_image + "]";
+
 	}
 	public ObserverUserDto(int id, @NotEmpty String obscode,
 			@NotEmpty @Size(min = 4, message = "user name must be greter than 4 charcter!!") String name,
 			@Email(message = "your email adress is not valid!!") String email,
 			@NotEmpty @Size(min = 8, max = 20, message = "Password must be between 8 and 20 characters") @Pattern(regexp = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$", message = "Password must contain at least one lowercase letter, one uppercase letter, one digit, and one special character (@#$%^&+=)") String password,
-			@NotEmpty String role, @NotEmpty String service, @NotNull long mobnum, @NotNull int workexperience,
-			String eCI_OBSID, String iD_NO, String oB_TITLE, String oB_CADRE, String oB_YEAR, String oB_SEX,
-			String oB_DOB, String oB_STATUS, String oB_LANG, String oB_DESIG, String o_ADR_L1, String o_CITY,
-			String o_STATE, String o_PIN, String o_STD, String o_FAX, String r_PIN, String r_STD, String r_TNO,
-			String r_FAX, String eMG_NAME, String sPONSOR, String aGE, String o_AccountNo, String o_IFCSCode,
-			String o_BankName, String o_BranchName, String o_AccountHolderName, String oB_FromDate, String oB_ToDate,
-			String oB_CDEP, String exp_as_RO, String exp_as_DEO, String exp_as_OtherElectionDuty, String o_TEL_DRCT,
-			String o_TEL_PBX, String o_TEL_EXT, String eMG_TEL, String oB_REQ_STATUS, String oB_image) {
+
+			@NotEmpty String role, @NotEmpty String service, long mobnum, String eCI_OBSID, String iD_NO,
+			String oB_TITLE, String oB_CADRE, String oB_YEAR, String oB_SEX, String oB_DOB, String oB_STATUS,
+			String oB_LANG, String oB_DESIG, String o_ADR_L1, String o_CITY, String o_STATE, String o_PIN, String o_STD,
+			String o_FAX, String r_PIN, String r_STD, String r_TNO, String r_FAX, String eMG_NAME, String sPONSOR,
+			String aGE, String o_AccountNo, String o_IFCSCode, String o_BankName, String o_BranchName,
+			String o_AccountHolderName, String oB_FromDate, String oB_ToDate, String oB_CDEP, String exp_as_RO,
+			String exp_as_DEO, String exp_as_OtherElectionDuty, String o_TEL_DRCT, String o_TEL_PBX, String o_TEL_EXT,
+			String eMG_TEL, String oB_REQ_STATUS, String oB_image) {
+			
 		super();
 		this.id = id;
 		this.obscode = obscode;
@@ -440,7 +443,6 @@ public class ObserverUserDto {
 		this.role = role;
 		this.service = service;
 		this.mobnum = mobnum;
-		this.workexperience = workexperience;
 		ECI_OBSID = eCI_OBSID;
 		ID_NO = iD_NO;
 		OB_TITLE = oB_TITLE;
@@ -485,4 +487,5 @@ public class ObserverUserDto {
 	
 	
 	
+
 }

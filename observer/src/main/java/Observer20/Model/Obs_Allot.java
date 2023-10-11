@@ -30,7 +30,15 @@ public class Obs_Allot {
 	    private String GROUP_TYPE;
 	    private String SCHEDULENO;
 	    private String AdjournedPoll;
+	    private String OB_image;
 	    
+	    
+		public String getOB_image() {
+			return OB_image;
+		}
+		public void setOB_image(String oB_image) {
+			OB_image = oB_image;
+		}
 		public Long getId() {
 			return id;
 		}

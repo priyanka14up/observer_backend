@@ -1,15 +1,13 @@
 package Observer20.Services.ServiceIMPL;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -18,16 +16,18 @@ import org.springframework.stereotype.Service;
 
 import Observer20.Exception.ApiException;
 import Observer20.Model.AC_LIST2;
-
+import Observer20.Model.DIST_LIST2;
 import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverUser;
 import Observer20.Model.PC_AC_DIST2;
 import Observer20.Model.STATE_LIST2;
 import Observer20.Model1.T_ALLOT_GROUP;
 import Observer20.Repo1.T_ALLOT_GROUP_REPO;
+
 import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.MElectionDetailsDataDTO;
 import Observer20.repository.AC_LIST2_REPO2;
+import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.MElectionDetailsREPO2;
 import Observer20.repository.MElectionScheduleREPO2;
 import Observer20.repository.Obs_AllotREPO;
@@ -49,6 +49,8 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	AC_LIST2_REPO2 aC_LIST2_REPO2;
 	@Autowired
 	PC_AC_DIST_REPO2 pC_AC_DIST_REPO2; 
+	@Autowired
+	DIST_LIST_REPO2 dIST_LIST_REPO2;
 
 	  @Autowired MElectionScheduleREPO2 mElectionScheduleREPO2;
 	  
@@ -149,6 +151,7 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 					obsAllot.setOBFromDate(observerUser.getOBFromDate());
 					obsAllot.setOBToDate(observerUser.getOBToDate());
 					obsAllot.setRole(observerUser.getRole());
+					obsAllot.setOB_image(observerUser.getOB_image());
 				} else {
 					obsAllot.setName("Observer Name Not Found");
 					obsAllot.setService("Service Not Found");
@@ -219,45 +222,52 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	}
 
 	
+		@Override
+		public Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn) {
+	        Map<String, String> resultMap = new HashMap<>();
 
+	        // Fetch AC_LIST details based on acNameEn
+	        AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEn(acNameEn);
 
-	
-	@Override
-	public Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn, String stCode) {
-	    // Fetch AC_LIST2 details based on acNameEn and stCode
-	    AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEnAndStCode(acNameEn, stCode);
+	        if (acDetails != null) {
+	            // Assuming you have dist_no_hdqt in AC_LIST
+	            String distNoHdqt = acDetails.getDistNoHdqtr();
 
-	    // Create a map to store the results
-	    Map<String, String> resultMap = new HashMap<>();
+	            // Fetch dist_name based on dist_no_hdqt from dist_list
+	            DIST_LIST2 distDetails = dIST_LIST_REPO2.findByDistNoAndStCode(distNoHdqt, acDetails.getStCode());
 
-	    // If AC_LIST2 details are found, put districtName and stateName in the resultMap
-	    if (acDetails != null) {
-	        // Fetch state name using stCode from STATE_LIST2 table
-	        STATE_LIST2 stateDetails = sTATE_LIST2_Repo.findByStCode(stCode);
-	        if (stateDetails != null) {
-	           // resultMap.put("districtName", acDetails.getDistrictName());
-	           resultMap.put("stateName", stateDetails.getStCode());
+	            if (distDetails != null) {
+	                resultMap.put("distNoHdqt", distDetails.getDistNo());
+	                resultMap.put("districtName", distDetails.getDistNameEn());
+
+	                // Fetch state details based on state code from STATE_LIST2
+	                STATE_LIST2 stateDetails = sTATE_LIST2_Repo.findByStCode(acDetails.getStCode());
+
+	                if (stateDetails != null) {
+	                    resultMap.put("stateCode", stateDetails.getStCode());
+	                    resultMap.put("stateName", stateDetails.getStName());
+	                } else {
+	                    resultMap.put("stateCode", "State Code Not Found");
+	                    resultMap.put("stateName", "State Name Not Found");
+	                }
+	            } else {
+	                resultMap.put("districtName", "District Name Not Found");
+	                resultMap.put("stateCode", "State Code Not Found");
+	                resultMap.put("stateName", "State Name Not Found");
+	                resultMap.put("districtCode", "District Code Not Found");
+	            }
 	        } else {
-	            // If state details are not found, put appropriate message in the resultMap
 	            resultMap.put("districtName", "District Name Not Found");
+	            resultMap.put("stateCode", "State Code Not Found");
 	            resultMap.put("stateName", "State Name Not Found");
+	            resultMap.put("districtCode", "District Code Not Found");
 	        }
-	    } else {
-	        // If AC_LIST2 details are not found, put appropriate messages in the resultMap
-	        resultMap.put("districtName", "District Name Not Found");
-	        resultMap.put("stateName", "State Name Not Found");
+
+	        return resultMap;
 	    }
-
-	    return resultMap;
 	}
-}
 
 
-
-
-
-
-
-
-
-
+	  
+	    
+	

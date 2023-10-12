@@ -1,11 +1,13 @@
 package Observer20.Services;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Comparator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -730,6 +732,9 @@ ResponseMap.put("remarks",response.getRemarks());
 					 existingFormStatus.setSubmittedBy(submittedBy);
 					 existingFormStatus.setConstituency(consistuency);
 					 formStatusRepo.save(existingFormStatus);
+					 
+					 Collections.sort(savedFinalAnswers, new FinalAnswerComparator());
+					 
 					return entityToDtoForFinal(existingFormStatus,savedFinalAnswers);
 				}
 				else
@@ -741,6 +746,9 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setConstituency(consistuency);
 				List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
+				
+				
+				 Collections.sort(savedFinalAnswers, new FinalAnswerComparator());
 				return entityToDtoForFinal(formStatus,savedFinalAnswers);
 				}					
 				
@@ -756,6 +764,9 @@ ResponseMap.put("remarks",response.getRemarks());
 					 existingFormStatus.setSubmittedBy(submittedBy);
 					 existingFormStatus.setConstituency(consistuency);
 					 formStatusRepo.save(existingFormStatus);
+					 
+					 Collections.sort(savedAnswers, new DraftAnswerComparator());
+					 
 					return entityToDtoForDraft(existingFormStatus,savedAnswers);
 				}
 				else
@@ -767,6 +778,9 @@ ResponseMap.put("remarks",response.getRemarks());
 				formStatus.setConstituency(consistuency);
 				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
 				formStatusRepo.save(formStatus);
+				
+				
+				 Collections.sort(savedAnswers, new DraftAnswerComparator());
 					return entityToDtoForDraft(formStatus,savedAnswers);
 				
 				}			
@@ -863,13 +877,31 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 			GetAnswerDto getAnswerDto=new GetAnswerDto();
 			List<DraftAnswer> draftAnswers=draftAnswerRepo.findByFidAndSidAndSubmittedBy(fid, sid, userid);
+			 Collections.sort(draftAnswers, new DraftAnswerComparator());
 					 SubForm subform=subFormRepo.findById(sid)
 						.orElseThrow(() ->new HandledException("NOT_FOUND", "subForm Id is not found"));
 					 getAnswerDto.setSubform_heading(subform.getHeading());
 					 getAnswerDto.setDraftAnswers(draftAnswers);
-					 
+					
 				return customResponseGetAnswerDtoforDraftAnswer(getAnswerDto);
 			
+		}
+		
+
+		public class DraftAnswerComparator implements Comparator<DraftAnswer> {
+		    @Override
+		    public int compare(DraftAnswer answer1, DraftAnswer answer2) {
+		        // Compare DraftAnswer objects by their question IDs
+		        return Long.compare(answer1.getQid(), answer2.getQid());
+		    }
+		}
+
+		public class FinalAnswerComparator implements Comparator<FinalSubmitAnswer> {
+		    @Override
+		    public int compare(FinalSubmitAnswer answer1, FinalSubmitAnswer answer2) {
+		        // Compare DraftAnswer objects by their question IDs
+		        return Long.compare(answer1.getQid(), answer2.getQid());
+		    }
 		}
 		
 
@@ -893,6 +925,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			        	
 			            continue;
 			        }
+			        Collections.sort(finalSubmitAnswers, new FinalAnswerComparator());
 			        	getAnswerDto.setFinalSubmitAnswers(finalSubmitAnswers);
 				        
 				        HashMap<String, Object> msgMap = new HashMap<>();
@@ -964,8 +997,8 @@ ResponseMap.put("remarks",response.getRemarks());
 		        msgMap.put("formId", answer.getFid());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
-		         msgMap.put("questionText",question.getQname());
-		         msgMap.put("inputType",question.getInputType());
+	         msgMap.put("questionText",question.getQname());
+	         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
 		        msgMap.put("remarks", answer.getRemarks());
@@ -976,6 +1009,8 @@ ResponseMap.put("remarks",response.getRemarks());
 
 		    return listOfMaps;
 		}
+		
+		
 		
 		
 		private HashMap<String, Object> customResponseFinalAnswerDto( AnswerDto dto) {
@@ -1030,7 +1065,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			HashMap<String, Object> msgMap =  new HashMap<>();
 			
 			msgMap.put("subformHeading",dto.getSubform_heading());
-			
+			 
 			msgMap.put("draftAnswer",customResponseDraftAnswers(dto.getDraftAnswers()));
 			
 			return msgMap;
@@ -1062,21 +1097,23 @@ ResponseMap.put("remarks",response.getRemarks());
 			List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
 			
 			 for (DraftAnswer answer : draftAnswers) {
+				
 			        HashMap<String, Object> msgMap = new HashMap<>();
-			        //msgMap.put("id", answer.getId());
+			       //msgMap.put("id", answer.getId());
 			        msgMap.put("formId", answer.getFid());
 			        msgMap.put("questionId", answer.getQid());
 			        Question question=questionRepo.findByQid(answer.getQid());
-			         msgMap.put("questionText",question.getQname());
-			         msgMap.put("inputType",question.getInputType());
+		         msgMap.put("questionText",question.getQname());
+		         msgMap.put("inputType",question.getInputType());
 			        msgMap.put("subFormId", answer.getSid());
 			        msgMap.put("answer", answer.getAnswer());
 			        msgMap.put("remarks", answer.getRemarks());
 			        msgMap.put("submittedBy", answer.getSubmittedBy());
-			        msgMap.put("qserial",question.getQserial()); 
+			       msgMap.put("qserial",question.getQserial()); 
 			        
 			        listOfMaps.add(msgMap);
-			    }
+				 }
+			    
 			
 			return listOfMaps;
 			

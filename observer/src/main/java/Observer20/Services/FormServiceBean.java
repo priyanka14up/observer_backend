@@ -645,16 +645,16 @@ ResponseMap.put("remarks",response.getRemarks());
 					answers.get(i).setQid(answers.get(i).getQid());
 					String answerget=answers.get(i).getAnswer();
 					answers.get(i).setAnswer(answers.get(i).getAnswer());
-					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
-					{
+//					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+//					{
 						answers.get(i).setRemarks(answers.get(i).getRemarks());
 						
-					}
-					else
-					{
-						answers.get(i).setRemarks(null);
-						
-					}	
+//					}
+//					else
+//					{
+//						answers.get(i).setRemarks(null);
+//						
+//					}	
 					sid=questionRepo.findSubformSidByQid(qid);
 					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
 					formId=subFormRepo.findFormIdBySid(sid);
@@ -679,16 +679,16 @@ ResponseMap.put("remarks",response.getRemarks());
 					
 					answer.setAnswer(answers.get(i).getAnswer());
 					
-					if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
-					{
-						answer.setRemarks(answers.get(i).getRemarks());
+//					if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
+//					{
+					answer.setRemarks(answers.get(i).getRemarks());
 						
-					}
-					else
-					{
-						answer.setRemarks(null);
-						
-					}	
+//					}
+//					else
+//					{
+//						answer.setRemarks(null);
+//						
+//					}	
 					
 					
 					
@@ -965,15 +965,12 @@ ResponseMap.put("remarks",response.getRemarks());
 		        msgMap.put("questionId", answer.getQid());
 		        Question question=questionRepo.findByQid(answer.getQid());
 		         msgMap.put("questionText",question.getQname());
-		         
-		       //msgMap.put("questionSeq",question.getQseq());
-		         
 		         msgMap.put("inputType",question.getInputType());
 		        msgMap.put("subFormId", answer.getSid());
 		        msgMap.put("answer", answer.getAnswer());
 		        msgMap.put("remarks", answer.getRemarks());
 		        msgMap.put("submittedBy", answer.getSubmittedBy());
-		        
+		      msgMap.put("qserial",question.getQserial());
 		        listOfMaps.add(msgMap);
 		    }
 
@@ -1071,14 +1068,12 @@ ResponseMap.put("remarks",response.getRemarks());
 			        msgMap.put("questionId", answer.getQid());
 			        Question question=questionRepo.findByQid(answer.getQid());
 			         msgMap.put("questionText",question.getQname());
-			         
-			       //msgMap.put("questionSeq",question.getQseq()); 
-			         
 			         msgMap.put("inputType",question.getInputType());
 			        msgMap.put("subFormId", answer.getSid());
 			        msgMap.put("answer", answer.getAnswer());
 			        msgMap.put("remarks", answer.getRemarks());
 			        msgMap.put("submittedBy", answer.getSubmittedBy());
+			        msgMap.put("qserial",question.getQserial()); 
 			        
 			        listOfMaps.add(msgMap);
 			    }

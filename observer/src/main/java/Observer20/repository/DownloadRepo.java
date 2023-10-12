@@ -14,7 +14,8 @@ import Observer20.Model.Question;
 @Repository
 public interface DownloadRepo extends JpaRepository<DownloadPdf, Long>{
 	
-	public List<DownloadPdf> findAllByOrderByIdAsc();
+	//public List<DownloadPdf> findAllByOrderById();
+	public List<DownloadPdf> findAllByOrderByOrdering();
 	
 	
 }

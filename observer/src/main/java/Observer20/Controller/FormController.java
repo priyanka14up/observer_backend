@@ -619,7 +619,37 @@ public class FormController {
 	}
 	
 	
+	@GetMapping("/form/status")
+	public ResponseEntity<Object> getAllFormsStatus() throws HandledException {
+
+		try {
+
+			List<FormStatus> formData = formService.allFormsStatus();
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
 	
+	@GetMapping("/form/status/{statecode}")
+	public ResponseEntity<Object> getAllFormsStatusByState(@PathVariable("statecode") String statecode) throws HandledException {
+
+		try {
+
+			List<FormStatus> formData = formService.allFormsStatusByState(statecode);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
 	
 
 }

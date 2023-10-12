@@ -172,26 +172,40 @@ public class ObserverUserController {
 		
 // post image
 		
-		@PostMapping("/image/upload/{obscode}") // Updated the path variable name
+		@PostMapping("/image/upload/{obscode}") 
 		public ResponseEntity<ObserverUserDto> uploadPostImage(@RequestParam("image") MultipartFile image, @PathVariable String obscode) throws IOException {
 		    ObserverUserDto observerUserDto = observerService.getObserverUserById(obscode);
 		    String fileName = fileService.uploadImage(path, image);
 		    observerUserDto.setOB_image(fileName);
-		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, obscode); // Fixed the variable name
+		    ObserverUserDto updatedUser = observerService.updateObserverUser(observerUserDto, obscode); 
 
-		    return new ResponseEntity<ObserverUserDto>(updatedUser, HttpStatus.OK); // Fixed the return type and variable name
+		    return new ResponseEntity<ObserverUserDto>(updatedUser, HttpStatus.OK); 
 		}
 
 
 // serve image
-		@GetMapping(value="/imageFetch/{imageName}",produces=MediaType.IMAGE_JPEG_VALUE)
-		public void DownloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)throws IOException
-		{
-			InputStream resource=fileService.getResource(path, imageName);
-			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-			StreamUtils.copy(resource,response.getOutputStream());
-		}
+		//@GetMapping(value="/imageFetch/{imageName}",produces=MediaType.IMAGE_JPEG_VALUE)
+		//public void DownloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response)throws IOException
+		//{
+			//InputStream resource=fileService.getResource(path, imageName);
+			//response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+			//StreamUtils.copy(resource,response.getOutputStream());
+		//}
 		
+		@GetMapping(value = "/imageFetch/{imageName}", produces = MediaType.IMAGE_JPEG_VALUE)
+	    public ResponseEntity<?> downloadImage(@PathVariable("imageName") String imageName, HttpServletResponse response) {
+	        try {
+	            InputStream resource = fileService.getResource(path, imageName);
+	            response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+	            StreamUtils.copy(resource, response.getOutputStream());
+	            return ResponseEntity.ok().build();
+	        } catch (IOException e) {
+	            // Handle the exception and return a custom error response
+	            String errorMessage = "Photo not found for imageName: " + imageName;
+	            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorMessage);
+	        }
+	    }
+	
 		
 		    @PutMapping("/image/{obscode}")
 		    public ResponseEntity<ObserverUserDto> editProfilePicture(

@@ -22,4 +22,8 @@ public interface FormStatusRepo extends JpaRepository<FormStatus, Long>{
             @Param("submittedBy") String submittedBy,
             @Param("constituency") String constituency
     );
+	
+	@org.springframework.data.jpa.repository.Query(value = "SELECT tbl1.stat_id, tbl1.constituency,tbl1.status,tbl2.st_code, tbl1.date_modified,tbl1.f_id,tbl1.submitted_by FROM status tbl1 join obs_allot tbl2 on tbl2.obscode=tbl1.submitted_by where tbl2.st_code =:st_code GROUP by tbl1.stat_id,tbl2.st_code " , nativeQuery = true)
+	List<FormStatus> getAllBySubmittedBy(@Param("st_code") String st_code);
+
 }

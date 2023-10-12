@@ -19,9 +19,9 @@ public class ObserverUserDto {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	@NotEmpty
+	//@NotEmpty
 	private String obscode;
-    @NotEmpty
+    //@NotEmpty
 	 @Size(min=4,message="user name must be greter than 4 charcter!!")
 	private String name;
     @Email(message="your email adress is not valid!!")
@@ -38,9 +38,9 @@ public class ObserverUserDto {
 	  
 	  private String password;
 	 
-	@NotEmpty
+	//@NotEmpty
 	 private String role;
-	@NotEmpty
+	//@NotEmpty
 	private String service;
 	/*
 	 * @NotEmpty private String homeState;

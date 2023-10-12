@@ -13,6 +13,7 @@ import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.Form;
 import Observer20.Model.FormDates;
+import Observer20.Model.FormStatus;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -68,5 +69,7 @@ public interface FormService {
 	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,String district,String state) throws HandledException;
 	
 	
-	
+	public List<FormStatus> allFormsStatus() throws HandledException;
+	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
+
 }

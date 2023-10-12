@@ -88,7 +88,7 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	    List<Obs_Allot> obsAllotList = obs_AllotREPO.findAllByObscode(obsCode);
 
 	    if (obsAllotList != null && !obsAllotList.isEmpty()) {
-	        // ... (your existing code)
+	        
 
 	        // Iterate through obsAllotList and update other fields
 	        for (Obs_Allot obsAllot : obsAllotList) {
@@ -103,7 +103,7 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	                for (AC_LIST2 ac : acList) {
 	                    acNames.append(ac.getAcNameEn()).append(", ");
 	                }
-	                // Remove the trailing comma and space
+	                
 	                if (acNames.length() > 0) {
 	                    acNames.setLength(acNames.length() - 2);
 	                    obsAllot.setAc_No(acNames.toString());

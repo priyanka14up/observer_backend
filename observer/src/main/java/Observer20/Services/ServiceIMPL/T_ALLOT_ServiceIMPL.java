@@ -1,7 +1,7 @@
 package Observer20.Services.ServiceIMPL;
 
 import java.sql.Timestamp;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,6 +26,7 @@ import Observer20.Repo1.T_ALLOT_GROUP_REPO;
 
 import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.MElectionDetailsDataDTO;
+
 import Observer20.repository.AC_LIST2_REPO2;
 import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.MElectionDetailsREPO2;
@@ -80,96 +81,87 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 		return newEntity;
 	}
 
+	
+
 	@Override
 	public List<Obs_Allot> getObsAllotByObscode(String obsCode) {
-		List<Obs_Allot> obsAllotList = obs_AllotREPO.findAllByObscode(obsCode);
+	    List<Obs_Allot> obsAllotList = obs_AllotREPO.findAllByObscode(obsCode);
 
-		if (obsAllotList != null && !obsAllotList.isEmpty()) {
-			String stCode = obsAllotList.get(0).getSt_Code();
-			String acNo = obsAllotList.get(0).getAc_No();
-			List<PC_AC_DIST2> pcAcDistList = pC_AC_DIST_REPO2.findAllByStCodeAndAcNo(stCode, acNo);
-			String pcName = "PC Name Not Found";
-			String distName = "District Name Not Found";
+	    if (obsAllotList != null && !obsAllotList.isEmpty()) {
+	        // ... (your existing code)
 
-			if (pcAcDistList != null && !pcAcDistList.isEmpty()) {
-				Set<String> uniquePcNames = new HashSet<>();
-				Set<String> uniqueDistNames = new HashSet<>();
+	        // Iterate through obsAllotList and update other fields
+	        for (Obs_Allot obsAllot : obsAllotList) {
+	            String stCode1 = obsAllot.getSt_Code();
+	            String acNo1 = obsAllot.getAc_No();
 
-				for (PC_AC_DIST2 pcAcDist : pcAcDistList) {
-					uniquePcNames.add(pcAcDist.getPC_NAME());
-					uniqueDistNames.add(pcAcDist.getDIST_NAME());
-				}
+	            // Fetch the AC names using the AC_NO and St_Code
+	            List<AC_LIST2> acList = aC_LIST2_REPO2.findAllByStCodeAndAcNo(stCode1, acNo1);
+	            StringBuilder acNames = new StringBuilder();
 
-				// Convert unique names back to a comma-separated string
-				pcName = String.join(", ", uniquePcNames);
-				distName = String.join(", ", uniqueDistNames);
-			}
+	            if (acList != null && !acList.isEmpty()) {
+	                for (AC_LIST2 ac : acList) {
+	                    acNames.append(ac.getAcNameEn()).append(", ");
+	                }
+	                // Remove the trailing comma and space
+	                if (acNames.length() > 0) {
+	                    acNames.setLength(acNames.length() - 2);
+	                    obsAllot.setAc_No(acNames.toString());
+	                } else {
+	                    obsAllot.setAc_No("AC Name Not Found");
+	                }
+	                
+	                // Fetch dist_no from AC_LIST2 table
+	                String distNo = acList.get(0).getDistNoHdqtr();
 
-			// Set PC_NAME and DIST_NAME outside the loop
-			for (Obs_Allot obsAllot : obsAllotList) {
-				obsAllot.setPC_NAME(pcName);
-				obsAllot.setDIST_NAME(distName);
-			}
+	                // Fetch dist_name based on dist_no and st_code
+	                DIST_LIST2 distList = dIST_LIST_REPO2.findByDistNoAndStCode(distNo, stCode1);
 
-			// Iterate through obsAllotList and update other fields
-			for (Obs_Allot obsAllot : obsAllotList) {
-				String stCode1 = obsAllot.getSt_Code();
-				String acNo1 = obsAllot.getAc_No();
+	                if (distList != null) {
+	                    obsAllot.setDIST_NAME(distList.getDistNameEn());
+	                } else {
+	                    obsAllot.setDIST_NAME("District Name Not Found");
+	                }
+	            } else {
+	                obsAllot.setAc_No("AC No. Not Found");
+	            }
 
-				// Fetch the AC names using the AC_NO and St_Code
-				List<AC_LIST2> acList = aC_LIST2_REPO2.findAllByStCodeAndAcNo(stCode1, acNo1);
-				StringBuilder acNames = new StringBuilder();
+	            // Fetch the state name using the ST_CODE
+	            STATE_LIST2 stateList2 = sTATE_LIST2_Repo.findByStCode(stCode1);
+	            if (stateList2 != null) {
+	                obsAllot.setSt_Code(stateList2.getStName());
+	            } else {
+	                obsAllot.setSt_Code("State Not Found");
+	            }
 
-				if (acList != null && !acList.isEmpty()) {
-					for (AC_LIST2 ac : acList) {
-						acNames.append(ac.getAcNameEn()).append(", ");
-					}
-					// Remove the trailing comma and space
-					if (acNames.length() > 0) {
-						acNames.setLength(acNames.length() - 2);
-						obsAllot.setAc_No(acNames.toString());
-					} else {
-						obsAllot.setAc_No("AC Name Not Found");
-					}
-				} else {
-					obsAllot.setAc_No("AC No. Not Found");
-				}
+	            // Fetch columns from eci_observers table
+	            ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
+	            if (observerUser != null) {
+	                obsAllot.setName(observerUser.getName());
+	                obsAllot.setService(observerUser.getService());
+	                obsAllot.setOBFromDate(observerUser.getOBFromDate());
+	                obsAllot.setOBToDate(observerUser.getOBToDate());
+	                obsAllot.setRole(observerUser.getRole());
+	                obsAllot.setOB_image(observerUser.getOB_image());
+	            } else {
+	                obsAllot.setName("Observer Name Not Found");
+	                obsAllot.setService("Service Not Found");
+	            }
+	        }
 
-				// Fetch the state name using the ST_CODE
-				STATE_LIST2 stateList2 = sTATE_LIST2_Repo.findByStCode(stCode1);
-				if (stateList2 != null) {
-					obsAllot.setSt_Code(stateList2.getStName());
-				} else {
-					obsAllot.setSt_Code("State Not Found");
-				}
+	        // Update pc_NAME and dist_NAME only for the first record
+	        //obsAllotList.get(0).setPC_NAME(pcName);
+	        //obsAllotList.get(0).setDIST_NAME(distName);
 
-				// Fetch columns from eci_observers table
-				ObserverUser observerUser = observerUserRepo.findByObscode(obsCode);
-				if (observerUser != null) {
-					obsAllot.setName(observerUser.getName());
-					obsAllot.setService(observerUser.getService());
-					obsAllot.setOBFromDate(observerUser.getOBFromDate());
-					obsAllot.setOBToDate(observerUser.getOBToDate());
-					obsAllot.setRole(observerUser.getRole());
-					obsAllot.setOB_image(observerUser.getOB_image());
-				} else {
-					obsAllot.setName("Observer Name Not Found");
-					obsAllot.setService("Service Not Found");
-				}
-			}
-
-			// Update pc_NAME and dist_NAME only for the first record
-			obsAllotList.get(0).setPC_NAME(pcName);
-			obsAllotList.get(0).setDIST_NAME(distName);
-
-			return obsAllotList;
-		} else {
-			throw new ApiException("Observer with obscode " + obsCode + " not found.");
-		}
+	        return obsAllotList;
+	    } else {
+	        throw new ApiException("Observer with obscode " + obsCode + " not found.");
+	    }
 	}
 
 
 
+	
 	
 	
 	@Override
@@ -265,6 +257,8 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 	        return resultMap;
 	    }
+
+		
 	}
 
 

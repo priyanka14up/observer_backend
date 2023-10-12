@@ -118,6 +118,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUser.setExp_as_DEO(observerUserDto.getExp_as_DEO());
 		observerUser.setExp_as_OtherElectionDuty(observerUserDto.getExp_as_OtherElectionDuty());
 		observerUser.setOB_image(observerUserDto.getOB_image());
+		observerUser.setO_PIN(observerUserDto.getO_PIN());
 		// observerUser.setPassword(passwordEncoder.encode(observerUserDto.getPassword()));
 		//observerUser.setPassword(DigestUtils.md5DigestAsHex(observerUserDto.getPassword().getBytes()));
 
@@ -177,6 +178,7 @@ public class ObserverServiceIMPL implements ObserverService {
 		observerUserDto.setEMG_TEL(observerUser.getEMG_TEL());
 		observerUserDto.setOB_REQ_STATUS(observerUser.getOB_REQ_STATUS());
 		observerUserDto.setOB_image(observerUser.getOB_image());
+		observerUserDto.setO_PIN(observerUser.getO_PIN());
 		
 		
 		// observerUserDto.setPassword(passwordEncoder.encode(observerUser.getPassword()));

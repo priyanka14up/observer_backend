@@ -42,9 +42,7 @@ private int id;
 	 
 	 
 	private long mobnum;
-	/*
-	 * @NotNull private int workexperience;
-	 */
+	
 	private String ECI_OBSID;
     private String ID_NO;
     private String OB_TITLE;

@@ -39,6 +39,10 @@ public class DownloadPdf {
 	//@NotBlank(message = "File Text is mandatory")
 	@Column(columnDefinition = "TEXT",name = "file_Text",nullable=false)
     private String fileText;
+	
+	@Column(name = "ordering",nullable=false)
+    private int ordering;
+	
 
 	public Long getId() {
 		return id;
@@ -72,10 +76,29 @@ public class DownloadPdf {
 		this.fileText = fileText;
 	}
 
+	
+	
+	
+	
+
+	
+
+	public int getOrdering() {
+		return ordering;
+	}
+
+	public void setOrdering(int ordering) {
+		this.ordering = ordering;
+	}
+
 	@Override
 	public String toString() {
 		return "DownloadPdf [id=" + id + ", foldName=" + foldName + ", fileName=" + fileName + ", fileText=" + fileText
-				+ "]";
+				+ ", ordering=" + ordering + "]";
 	}
+
+	
+	
+	
 	
 	}

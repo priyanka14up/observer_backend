@@ -29,8 +29,8 @@ public class Question {
 	@Column(columnDefinition = "TEXT",name = "ques_name",nullable=false)
     private String qname;
 	
-	@Column(name = "ques_seq",nullable=false)
-    private Long qseq;
+	@Column(name = "ques_serial",nullable=false)
+    private Long qserial;
 	
 	
 	@NotBlank(message = "Input Type is mandatory")
@@ -114,27 +114,23 @@ public class Question {
 		this.remarkLabel = remarkLabel;
 	}
 
-	public Long getQseq() {
-		return qseq;
+	
+
+	public Long getQserial() {
+		return qserial;
 	}
 
-	public void setQseq(Long qseq) {
-		this.qseq = qseq;
+	public void setQserial(Long qserial) {
+		this.qserial = qserial;
 	}
 
 	@Override
 	public String toString() {
-		return "Question [qid=" + qid + ", qname=" + qname + ", qseq=" + qseq + ", inputType=" + inputType
+		return "Question [qid=" + qid + ", qname=" + qname + ", qserial=" + qserial + ", inputType=" + inputType
 				+ ", inputLabel=" + inputLabel + ", remarkStatus=" + remarkStatus + ", remarkLabel=" + remarkLabel
 				+ ", subform=" + subform + "]";
 	}
 
-	
-
-	
-
-	
-	
 
 //	public SubForm getSubform() {
 //		return subform;

@@ -124,13 +124,11 @@ public class FormController {
 			for(Question q: formData) {
 				data.add(q.getQid());
 				data.add(q.getQname());
-				
-				//data.add(q.getQseq());
-				
 				data.add(q.getInputType());
 				data.add(q.getInputLabel());
 				data.add(q.isRemarkStatus());
 				data.add(q.getRemarkLabel());
+				data.add(q.getQserial());
 				array.put(data);
 				data = new ArrayList<Object>();
 			}
@@ -165,6 +163,7 @@ public class FormController {
 	            questionData.put("inputLabel", q.getInputLabel());
 	            questionData.put("remarkStatus", q.isRemarkStatus());
 	            questionData.put("remarkLabel", q.getRemarkLabel());
+	            questionData.put("questionSerial", q.getQserial());
 	            data.add(questionData);
 	        }
 
@@ -606,7 +605,7 @@ public class FormController {
 	@GetMapping("/arrivalDeparture/{userid}/{constituency}/{state}/{district}")
 	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency,@PathVariable("state")String state,@PathVariable("district")String district) throws HandledException {
 		try {
-
+			
 		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency,state,district);
 	
 		

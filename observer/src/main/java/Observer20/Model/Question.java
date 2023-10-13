@@ -30,7 +30,7 @@ public class Question {
     private String qname;
 	
 	@Column(name = "ques_serial",nullable=false)
-    private Long qserial;
+    private String qserial;
 	
 	
 	@NotBlank(message = "Input Type is mandatory")
@@ -116,11 +116,13 @@ public class Question {
 
 	
 
-	public Long getQserial() {
+	
+
+	public String getQserial() {
 		return qserial;
 	}
 
-	public void setQserial(Long qserial) {
+	public void setQserial(String qserial) {
 		this.qserial = qserial;
 	}
 
@@ -130,6 +132,7 @@ public class Question {
 				+ ", inputLabel=" + inputLabel + ", remarkStatus=" + remarkStatus + ", remarkLabel=" + remarkLabel
 				+ ", subform=" + subform + "]";
 	}
+
 
 
 //	public SubForm getSubform() {

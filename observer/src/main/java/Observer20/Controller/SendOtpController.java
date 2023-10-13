@@ -115,21 +115,21 @@ public class SendOtpController {
 
     private boolean verifyMobileOtpWithGupshup(String phoneNumber, int otp) {
         String apiEndpoint = "https://enterprise.smsgupshup.com/GatewayAPI/rest";
-        String userId = ""; // Your Gupshup API User ID
-        String password = ""; // Your Gupshup API Password
+        String userId = "2000189478"; // Your Gupshup API User ID
+        String password = "GmUJ58"; // Your Gupshup API Password
         String method = "TWO_FACTOR_AUTH";
         String phoneNo = "91" + phoneNumber; // Prefix '91' for India country code
         String otpCode = String.valueOf(otp);
 
-        String apiUrl = apiEndpoint + "?userid=" + userId + "&password=" + password +
-                        "&method=" + method + "&v=1.1&phone_no=" + phoneNo + "&otp_code=" + otpCode;
+        String apiUrl = String.format("%s?userid=%s&password=%s&method=%s&v=1.1&phone_no=%s&otp_code=%s",
+                apiEndpoint, userId, password, method, phoneNo, otpCode);
 
         RestTemplate restTemplate = new RestTemplate();
         String response = restTemplate.getForObject(apiUrl, String.class);
 
-       
         return response != null && response.contains("success:true");
     }
+
 
 
 

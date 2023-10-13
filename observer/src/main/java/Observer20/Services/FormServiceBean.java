@@ -1552,14 +1552,14 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
             if (stateDetails != null) {
                state= stateDetails.getStName();
-               formMap.put("ObserverNameAndCode",name+" "+userid);
+              formMap.put("ObserverNameAndCode",name+","+userid);
    			formMap.put("Email",email);
    			formMap.put("Constituency",constituency);
-   			formMap.put("DistrictAndState",district+" "+state);
+   			formMap.put("DistrictAndState",district+","+state);
    			formMap.put("MobileNo",mobile);
    			formMap.put("FaxNo",fax);
-   			formMap.put("State",fax);
-   			formMap.put("District",fax);
+//   			formMap.put("State",state);
+//   			formMap.put("District",district);
    			return formMap;
                //return customResponseArrivalDeparture(userid,name,email,mobile,fax,constituency,district,state);
             } else {

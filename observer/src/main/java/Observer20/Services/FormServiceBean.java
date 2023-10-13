@@ -50,6 +50,7 @@ import Observer20.Model.Question;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
 import Observer20.Model.AC_LIST2;
+import Observer20.Model.DIST_LIST2;
 import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
@@ -65,6 +66,7 @@ import Observer20.repository.QuestionRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.SubFormRepo;
 import Observer20.repository.AC_LIST2_REPO2;
+import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
@@ -117,6 +119,8 @@ public class FormServiceBean implements FormService {
 	@Autowired
 	public STATE_LIST2_Repo sTATE_LIST2_Repo;
 	
+	@Autowired
+	DIST_LIST_REPO2 dIST_LIST_REPO2;
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -1511,8 +1515,10 @@ private HashMap<String, Object> customResponseDownload( DownloadPdf downloadData
 		}
 
 @Override
-public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,String district,String state) throws HandledException {
+public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency) throws HandledException {
 	
+	String state,district;
+	HashMap<String, Object> formMap =  new HashMap<>();
 	ObserverUser observer=observerUserRepo.getObserverUserByobscode(userid);
 	String name=observer.getName();
 	
@@ -1525,24 +1531,56 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 	
 	List<Obs_Allot> obs_AllotList=obs_AllotREPO.findAllByObscode(userid);
 	
-	
-	
-	//String acNo=Obs_Allot.getAc_No();
-	//AC_LIST2 aC_LIST2=aC_LIST2_REPO2.findByAcNo(acNo);
-	
-	//String constituencyName=aC_LIST2.getAC_NAME_HI();
-	
-	//String district=Obs_Allot.getDIST_NAME();
-	
-	//String stCode=Obs_Allot.getSt_Code();
-	
-	//STATE_LIST2 sTATE_LIST2=sTATE_LIST2_Repo.findByStCode(stCode);
-	
-	//String state=sTATE_LIST2.getST_NAME_HI();
-	
-		return customResponseArrivalDeparture(userid,name,email,mobile,fax,constituency,district,state);
-	
+    Map<String, String> resultMap = new HashMap<>();
+
+    // Fetch AC_LIST details based on acNameEn
+    AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEn(constituency);
+
+    if (acDetails != null) {
+        // Assuming you have dist_no_hdqt in AC_LIST
+        String distNoHdqt = acDetails.getDistNoHdqtr();
+
+        // Fetch dist_name based on dist_no_hdqt from dist_list
+        DIST_LIST2 distDetails = dIST_LIST_REPO2.findByDistNoAndStCode(distNoHdqt, acDetails.getStCode());
+
+        if (distDetails != null) {
+            
+         district=distDetails.getDistNameEn();
+
+            // Fetch state details based on state code from STATE_LIST2
+            STATE_LIST2 stateDetails = sTATE_LIST2_Repo.findByStCode(acDetails.getStCode());
+
+            if (stateDetails != null) {
+               state= stateDetails.getStName();
+               formMap.put("ObserverNameAndCode",name+" "+userid);
+   			formMap.put("Email",email);
+   			formMap.put("Constituency",constituency);
+   			formMap.put("DistrictAndState",district+" "+state);
+   			formMap.put("MobileNo",mobile);
+   			formMap.put("FaxNo",fax);
+   			formMap.put("State",fax);
+   			formMap.put("District",fax);
+   			return formMap;
+               //return customResponseArrivalDeparture(userid,name,email,mobile,fax,constituency,district,state);
+            } else {
+            	
+            	 throw new HandledException("CHECK_PARAMETERS", "state not found");
+            }
+        } else {
+        	 throw new HandledException("CHECK_PARAMETERS", "state or district not found");
+        	
+        }
+    } else {
+    	throw new HandledException("CHECK_PARAMETERS", "state or district not found");
+    }
+
 }
+
+	
+	
+		
+
+
 //custom response
 		private HashMap<String, Object> customResponseArrivalDeparture(String userid,String name,String email,Long mob,String fax,String constituency,String district,String state) {
 			
@@ -1554,22 +1592,24 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 			formMap.put("DistrictAndState",district+" "+state);
 			formMap.put("MobileNo",mob);
 			formMap.put("FaxNo",fax);
+			formMap.put("State",fax);
+			formMap.put("District",fax);
 			return formMap;
 			
 		}
 
-		@Override
-		public List<FormStatus> allFormsStatus() throws HandledException {
-			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
-			formStatusList = formStatusRepo.findAll();
-			return formStatusList;
-		}
-		
-		@Override
-		public List<FormStatus> allFormsStatusByState(String stateCode) throws HandledException {
-			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
-			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
-			return formStatusList;
-		}
+//		@Override
+//		public List<FormStatus> allFormsStatus() throws HandledException {
+//			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
+//			formStatusList = formStatusRepo.findAll();
+//			return formStatusList;
+//		}
+//		
+//		@Override
+//		public List<FormStatus> allFormsStatusByState(String stateCode) throws HandledException {
+//			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
+//			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
+//			return formStatusList;
+//		}
 		
 }

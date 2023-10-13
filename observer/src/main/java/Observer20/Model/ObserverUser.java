@@ -1,5 +1,6 @@
 package Observer20.Model;
 
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name="eci_observers")
-public class ObserverUser implements UserDetails{
+public class ObserverUser implements UserDetails, Serializable{
 	
 	
 
@@ -137,11 +138,18 @@ public class ObserverUser implements UserDetails{
     private String O_TEL_PBX;
     private String O_TEL_EXT;
     private String OB_image;
+   
     
     
    
     
-    public String getOB_image() {
+   
+
+	
+
+	
+
+	public String getOB_image() {
 		return OB_image;
 	}
 

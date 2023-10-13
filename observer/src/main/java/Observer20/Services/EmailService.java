@@ -33,7 +33,7 @@ public class EmailService {
 		  properties.put("mail.smtp.host", host);
 		//properties.put("mail.smtp.port", "465"); 
 		  properties.put("mail.smtp.port","25"); 
-		//  properties.put("mail.smtp.ssl.enable", "true");
+		// properties.put("mail.smtp.ssl.enable", "true");
 		  properties.put("mail.smtp.auth", "true");
 		  
 		
@@ -44,7 +44,7 @@ public class EmailService {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				
-				//return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
+			//	return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
 				return new PasswordAuthentication("no-reply@eci.gov.in", "Y6$tA5&bS4");
 			}
 			

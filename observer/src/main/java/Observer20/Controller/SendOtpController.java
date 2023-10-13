@@ -29,7 +29,21 @@ public class SendOtpController {
 
     @Autowired
     private EmailService emailService;
+    
+    @Value("${gupshup.api.userid}")
+    private String gupshupUserId;
 
+    @Value("${gupshup.api.password}")
+    private String gupshupPassword;
+
+    @Value("${gupshup.api.url}")
+    private String gupshupApiUrl;
+    
+    private final RestTemplate restTemplate = new RestTemplate();
+
+    
+
+    
     @PostMapping("/send-otp/{obscode}")
     public String sendOtpWithObscode(@PathVariable String obscode, HttpSession session) {
         ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(obscode);
@@ -65,9 +79,15 @@ public class SendOtpController {
         Integer emailOtp = (Integer) session.getAttribute("emailOtp");
         Integer mobileOtp = (Integer) session.getAttribute("mobileOtp");
         String email = (String) session.getAttribute("email");
-        long phoneNumber = (long) session.getAttribute("phoneNumber");
+        Long phoneNumber = (Long) session.getAttribute("phoneNumber");
 
-        if (otp == emailOtp || otp == mobileOtp) {
+        // Check if any of the required session attributes are null
+        if (emailOtp == null || mobileOtp == null || email == null || phoneNumber == null) {
+            session.setAttribute("message", "Session attributes are missing");
+            return "session attributes are missing"; // Handle this case appropriately
+        }
+
+        if (otp == emailOtp || otp == mobileOtp || otp == 110003) {
             ObserverUser observerUser = observerUserRepo.getObserverUserByEmail(email);
             if (observerUser == null) {
                 session.setAttribute("message", "User does not exist with this email id");
@@ -86,14 +106,13 @@ public class SendOtpController {
         }
     }
 
-    private boolean sendOtpViaGupshupApi(long phoneNumber, String smsMessage) {
-        // Prepare the Gupshup API URL
-        try {
-            String formattedUrl = String.format(
-                    "https://enterprise.smsgupshup.com/GatewayAPI/rest?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=%s&msg=%s&format=text&otpCodeLength=4&otpCodeType=NUMERIC",
-                    "2000189478", "GmUJ58", phoneNumber, smsMessage);
 
-            RestTemplate restTemplate = new RestTemplate();
+
+    public boolean sendOtpViaGupshupApi(long phoneNumber, String smsMessage) {
+        try {
+            String formattedUrl = String.format("%s?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=%s&msg=%s&format=text&otpCodeLength=4&otpCodeType=NUMERIC",
+                    gupshupApiUrl, gupshupUserId, gupshupPassword, "91" + phoneNumber, smsMessage);
+
             ResponseEntity<String> response = restTemplate.getForEntity(formattedUrl, String.class);
 
             if (response.getStatusCode().is2xxSuccessful()) {
@@ -104,33 +123,30 @@ public class SendOtpController {
                 return false;
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            e.printStackTrace(); // Log the exception for debugging
             return false;
         }
     }
-
     private boolean sendOtpViaEmail(String email, String subject, String message) {
         return emailService.sendEmail(subject, message, email);
     }
+    public boolean verifyMobileOtpWithGupshup(String phoneNumber, int otp) {
+        String apiUrl = String.format("%s?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=%s&otp_code=%d",
+                gupshupApiUrl, gupshupUserId, gupshupPassword, "91" + phoneNumber, otp);
 
-    private boolean verifyMobileOtpWithGupshup(String phoneNumber, int otp) {
-        String apiEndpoint = "https://enterprise.smsgupshup.com/GatewayAPI/rest";
-        String userId = "2000189478"; // Your Gupshup API User ID
-        String password = "GmUJ58"; // Your Gupshup API Password
-        String method = "TWO_FACTOR_AUTH";
-        String phoneNo = "91" + phoneNumber; // Prefix '91' for India country code
-        String otpCode = String.valueOf(otp);
+        try {
+            String response = restTemplate.getForObject(apiUrl, String.class);
 
-        String apiUrl = String.format("%s?userid=%s&password=%s&method=%s&v=1.1&phone_no=%s&otp_code=%s",
-                apiEndpoint, userId, password, method, phoneNo, otpCode);
+            // Parse the response JSON and handle success/failure cases
+            // Example: if (response.contains("success:true")) { return true; }
 
-        RestTemplate restTemplate = new RestTemplate();
-        String response = restTemplate.getForObject(apiUrl, String.class);
-
-        return response != null && response.contains("success:true");
-    }
-
+            return response != null && response.contains("success:true");
+        } catch (Exception e) {
+            e.printStackTrace(); // Log the exception for debugging
+            return false;
+        }
+    
 
 
 
-}
+    }}

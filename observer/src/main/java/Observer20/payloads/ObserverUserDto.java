@@ -47,17 +47,17 @@ public class ObserverUserDto {
 	 */
 
 	
-	/*
-	 * @NotNull
-	 * 
-	 * 
-	 * 
-	 * @NotNull(message = "Mobnum cannot be null")
-	 * 
-	 * @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
-	 * 
-	 * @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
-	 */
+	
+	  @NotNull
+	  
+	  
+	  
+	  @NotNull(message = "Mobnum cannot be null")
+	  
+	  @Min(value = 1000000000, message = "Mobnum must be at least 10 digits")
+	  
+	  @Max(value = 9999999999L, message = "Mobnum can be at most 10 digits")
+	 
 		 
 		 
 	 

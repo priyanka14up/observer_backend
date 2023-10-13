@@ -41,10 +41,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
             .authorizeRequests()
             .antMatchers("/api/auth/login").permitAll()
-            //.antMatchers("/api/observers/send-otp").permitAll()
+            .antMatchers("/api/observers/send-otp").permitAll()
             //.antMatchers("/api/observers/mobileNo").permitAll()
-            //.antMatchers("/api/observers/verify-otp").permitAll()
-            //.antMatchers("/api/observers/otp").permitAll()
+            .antMatchers("/api/observers/verify-otp").permitAll()
+            .antMatchers("/api/observers/otp").permitAll()
             .antMatchers("/api/observers/change-profile-status").permitAll()
             //.antMatchers("/api/observers/change-password").permitAll()
             .antMatchers("/api/observers/change-password1").permitAll()
@@ -53,6 +53,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/verify-otp1").permitAll()
 
             .antMatchers("/api/observers/imageFetch/{imageName}").permitAll()
+            
             
 
             .anyRequest().authenticated()
@@ -72,7 +73,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://10.72.140.67"));
+        configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000", "http://10.72.140.67", "http://164.100.186.47"));
         configuration.addAllowedHeader("*");
         configuration.addAllowedMethod("*");
         

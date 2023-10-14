@@ -44,8 +44,11 @@ public class EmailService {
 			@Override
 			protected PasswordAuthentication getPasswordAuthentication() {
 				
-			//	return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
-				return new PasswordAuthentication("no-reply@eci.gov.in", "Y6$tA5&bS4");
+
+				//return new PasswordAuthentication("eci921693@gmail.com", "dnybgjowedvtbzvo");
+			return new PasswordAuthentication("no-reply@eci.gov.in", "Y6$tA5&bS4");
+
+		
 			}
 			
 		

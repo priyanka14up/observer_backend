@@ -200,7 +200,7 @@ public class FormServiceBean implements FormService {
 			List<Form> FormForGeneral=new ArrayList<Form>();
 			try{
 				 FormForGeneral=formServiceRepo.findAllByObsType(obsType);
-				
+				 Collections.sort(FormForGeneral, new FormComparator());
 			}catch(Exception e) {
 				
 				 System.out.println(e);
@@ -209,7 +209,7 @@ public class FormServiceBean implements FormService {
 			
 			if(FormForGeneral.size()>0)
 			{
-				List formList = new ArrayList<>() ;
+				List formList = new ArrayList<>();
 				
 				for (int i = 0; i < FormForGeneral.size(); i++){  
 					
@@ -907,7 +907,14 @@ ResponseMap.put("remarks",response.getRemarks());
 		        return Long.compare(answer1.getQid(), answer2.getQid());
 		    }
 		}
-		
+
+		public class FormComparator implements Comparator<Form> {
+		    @Override
+		    public int compare(Form answer1, Form answer2) {
+		        // Compare DraftAnswer objects by their question IDs
+		        return Long.compare(answer1.getId(), answer2.getId());
+		    }
+		}
 
 		@Override
 		public List<HashMap<String, Object>> getFinalAnswers(String userid, Long fid) throws HandledException {

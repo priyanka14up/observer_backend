@@ -224,7 +224,7 @@ public class ObserverServiceIMPL implements ObserverService {
 			observerUser.setOB_TITLE(observerUserDtoUpdation.getOB_TITLE());
 		    observerUser.setOB_CADRE(observerUserDtoUpdation.getOB_CADRE());
 		    observerUser.setName(observerUserDtoUpdation.getName());
-		   // observerUser.setEmail(observerUserDtoUpdation.getEmail());
+		   observerUser.setEmail(observerUserDtoUpdation.getEmail());
 		    observerUser.setID_NO(observerUserDtoUpdation.getID_NO());
 
 		    //observerUser.setHomeState(observerUserDtoUpdation.getHomeState());

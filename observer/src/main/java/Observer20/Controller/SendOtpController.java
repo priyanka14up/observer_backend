@@ -77,17 +77,15 @@ public class SendOtpController {
     @PostMapping("/verify-otp1")
     public String verifyotp1(@RequestParam("otp") int otp, HttpSession session) {
         Integer emailOtp = (Integer) session.getAttribute("emailOtp");
-        Integer mobileOtp = (Integer) session.getAttribute("mobileOtp");
         String email = (String) session.getAttribute("email");
-        Long phoneNumber = (Long) session.getAttribute("phoneNumber");
 
         // Check if any of the required session attributes are null
-        if (emailOtp == null || mobileOtp == null || email == null || phoneNumber == null) {
+        if (emailOtp == null || email == null) {
             session.setAttribute("message", "Session attributes are missing");
             return "session attributes are missing"; // Handle this case appropriately
         }
 
-        if (otp == emailOtp || otp == mobileOtp || otp == 110003) {
+        if (otp == emailOtp || otp == 110003) {
             ObserverUser observerUser = observerUserRepo.getObserverUserByEmail(email);
             if (observerUser == null) {
                 session.setAttribute("message", "User does not exist with this email id");
@@ -96,15 +94,11 @@ public class SendOtpController {
                 return "password change form";
             }
         } else {
-            boolean isMobileOtpValid = verifyMobileOtpWithGupshup(String.valueOf(phoneNumber), otp);
-            if (isMobileOtpValid) {
-                return "OTP is correct";
-            } else {
-                session.setAttribute("message", "You have entered the wrong OTP");
-                return "Otp is not valid";
-            }
+            session.setAttribute("message", "You have entered the wrong OTP");
+            return "Otp is not valid";
         }
     }
+
 
 
 

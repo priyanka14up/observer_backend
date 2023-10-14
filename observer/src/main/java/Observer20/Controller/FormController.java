@@ -602,11 +602,11 @@ public class FormController {
 
 	}
 	
-	@GetMapping("/arrivalDeparture/{userid}/{constituency}/{state}/{district}")
-	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency,@PathVariable("state")String state,@PathVariable("district")String district) throws HandledException {
+	@GetMapping("/arrivalDeparture/{userid}/{constituency}")
+	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency) throws HandledException {
 		try {
 			
-		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency,state,district);
+		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency);
 	
 		
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
@@ -650,6 +650,5 @@ public class FormController {
 		}
 
 	}
-	
 
 }

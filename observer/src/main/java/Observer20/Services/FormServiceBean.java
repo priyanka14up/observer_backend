@@ -1605,19 +1605,18 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 			return formMap;
 			
 		}
-
-//		@Override
-//		public List<FormStatus> allFormsStatus() throws HandledException {
-//			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
-//			formStatusList = formStatusRepo.findAll();
-//			return formStatusList;
-//		}
-//		
-//		@Override
-//		public List<FormStatus> allFormsStatusByState(String stateCode) throws HandledException {
-//			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
-//			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
-//			return formStatusList;
-//		}
+		@Override
+		public List<FormStatus> allFormsStatus() throws HandledException {
+			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
+			formStatusList = formStatusRepo.findAll();
+			return formStatusList;
+		}
 		
+		@Override
+		public List<FormStatus> allFormsStatusByState(String stateCode) throws HandledException {
+			List<FormStatus> formStatusList = new ArrayList<FormStatus>();
+			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
+			return formStatusList;
+		}
+
 }

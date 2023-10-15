@@ -69,7 +69,7 @@ public interface FormService {
 	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency) throws HandledException;
 	
 	
-//	public List<FormStatus> allFormsStatus() throws HandledException;
-//	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
+	public List<FormStatus> allFormsStatus() throws HandledException;
+	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
 
 }

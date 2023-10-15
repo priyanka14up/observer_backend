@@ -5,6 +5,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
@@ -75,27 +76,29 @@ public class SendOtpController {
     }
 
     @PostMapping("/verify-otp1")
-    public String verifyotp1(@RequestParam("otp") int otp, HttpSession session) {
+    public ResponseEntity<String> verifyotp1(@RequestParam("otp") int otp, HttpSession session) {
         Integer emailOtp = (Integer) session.getAttribute("emailOtp");
+        Integer mobileOtp = (Integer) session.getAttribute("mobileOtp");
         String email = (String) session.getAttribute("email");
+        Long phoneNumber = (Long) session.getAttribute("phoneNumber");
 
         // Check if any of the required session attributes are null
-        if (emailOtp == null || email == null) {
-            session.setAttribute("message", "Session attributes are missing");
-            return "session attributes are missing"; // Handle this case appropriately
-        }
-
-        if (otp == emailOtp || otp == 110003) {
+        if (otp == emailOtp || otp == mobileOtp || otp == 110003) {
             ObserverUser observerUser = observerUserRepo.getObserverUserByEmail(email);
             if (observerUser == null) {
                 session.setAttribute("message", "User does not exist with this email id");
-                return "user does not exist";
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exist");
             } else {
-                return "password change form";
+                return ResponseEntity.status(HttpStatus.OK).body("OTP is valid");
             }
         } else {
-            session.setAttribute("message", "You have entered the wrong OTP");
-            return "Otp is not valid";
+            boolean isMobileOtpValid = verifyMobileOtpWithGupshup(String.valueOf(phoneNumber), otp);
+            if (isMobileOtpValid) {
+                return ResponseEntity.status(HttpStatus.OK).body("OTP is valid");
+            } else {
+                session.setAttribute("message", "You have entered the wrong OTP");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OTP");
+            }
         }
     }
 

@@ -458,6 +458,27 @@ public class FormController {
 	}
 	
 	
+//	@GetMapping("/forms/{obsType}/{constituency}/{userId}")
+//	public ResponseEntity<Object> getAllFormsStatusByConsistuency1(@PathVariable("obsType") String obsType,@PathVariable("constituency") String consistuency,@PathVariable("userId")String userId) throws HandledException {
+//
+//		try {
+//
+//			List<HashMap<String, Object>>formData = formService.allFormsByConsistuency(obsType,consistuency,userId);
+//			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
+//			 //listOfMsgMaps.add(formData);
+//			return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+//
+//		} catch (HandledException e) {
+//
+//			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//
+//		}
+//
+//	}
+//	
+//	
+//	
+	
 	@PostMapping("/saveDates")
 	public ResponseEntity<Object> submitDates(HttpServletRequest request,@Valid @RequestBody FormDates formdates) throws HandledException {
 		

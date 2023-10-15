@@ -313,7 +313,8 @@ public class FormServiceBean implements FormService {
 
 		@Override
 		public List<Question> allQuestionsBySid(Long sid) throws HandledException {
-			List<Question> questions=questionRepo.findQuestionsBySubformSid(sid);
+			List<Question> questions=questionRepo.findQuestionsBySubformSidAndOrderByQid(sid);
+			
 			if(questions.size()!=0)
 			{
 				return questions;

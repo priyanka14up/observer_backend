@@ -1543,11 +1543,10 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
     // Fetch AC_LIST details based on acNameEn
     AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEn(constituency);
-
     if (acDetails != null) {
         // Assuming you have dist_no_hdqt in AC_LIST
         String distNoHdqt = acDetails.getDistNoHdqtr();
-
+        String acNo=acDetails.getAcNo();
         // Fetch dist_name based on dist_no_hdqt from dist_list
         DIST_LIST2 distDetails = dIST_LIST_REPO2.findByDistNoAndStCode(distNoHdqt, acDetails.getStCode());
 
@@ -1560,10 +1559,10 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
             if (stateDetails != null) {
                state= stateDetails.getStName();
-              formMap.put("ObserverNameAndCode",name+","+userid);
-   			formMap.put("Email",email);
-   			formMap.put("Constituency",constituency);
-   			formMap.put("DistrictAndState",district+","+state);
+              formMap.put("NameOfObserverAndCode",name+","+userid);
+   			formMap.put("EmailId",email);
+   			formMap.put("NumberAndNameOfConstituency",constituency);
+   			formMap.put("NameOfTheDistrictAndState",district+","+state);
    			formMap.put("MobileNo",mobile);
    			formMap.put("FaxNo",fax);
 //   			formMap.put("State",state);

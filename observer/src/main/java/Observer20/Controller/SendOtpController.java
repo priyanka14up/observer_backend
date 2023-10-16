@@ -1,6 +1,8 @@
 package Observer20.Controller;
 
 
+import java.util.Date;
+
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,9 +59,10 @@ public class SendOtpController {
         int min = 1000;
         int max = 9999;
         int otp = (int) (Math.random() * (max - min + 1) + min);
-
-        String smsMessage = "OTP From Observer Portal, Kindly don't share it with anyone. " + otp;
-
+        Date currentDate = new Date();
+       // String smsMessage = "OTP From Observer Portal, Kindly don't share it with anyone. " + otp;
+       // String smsMessage = "Your OTP is " + otp + " for Observer Portal, generated on " + currentDate + " Kindly don't share it with anyone.";
+        String smsMessage = "Your OTP is <strong>" + otp + "</strong> for Observer Portal, generated on " + currentDate + ". Kindly don't share it with anyone.";
         boolean gupshupApiSuccess = sendOtpViaGupshupApi(observerUser.getMobnum(), smsMessage);
         boolean emailServiceSuccess = sendOtpViaEmail(observerUser.getEmail(), "Your OTP Code", smsMessage);
 
@@ -80,7 +83,7 @@ public class SendOtpController {
         Integer emailOtp = (Integer) session.getAttribute("emailOtp");
         Integer mobileOtp = (Integer) session.getAttribute("mobileOtp");
         String email = (String) session.getAttribute("email");
-        Long phoneNumber = (Long) session.getAttribute("phoneNumber");
+        Long phoneNumber = (Long) session.getAttribute("mobnum");
 
         // Check if any of the required session attributes are null
         if (otp == emailOtp || otp == mobileOtp || otp == 110003) {
@@ -104,32 +107,33 @@ public class SendOtpController {
 
 
 
+    	public boolean sendOtpViaGupshupApi(long mobnum, String smsMessage) {
+            try {
+                String formattedUrl = String.format("https://enterprise.smsgupshup.com/GatewayAPI/rest?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=91%d&msg=Your%%20OTP%%20code%%20is%%20%s&format=text&otpCodeLength=4&otpCodeType=NUMERIC",
+                        gupshupUserId, gupshupPassword, mobnum, smsMessage);
 
-    public boolean sendOtpViaGupshupApi(long phoneNumber, String smsMessage) {
-        try {
-            String formattedUrl = String.format("%s?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=%s&msg=%s&format=text&otpCodeLength=4&otpCodeType=NUMERIC",
-                    gupshupApiUrl, gupshupUserId, gupshupPassword, "91" + phoneNumber, smsMessage);
+                ResponseEntity<String> response = restTemplate.getForEntity(formattedUrl, String.class);
 
-            ResponseEntity<String> response = restTemplate.getForEntity(formattedUrl, String.class);
-
-            if (response.getStatusCode().is2xxSuccessful()) {
-                System.out.println("Gupshup API Response: " + response.getBody());
-                return true;
-            } else {
-                System.out.println("Gupshup API Error: " + response.getBody());
+                if (response.getStatusCode().is2xxSuccessful()) {
+                    System.out.println("Gupshup API Response: " + response.getBody());
+                    return true;
+                } else {
+                    System.out.println("Gupshup API Error: " + response.getBody());
+                    return false;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
                 return false;
             }
-        } catch (Exception e) {
-            e.printStackTrace(); // Log the exception for debugging
-            return false;
         }
-    }
+    
     private boolean sendOtpViaEmail(String email, String subject, String message) {
         return emailService.sendEmail(subject, message, email);
     }
-    public boolean verifyMobileOtpWithGupshup(String phoneNumber, int otp) {
-        String apiUrl = String.format("%s?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=%s&otp_code=%d",
-                gupshupApiUrl, gupshupUserId, gupshupPassword, "91" + phoneNumber, otp);
+    public boolean verifyMobileOtpWithGupshup(String mobnum, int otp) {
+    	String apiUrl = String.format("https://enterprise.smsgupshup.com/GatewayAPI/rest?userid=%s&password=%s&method=TWO_FACTOR_AUTH&v=1.1&phone_no=91%s&otp_code=%d",
+                gupshupUserId, gupshupPassword, mobnum, otp);
+
 
         try {
             String response = restTemplate.getForObject(apiUrl, String.class);

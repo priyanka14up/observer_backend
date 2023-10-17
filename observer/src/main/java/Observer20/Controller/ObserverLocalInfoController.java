@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import Observer20.Exception.ApiException;
 import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverLocalInfo;
 import Observer20.Model.ObserverLocalInfoRequest;
@@ -29,7 +30,7 @@ import Observer20.Services.ObserverService;
 import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.ACRequest;
 import Observer20.payloads.MElectionDetailsDataDTO;
-
+import Observer20.payloads.ObsAllotDTO;
 import Observer20.payloads.ObserverLocalInfoDTO;
 import Observer20.payloads.ObserverUserDto;
 import Observer20.payloads.ObserverUserDtoUpdation;
@@ -112,6 +113,13 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
 		          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		      }
 		  }
+		  @GetMapping("DeployStatus/{obsCode}")
+		    public ResponseEntity<List<ObsAllotDTO>> getObsAllotByObscode1(@PathVariable String obsCode) {
+		       
+		            List<ObsAllotDTO> obsAllotList = t_Allot_Group_Servcie.getObsAllotByObscode1(obsCode);
+		            return ResponseEntity.ok(obsAllotList);
+		        }
+		  
 }
 		
 

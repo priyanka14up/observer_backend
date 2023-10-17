@@ -5,6 +5,7 @@ import java.util.Map;
 
 import Observer20.Model.Obs_Allot;
 import Observer20.payloads.MElectionDetailsDataDTO;
+import Observer20.payloads.ObsAllotDTO;
 
 
 
@@ -14,6 +15,7 @@ public interface T_Allot_Group_Servcie {
 	MElectionDetailsDataDTO getElectionData(String obsCode);
 	
 	Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn);
+	List<ObsAllotDTO> getObsAllotByObscode1(String obsCode);
 	
 	
 

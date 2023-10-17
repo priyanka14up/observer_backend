@@ -23,10 +23,12 @@ import Observer20.Model.PC_AC_DIST2;
 import Observer20.Model.STATE_LIST2;
 import Observer20.Model1.T_ALLOT_GROUP;
 import Observer20.Repo1.T_ALLOT_GROUP_REPO;
-
+import Observer20.Security.CustomUserDetailsService;
+import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.MElectionDetailsDataDTO;
-
+import Observer20.payloads.ObsAllotDTO;
+import Observer20.payloads.ObserverUserDto;
 import Observer20.repository.AC_LIST2_REPO2;
 import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.MElectionDetailsREPO2;
@@ -35,6 +37,9 @@ import Observer20.repository.Obs_AllotREPO;
 import Observer20.repository.ObserverUserRepo;
 import Observer20.repository.PC_AC_DIST_REPO2;
 import Observer20.repository.STATE_LIST2_Repo;
+import Observer20.Model.MElectionSchedule2;
+import Observer20.Model.M_ELECTION_DETAILS2;
+
 
 @Service
 public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
@@ -56,6 +61,11 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	  @Autowired MElectionScheduleREPO2 mElectionScheduleREPO2;
 	  
 	  @Autowired MElectionDetailsREPO2 mElectionDetailsREPO2;
+	  @Autowired
+		JwtTokenHelper jwtTokenHelper;
+		
+		 @Autowired private CustomUserDetailsService userDetailsService;
+		 @Autowired
 	  
 	 
 
@@ -79,6 +89,58 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 		newEntity.setCURRENTELECTION(source.getCURRENTELECTION());
 
 		return newEntity;
+	}
+
+	private Obs_Allot dtoToUser(ObsAllotDTO obsAllotDTO) {
+
+		Obs_Allot obs_Allot = new Obs_Allot();
+		obs_Allot.setObscode(obsAllotDTO.getObscode());
+		obs_Allot.setConstType(obsAllotDTO.getConstType());
+		obs_Allot.setElectionType(obsAllotDTO.getElectionType());
+		obs_Allot.setDatePoll(obsAllotDTO.getDatePoll());
+		obs_Allot.setSt_Code(obsAllotDTO.getStCode());
+		obs_Allot.setScheduleID(obsAllotDTO.getScheduleID());
+		obs_Allot.setOBFromDate(obsAllotDTO.getOBFromDate());
+		obs_Allot.setOBToDate(obsAllotDTO.getOBToDate());
+		obs_Allot.setAc_No(obsAllotDTO.getAcNo());
+		obs_Allot.setDIST_NAME(obsAllotDTO.getDistName());
+		
+		obs_Allot.setStName(obsAllotDTO.getStName());
+		
+		obs_Allot.setAcNameEn(obsAllotDTO.getAcName());
+		obs_Allot.setDistNo(obsAllotDTO.getDistNo());
+		
+		
+		
+		
+		
+
+		return obs_Allot;
+	}
+
+	public ObsAllotDTO userToDto(Obs_Allot obs_Allot) {
+
+		ObsAllotDTO obsAllotDTO = new ObsAllotDTO();
+		obsAllotDTO.setObscode(obs_Allot.getObscode());
+		obsAllotDTO.setConstType(obs_Allot.getConstType());
+		obsAllotDTO.setElectionType(obs_Allot.getElectionType());
+		obsAllotDTO.setDatePoll(obs_Allot.getDatePoll());
+		
+		obsAllotDTO.setStCode(obs_Allot.getSt_Code());
+		obsAllotDTO.setScheduleID(obs_Allot.getScheduleID());
+		
+		obsAllotDTO.setOBFromDate(obs_Allot.getOBFromDate());
+		obsAllotDTO.setOBToDate(obs_Allot.getOBToDate());
+		obsAllotDTO.setAcNo(obs_Allot.getAc_No());
+		obsAllotDTO.setDistName(obs_Allot.getDistNameEn());
+		
+		obsAllotDTO.setStName(obs_Allot.getStName());
+		obsAllotDTO.setAcName(obs_Allot.getAcNameEn());
+		obsAllotDTO.setDistNo(obs_Allot.getDistNo());
+		
+		
+
+		return obsAllotDTO;
 	}
 
 	
@@ -258,10 +320,102 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	        return resultMap;
 	    }
 
+			  
 		
-	}
+		
 
+		 public List<ObsAllotDTO> getObsAllotByObscode1(String obsCode) {
+		        List<Obs_Allot> obsAllotList = obs_AllotREPO.findAllByObscode(obsCode);
+		        List<ObsAllotDTO> obsAllotDTOList = new ArrayList<>();
 
-	  
-	    
-	
+		        if (obsAllotList != null && !obsAllotList.isEmpty()) {
+		            for (Obs_Allot obsAllot : obsAllotList) {
+		                ObsAllotDTO obsAllotDTO = new ObsAllotDTO();
+
+		                // Populate ObsAllotDTO fields
+		                obsAllotDTO.setObscode(obsAllot.getObscode());
+		                obsAllotDTO.setAcNo(obsAllot.getAc_No());
+		                // ... populate other fields of ObsAllotDTO ...
+
+		                // Fetch additional data and populate ObsAllotDTO
+		                String stCode1 = obsAllot.getSt_Code();
+		                String acNo1 = obsAllot.getAc_No();
+
+		                // Fetch AC names using AC_NO and St_Code
+		                List<AC_LIST2> acList = aC_LIST2_REPO2.findAllByStCodeAndAcNo(stCode1, acNo1);
+		                StringBuilder acNames = new StringBuilder();
+
+		                if (acList != null && !acList.isEmpty()) {
+		                    for (AC_LIST2 ac : acList) {
+		                        acNames.append(ac.getAcNameEn()).append(", ");
+		                    }
+
+		                    if (acNames.length() > 0) {
+		                        acNames.setLength(acNames.length() - 2);
+		                        obsAllotDTO.setAcNo(acNames.toString());
+		                    } else {
+		                        obsAllotDTO.setAcNo("AC Name Not Found");
+		                    }
+
+		                    // Fetch dist_no from AC_LIST2 table
+		                    String distNo = acList.get(0).getDistNoHdqtr();
+
+		                    // Fetch dist_name based on dist_no and st_code
+		                    DIST_LIST2 distList = dIST_LIST_REPO2.findByDistNoAndStCode(distNo, stCode1);
+
+		                    if (distList != null) {
+		                        obsAllotDTO.setDistName(distList.getDistNameEn());
+		                    } else {
+		                        obsAllotDTO.setDistName("District Name Not Found");
+		                    }
+		                } else {
+		                    obsAllotDTO.setAcNo("AC No. Not Found");
+		                }
+
+		                // Fetch state name using ST_CODE
+		                STATE_LIST2 stateList2 = sTATE_LIST2_Repo.findByStCode(stCode1);
+		                if (stateList2 != null) {
+		                    obsAllotDTO.setStName(stateList2.getStName());
+		                } else {
+		                    obsAllotDTO.setStName("State Not Found");
+		                }
+
+		                // Fetch data from observerUserRepo and populate ObsAllotDTO
+		                ObserverUser observerUser1 = observerUserRepo.findByObscode(obsCode);
+		                if (observerUser1 != null) {
+		                    obsAllotDTO.setOBFromDate(observerUser1.getOBFromDate());
+		                    obsAllotDTO.setOBToDate(observerUser1.getOBToDate());
+		                    //obsAllotDTO.setOBImage(observerUser1.getOB_image());
+		                    // ... populate other fields of ObsAllotDTO from observerUser1 ...
+		                } else {
+		                    obsAllotDTO.setOBFromDate(null);
+		                    obsAllotDTO.setOBToDate(null);
+		                }
+
+		                // Fetch data from M_election_schedule and populate ObsAllotDTO
+		                Long scheduleId = obsAllot.getScheduleID();
+		                MElectionSchedule2 electionSchedule = mElectionScheduleREPO2.findByScheduleID(scheduleId);
+		                if (electionSchedule != null) {
+		                    obsAllotDTO.setDatePoll(electionSchedule.getDatePoll());
+		                } else {
+		                    obsAllotDTO.setDatePoll(null);
+		                }
+
+		                // Fetch data from M_election_details2 and populate ObsAllotDTO
+		                M_ELECTION_DETAILS2 electionDetails = mElectionDetailsREPO2.findByScheduleID(scheduleId);
+		                if (electionDetails != null) {
+		                    obsAllotDTO.setConstType(electionDetails.getConstType());
+		                    obsAllotDTO.setElectionType(electionDetails.getElectionType());
+		                } else {
+		                    obsAllotDTO.setConstType("Const Type Not Found");
+		                    obsAllotDTO.setElectionType("Election Type Not Found");
+		                }
+
+		                obsAllotDTOList.add(obsAllotDTO);
+		            }
+		            return obsAllotDTOList;
+		        } else {
+		            throw new ApiException("Observer with obscode " + obsCode + " not found.");
+		        }
+		    }
+		}

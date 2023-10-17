@@ -32,6 +32,8 @@ public interface DraftAnswerRepo extends JpaRepository<DraftAnswer, Long>{
 	    void deleteByFid(@Param("fid") Long fid);
 	 
 	 
+	 void deleteAllBySubmittedByAndFid(String obsCode,Long fid);
+	 
 //	 @Query("SELECT DISTINCT a.subformId FROM Answer a " +
 //	           "WHERE a.formId = ?1 AND a.submittedBy = ?2")
 //	    List<Long> findDistinctSubformIdsByFormIdAndSubmittedBy(Long formId, String submittedBy);

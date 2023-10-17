@@ -302,15 +302,15 @@ public class FormServiceBean implements FormService {
 		public Form createForm(HttpServletRequest request, @Valid Form form)throws HandledException
 		{	
 			
-		        // Set the form reference in subforms
+		        
 		        form.getSubforms().forEach(subform -> subform.setForm(form));
 
-		        // Set the subform reference in questions
+		       
 		        form.getSubforms().forEach(subform -> {
 		            subform.getQuestions().forEach(question -> question.setSubform(subform));
 		        });
 
-		        // Save the form to the database
+		       
 		        return formServiceRepo.save(form);
 		    
 		}
@@ -1641,5 +1641,65 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
 			return formStatusList;
 		}
+		
+		@Override
+		public Map<String, Boolean> deleteSubmittedForm(String obsCode) throws HandledException 
+		{
+			     
+//			      List<FormStatus> formStatuses=formStatusRepo.findAllBySubmittedBy(obsCode);
+//			      List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllBySubmittedBy(obsCode);
+//			      List<FinalSubmitAnswer> finalSubmitAnswers=finalSubmitAnswerRepo.findAllBySubmittedBy(obsCode);
+//			        
+//			      for(FormStatus formStatus:formStatuses)     
+//			      {
+//			    	  if(formStatus!=null)
+//			            {
+//			            	if(formStatus.isStatus()==false)
+//			            {
+//			            	 draftAnswerRepo.deleteAll(draftAnswers);
+//			            }
+//			            else
+//			            {
+//			            	finalSubmitAnswerRepo.deleteAll(finalSubmitAnswers);
+//			            }
+//			            
+//			            	formStatusRepo.delete(formStatus);
+//			            	 
+//				            HashMap<String, Boolean> response = new HashMap<>();
+//							 response.put("deleted", Boolean.TRUE);
+//							 return response;
+//			            }
+//			            else
+//			            {
+//			            	 throw new HandledException("CHECK_PARAMETERS", "status not found");
+//			            }
+//			            
+//			            
+//			      }
+			     
+		    List<FormStatus> formStatuses = formStatusRepo.findAllBySubmittedBy(obsCode);
+	        if (formStatuses.isEmpty()) {
+	            throw new HandledException("CHECK_PARAMETERS", "No records found for the observer code.");
+	        }
+
+	        for (FormStatus formStatus : formStatuses) {
+	            Long formId = formStatus.getFid();
+
+	            // Delete draftAnswers
+	            draftAnswerRepo.deleteAllBySubmittedByAndFid(obsCode, formId);
+
+	            // Delete finalSubmitAnswers
+	            finalSubmitAnswerRepo.deleteAllBySubmittedByAndFid(obsCode, formId);
+
+	            // Delete the FormStatus entity
+	            formStatusRepo.delete(formStatus);
+	          
+	        }
+	        HashMap<String, Boolean> response = new HashMap<>();
+			 response.put("deleted", Boolean.TRUE);
+				 return response; 
+			   
+		}
+		
 
 }

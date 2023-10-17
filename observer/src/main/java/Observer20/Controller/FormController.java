@@ -2,6 +2,7 @@
 package Observer20.Controller;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -585,6 +586,23 @@ public class FormController {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 		}
     }
+	
+	 @Transactional
+	@DeleteMapping("/deleteSubmittedForm/{obsCode}")
+    public ResponseEntity<Object> deleteSubmittedForm(@PathVariable String obsCode) {
+       
+        
+        try {
+
+			Map<String, Boolean> messageData = formService.deleteSubmittedForm(obsCode);
+			return ResponseHandler.generateResponse("deleted successfully", HttpStatus.OK, messageData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+    }
+	
 	@GetMapping("/form/{userId}/{sid}")
 	public ResponseEntity<Object> getFormsStatusByConsistuency(@PathVariable("userId")String userId,@PathVariable("sid")Long sid) throws HandledException {
 

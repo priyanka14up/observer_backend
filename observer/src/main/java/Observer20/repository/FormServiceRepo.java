@@ -10,7 +10,11 @@ import Observer20.Model.Question;
 
 @Repository
 public interface FormServiceRepo extends JpaRepository<Form, Long>{
+	//List<Form> findAllByObsTypeOrderBySequence(String obsType);
+	
 	List<Form> findAllByObsType(String obsType);
+	
+	
 	//List<Question> findAllById(Long formId);
 	
 	//Form findById(Long id);

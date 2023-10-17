@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twilio.rest.api.v2010.account.Message;
 
 import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.AnswerDto;
@@ -24,6 +25,7 @@ import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
 import Observer20.Model.FormDates;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Messages;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -685,4 +687,17 @@ public class FormController {
 
 	}
 
+	@PostMapping("/saveMessages")
+	public ResponseEntity<Object> saveMessages(HttpServletRequest request,@Valid @RequestBody Messages messages) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitMessages(request,messages);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
 }

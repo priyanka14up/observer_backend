@@ -56,6 +56,7 @@ import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Messages;
 import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverUser;
 //import Observer20.repository.AnswerRepo;
@@ -73,6 +74,7 @@ import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FormDatesRepo;
 import Observer20.repository.FormStatusRepo;
+import Observer20.repository.MessagesRepo;
 import Observer20.repository.Obs_AllotREPO;
 import Observer20.repository.ObserverUserRepo;
 
@@ -122,6 +124,10 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	DIST_LIST_REPO2 dIST_LIST_REPO2;
+	
+	@Autowired
+	MessagesRepo messagesRepo;
+	
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -1700,6 +1706,47 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 				 return response; 
 			   
 		}
+		
+		
+		@Override
+		public HashMap<String, Object> submitMessages(HttpServletRequest request, Messages messages)
+				throws HandledException {
+
+			
+			Messages existedMessage=messagesRepo.findByObsCodeAndMsgTextAndDate(messages.getObsCode(),messages.getMsgText(),messages.getDate());
+		//Form//Dates formDatesInDB=formDatesRepo.findByFidAndObsType(formDates.getFid(),formDates.getObsType());
+			HashMap<String, Object> MessagesMap = new HashMap<>();
+			
+			if (existedMessage == null) {
+				
+				messagesRepo.save(messages);
+				
+				MessagesMap = customResponseMessages(messages);
+				
+			}else {
+				
+				throw new HandledException("CHECK_PARAMETERS", "Already existed");
+			}
+			
+			return MessagesMap;
+			
+			
+		}
+		private HashMap<String, Object> customResponseMessages( Messages messages) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("MessageId",messages.getId());
+			msgMap.put("MessageText",messages.getMsgText());
+			msgMap.put("ObsCode",messages.getObsCode());
+			msgMap.put("Date",messages.getDate());
+			
+			
+			return msgMap;
+			
+		}
+
+		
 		
 
 }

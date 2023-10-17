@@ -39,6 +39,9 @@ public class Form {
 	 @OneToMany(mappedBy = "form", cascade = CascadeType.ALL)
 	    private List<SubForm> subforms = new ArrayList<>();
 	 
+//	 @Column(name = "sequence",nullable=false)
+//	    private  Long sequence;
+	 
 	
 	public Long getId() {
 		return id;
@@ -78,6 +81,9 @@ public class Form {
 	}
 
 	
+	
+	
+
 	
 	
 	

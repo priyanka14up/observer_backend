@@ -19,4 +19,5 @@ public interface FinalSubmitAnswerRepo extends JpaRepository<FinalSubmitAnswer, 
 	    List<Long> findDistinctSIdsByFidAndSubmittedBy(Long fid, String submittedBy);
 	 List<FinalSubmitAnswer> findAllByFid(Long fid);
 	 //List<FinalSubmitAnswer> findBySid(Long sid);
+	 void deleteAllBySubmittedByAndFid(String obsCode,Long fid);
 }

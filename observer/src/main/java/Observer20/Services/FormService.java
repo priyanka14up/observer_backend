@@ -14,6 +14,7 @@ import Observer20.Exception.HandledException;
 import Observer20.Model.Form;
 import Observer20.Model.FormDates;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Messages;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -66,7 +67,11 @@ public interface FormService {
 	Map<String, Boolean> deleteForm(Long fid)throws HandledException;
 	public boolean FormByConsistuency(String userId,Long sid)throws HandledException;
 	public List allDownload() throws HandledException;
-	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency) throws HandledException;
+	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,Long fid) throws HandledException;
+	//delete submitted forms
+	Map<String, Boolean> deleteSubmittedForm(String obsCode)throws HandledException;
+	//for submitting messages
+	HashMap<String, Object> submitMessages(HttpServletRequest request,Messages messages) throws HandledException;
 	
 	
 	public List<FormStatus> allFormsStatus() throws HandledException;

@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
+import Observer20.Model.Question;
 
 public interface DraftAnswerRepo extends JpaRepository<DraftAnswer, Long>{
 	
@@ -29,7 +30,10 @@ public interface DraftAnswerRepo extends JpaRepository<DraftAnswer, Long>{
 	    @Modifying
 	    @Query("DELETE FROM DraftAnswer da WHERE da.form.id = :fid")
 	    void deleteByFid(@Param("fid") Long fid);
-	    
+	 
+	 
+	 void deleteAllBySubmittedByAndFid(String obsCode,Long fid);
+	 
 //	 @Query("SELECT DISTINCT a.subformId FROM Answer a " +
 //	           "WHERE a.formId = ?1 AND a.submittedBy = ?2")
 //	    List<Long> findDistinctSubformIdsByFormIdAndSubmittedBy(Long formId, String submittedBy);

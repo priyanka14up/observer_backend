@@ -2,6 +2,7 @@
 package Observer20.Controller;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twilio.rest.api.v2010.account.Message;
 
 import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.AnswerDto;
@@ -23,6 +25,7 @@ import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.Form;
 import Observer20.Model.FormDates;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Messages;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
 import Observer20.Model.Response;
@@ -585,19 +588,31 @@ public class FormController {
 			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 		}
     }
+	
+	 @Transactional
+	@DeleteMapping("/deleteSubmittedForm/{obsCode}")
+    public ResponseEntity<Object> deleteSubmittedForm(@PathVariable String obsCode) {
+       
+        
+        try {
+
+			Map<String, Boolean> messageData = formService.deleteSubmittedForm(obsCode);
+			return ResponseHandler.generateResponse("deleted successfully", HttpStatus.OK, messageData);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+    }
+	
 	@GetMapping("/form/{userId}/{sid}")
 	public ResponseEntity<Object> getFormsStatusByConsistuency(@PathVariable("userId")String userId,@PathVariable("sid")Long sid) throws HandledException {
 
 		try {
 
 			boolean result = formService.FormByConsistuency(userId,sid);
-			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
-			 //listOfMsgMaps.add(formData);
-			
 			
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-
-			//return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
 
 		} catch (HandledException e) {
 
@@ -623,11 +638,11 @@ public class FormController {
 
 	}
 	
-	@GetMapping("/arrivalDeparture/{userid}/{constituency}")
-	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency) throws HandledException {
+	@GetMapping("/arrivalDeparture/{userid}/{constituency}/{fid}")
+	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency,@PathVariable("fid")Long fid) throws HandledException {
 		try {
 			
-		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency);
+		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency,fid);
 	
 		
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
@@ -672,4 +687,17 @@ public class FormController {
 
 	}
 
+	@PostMapping("/saveMessages")
+	public ResponseEntity<Object> saveMessages(HttpServletRequest request,@Valid @RequestBody Messages messages) throws HandledException {
+		
+	try {
+		HashMap<String, Object> result=formService.submitMessages(request,messages);
+		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+	} catch (HandledException e) {
+
+		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+	}
+}
+	
 }

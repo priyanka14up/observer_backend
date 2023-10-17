@@ -56,6 +56,7 @@ import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FormStatus;
+import Observer20.Model.Messages;
 import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverUser;
 //import Observer20.repository.AnswerRepo;
@@ -73,6 +74,7 @@ import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FormDatesRepo;
 import Observer20.repository.FormStatusRepo;
+import Observer20.repository.MessagesRepo;
 import Observer20.repository.Obs_AllotREPO;
 import Observer20.repository.ObserverUserRepo;
 
@@ -122,6 +124,10 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	DIST_LIST_REPO2 dIST_LIST_REPO2;
+	
+	@Autowired
+	MessagesRepo messagesRepo;
+	
 	
 	@Override
 	public List allForms() throws HandledException {
@@ -302,15 +308,15 @@ public class FormServiceBean implements FormService {
 		public Form createForm(HttpServletRequest request, @Valid Form form)throws HandledException
 		{	
 			
-		        // Set the form reference in subforms
+		        
 		        form.getSubforms().forEach(subform -> subform.setForm(form));
 
-		        // Set the subform reference in questions
+		       
 		        form.getSubforms().forEach(subform -> {
 		            subform.getQuestions().forEach(question -> question.setSubform(subform));
 		        });
 
-		        // Save the form to the database
+		       
 		        return formServiceRepo.save(form);
 		    
 		}
@@ -1641,5 +1647,106 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 			formStatusList = formStatusRepo.getAllBySubmittedBy(stateCode);
 			return formStatusList;
 		}
+		
+		@Override
+		public Map<String, Boolean> deleteSubmittedForm(String obsCode) throws HandledException 
+		{
+			     
+//			      List<FormStatus> formStatuses=formStatusRepo.findAllBySubmittedBy(obsCode);
+//			      List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllBySubmittedBy(obsCode);
+//			      List<FinalSubmitAnswer> finalSubmitAnswers=finalSubmitAnswerRepo.findAllBySubmittedBy(obsCode);
+//			        
+//			      for(FormStatus formStatus:formStatuses)     
+//			      {
+//			    	  if(formStatus!=null)
+//			            {
+//			            	if(formStatus.isStatus()==false)
+//			            {
+//			            	 draftAnswerRepo.deleteAll(draftAnswers);
+//			            }
+//			            else
+//			            {
+//			            	finalSubmitAnswerRepo.deleteAll(finalSubmitAnswers);
+//			            }
+//			            
+//			            	formStatusRepo.delete(formStatus);
+//			            	 
+//				            HashMap<String, Boolean> response = new HashMap<>();
+//							 response.put("deleted", Boolean.TRUE);
+//							 return response;
+//			            }
+//			            else
+//			            {
+//			            	 throw new HandledException("CHECK_PARAMETERS", "status not found");
+//			            }
+//			            
+//			            
+//			      }
+			     
+		    List<FormStatus> formStatuses = formStatusRepo.findAllBySubmittedBy(obsCode);
+	        if (formStatuses.isEmpty()) {
+	            throw new HandledException("CHECK_PARAMETERS", "No records found for the observer code.");
+	        }
+
+	        for (FormStatus formStatus : formStatuses) {
+	            Long formId = formStatus.getFid();
+
+	            // Delete draftAnswers
+	            draftAnswerRepo.deleteAllBySubmittedByAndFid(obsCode, formId);
+
+	            // Delete finalSubmitAnswers
+	            finalSubmitAnswerRepo.deleteAllBySubmittedByAndFid(obsCode, formId);
+
+	            // Delete the FormStatus entity
+	            formStatusRepo.delete(formStatus);
+	          
+	        }
+	        HashMap<String, Boolean> response = new HashMap<>();
+			 response.put("deleted", Boolean.TRUE);
+				 return response; 
+			   
+		}
+		
+		
+		@Override
+		public HashMap<String, Object> submitMessages(HttpServletRequest request, Messages messages)
+				throws HandledException {
+
+			
+			Messages existedMessage=messagesRepo.findByObsCodeAndMsgTextAndDate(messages.getObsCode(),messages.getMsgText(),messages.getDate());
+		//Form//Dates formDatesInDB=formDatesRepo.findByFidAndObsType(formDates.getFid(),formDates.getObsType());
+			HashMap<String, Object> MessagesMap = new HashMap<>();
+			
+			if (existedMessage == null) {
+				
+				messagesRepo.save(messages);
+				
+				MessagesMap = customResponseMessages(messages);
+				
+			}else {
+				
+				throw new HandledException("CHECK_PARAMETERS", "Already existed");
+			}
+			
+			return MessagesMap;
+			
+			
+		}
+		private HashMap<String, Object> customResponseMessages( Messages messages) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("MessageId",messages.getId());
+			msgMap.put("MessageText",messages.getMsgText());
+			msgMap.put("ObsCode",messages.getObsCode());
+			msgMap.put("Date",messages.getDate());
+			
+			
+			return msgMap;
+			
+		}
+
+		
+		
 
 }

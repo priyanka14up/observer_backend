@@ -29,7 +29,7 @@ public class Question {
 	@Column(columnDefinition = "TEXT",name = "ques_name",nullable=false)
     private String qname;
 	
-	@Column(name = "ques_serial",nullable=false)
+	@Column(name = "ques_serial")
     private String qserial;
 	
 	

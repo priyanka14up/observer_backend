@@ -1,5 +1,6 @@
 package Observer20.Services;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -199,7 +200,10 @@ public class FormServiceBean implements FormService {
 			
 			List<Form> FormForGeneral=new ArrayList<Form>();
 			try{
-				 FormForGeneral=formServiceRepo.findAllByObsType(obsType);
+	FormForGeneral=formServiceRepo.findAllByObsType(obsType);
+				//FormForGeneral=formServiceRepo.findAllByObsTypeOrderBySequence(obsType);
+				 
+				 
 				 Collections.sort(FormForGeneral, new FormComparator());
 			}catch(Exception e) {
 				
@@ -813,8 +817,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			        	
 			             qid = updatedAnswer.getQid();
 			            
-			            //finding sid from qid
-			            
+			          
 			             sid=questionRepo.findSubformSidByQid(qid);
 		           
 	             fid=subFormRepo.findFormIdBySid(sid);
@@ -823,10 +826,10 @@ ResponseMap.put("remarks",response.getRemarks());
 			            existingAnswer = draftAnswerRepo.findByQid(qid);
 
 			            if (existingAnswer != null && (!updatedAnswer.getAnswer().equals(existingAnswer.getAnswer())|| !updatedAnswer.getRemarks().equals(existingAnswer.getRemarks()))) {
-			                // Update the existing draft answer with new data
+			                
 			                existingAnswer.setAnswer(updatedAnswer.getAnswer());
 			                existingAnswer.setRemarks(updatedAnswer.getRemarks());
-			                // You can update other fields if needed
+			              
 
 			                draftAnswerRepo.save(existingAnswer);
 			                
@@ -837,7 +840,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			    } catch (Exception e) {
 			        throw new HandledException("Exception in updating draft answers", e.getMessage());
 			    }
-			    //return null;   
+			   
 }
 			
 		
@@ -904,7 +907,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		public class FinalAnswerComparator implements Comparator<FinalSubmitAnswer> {
 		    @Override
 		    public int compare(FinalSubmitAnswer answer1, FinalSubmitAnswer answer2) {
-		        // Compare DraftAnswer objects by their question IDs
+		      
 		        return Long.compare(answer1.getQid(), answer2.getQid());
 		    }
 		}
@@ -912,7 +915,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		public class FormComparator implements Comparator<Form> {
 		    @Override
 		    public int compare(Form answer1, Form answer2) {
-		        // Compare DraftAnswer objects by their question IDs
+		        
 		        return Long.compare(answer1.getId(), answer2.getId());
 		    }
 		}
@@ -1094,6 +1097,7 @@ ResponseMap.put("remarks",response.getRemarks());
 				msgMap.put("subformHeading",dtos.get(i).getSubform_heading());
 				
 				msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dtos.get(i).getFinalSubmitAnswers()));
+				
 				
 				listOfMsgMaps.add(msgMap);
 				
@@ -1523,7 +1527,7 @@ private HashMap<String, Object> customResponseDownload( DownloadPdf downloadData
 		}
 
 @Override
-public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency) throws HandledException {
+public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,Long fid) throws HandledException {
 	
 	String state,district;
 	HashMap<String, Object> formMap =  new HashMap<>();
@@ -1543,11 +1547,10 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
     // Fetch AC_LIST details based on acNameEn
     AC_LIST2 acDetails = aC_LIST2_REPO2.findByAcNameEn(constituency);
-
     if (acDetails != null) {
         // Assuming you have dist_no_hdqt in AC_LIST
         String distNoHdqt = acDetails.getDistNoHdqtr();
-
+        String acNo=acDetails.getAcNo();
         // Fetch dist_name based on dist_no_hdqt from dist_list
         DIST_LIST2 distDetails = dIST_LIST_REPO2.findByDistNoAndStCode(distNoHdqt, acDetails.getStCode());
 
@@ -1560,12 +1563,32 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
             if (stateDetails != null) {
                state= stateDetails.getStName();
-              formMap.put("ObserverNameAndCode",name+","+userid);
-   			formMap.put("Email",email);
-   			formMap.put("Constituency",constituency);
-   			formMap.put("DistrictAndState",district+","+state);
-   			formMap.put("MobileNo",mobile);
-   			formMap.put("FaxNo",fax);
+               FormStatus status=formStatusRepo.findByFidAndSubmittedByAndConstituency(fid, userid, constituency);
+               if(status==null)
+               {
+            	   LocalDate currentDate = LocalDate.now();
+            	   Date date = Date.from(currentDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
+            	   formMap.put("DateOfReporting",currentDate);
+            	   formMap.put("NameOfObserverAndCode",name+","+userid);
+          			formMap.put("EmailId",email);
+          			formMap.put("NumberAndNameOfConstituency",constituency);
+          			formMap.put("NameOfTheDistrictAndState",district+","+state);
+          			formMap.put("MobileNo",mobile);
+          			formMap.put("FaxNo",fax);
+               }
+               else
+               {
+            	   Date submissionDate=status.getDate();
+            	   formMap.put("DateOfReporting",submissionDate);
+            	   formMap.put("NameOfObserverAndCode",name+","+userid);
+          			formMap.put("EmailId",email);
+          			formMap.put("NumberAndNameOfConstituency",acNo+","+constituency);
+          			formMap.put("NameOfTheDistrictAndState",district+","+state);
+          			formMap.put("MobileNo",mobile);
+          			formMap.put("FaxNo",fax);
+               }
+               
+              
 //   			formMap.put("State",state);
 //   			formMap.put("District",district);
    			return formMap;

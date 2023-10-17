@@ -591,13 +591,8 @@ public class FormController {
 		try {
 
 			boolean result = formService.FormByConsistuency(userId,sid);
-			 //List<HashMap<String, Object>> listOfMsgMaps = new ArrayList<>();
-			 //listOfMsgMaps.add(formData);
-			
 			
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
-
-			//return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
 
 		} catch (HandledException e) {
 
@@ -623,11 +618,11 @@ public class FormController {
 
 	}
 	
-	@GetMapping("/arrivalDeparture/{userid}/{constituency}")
-	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency) throws HandledException {
+	@GetMapping("/arrivalDeparture/{userid}/{constituency}/{fid}")
+	public ResponseEntity<Object> getArrivalDepartureData(@PathVariable("userid")String userid,@PathVariable("constituency")String constituency,@PathVariable("fid")Long fid) throws HandledException {
 		try {
 			
-		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency);
+		HashMap<String, Object> result=formService.getArrivalDepartureData(userid,constituency,fid);
 	
 		
 			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);

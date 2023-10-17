@@ -66,7 +66,7 @@ public interface FormService {
 	Map<String, Boolean> deleteForm(Long fid)throws HandledException;
 	public boolean FormByConsistuency(String userId,Long sid)throws HandledException;
 	public List allDownload() throws HandledException;
-	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency) throws HandledException;
+	public HashMap<String, Object> getArrivalDepartureData(String userid,String constituency,Long fid) throws HandledException;
 	
 	
 	public List<FormStatus> allFormsStatus() throws HandledException;

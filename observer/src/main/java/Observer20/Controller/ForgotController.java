@@ -7,10 +7,13 @@ import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +22,7 @@ import Observer20.Model.ChangePasswordRequest;
 import Observer20.Model.ChangePasswordRequest1;
 
 import Observer20.Model.ObserverUser;
+import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.EmailService;
 import Observer20.payloads.EmailRequest;
 import Observer20.repository.ObserverUserRepo;
@@ -98,15 +102,22 @@ public class ForgotController {
 	}
 
 	
-
-	
 	@PostMapping("/change-password")
-	public String changePassword(@Valid@RequestBody ChangePasswordRequest request, HttpSession session) {
+	public ResponseEntity<String> changePassword( @RequestBody ChangePasswordRequest request,
+	                                            @RequestHeader("Authorization") String token) {
+	    // Extract the user information (including obscode) from the JWT token
+	    String obscodeFromToken = extractObscodeFromToken(token);
+
+	    // Check if the provided obscode matches the obscode from the token
+	    if (!obscodeFromToken.equals(request.getObscode())) {
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid obscode.");
+	    }
+
 	    // Fetch the user based on the provided obscode
-	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request.getObscode());
+	    ObserverUser observerUser = observerUserRepo.findByObscode(request.getObscode());
 
 	    if (observerUser == null) {
-	        return "User does not exist.";
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found.");
 	    }
 
 	    // Check if the old password matches the stored MD5 password
@@ -114,24 +125,44 @@ public class ForgotController {
 	    String oldPasswordMd5 = DigestUtils.md5DigestAsHex(request.getOldpassword().getBytes());
 
 	    if (!storedMd5Password.equals(oldPasswordMd5)) {
-	        return "Old password is incorrect.";
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Incorrect old password.");
 	    }
 
 	    // Check if the new password is the same as the old password
 	    String newMd5Password = DigestUtils.md5DigestAsHex(request.getNewpassword().getBytes());
 	    if (newMd5Password.equals(storedMd5Password)) {
-	        return "New password cannot be the same as the old password.";
+	        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("New password cannot be the same as the old password.");
 	    }
 
 	    // Update the password
 	    observerUser.setPassword(newMd5Password);
 	    observerUserRepo.save(observerUser);
 
-	    return "Password changed successfully.";
+	    return ResponseEntity.ok("Password changed successfully.");
 	}
 
+	private String extractObscodeFromToken(String token) {
+	    // Remove the "Bearer " prefix from the token if present
+	    if (token.startsWith("Bearer ")) {
+	        token = token.substring(7);
+	    }
+
+	    // Extract obscode from the token using JwtTokenHelper
+	    try {
+	        JwtTokenHelper jwtTokenHelper = new JwtTokenHelper();
+	        return jwtTokenHelper.getUsernameFromToken(token);
+	    } catch (Exception e) {
+	        // Handle any exceptions that might occur during token extraction
+	        // For example, if the token is invalid or expired
+	        return null; // Or throw an exception based on your error handling requirements
+	    }
+	}
+
+
+
+
 	
-	@PostMapping("/change-password1")
+	@PostMapping("/forget-password1")
 	public String changePassword1(@Valid @RequestBody ChangePasswordRequest1 request1, HttpSession session) {
 	    // Update the password for the provided obscode
 	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request1.getObscode());

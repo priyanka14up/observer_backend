@@ -50,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/api/observers/change-password1").permitAll()
             .antMatchers("/api/observers/profilelogin").permitAll()
             .antMatchers("/api/observers/send-otp/{obscode}").permitAll()
+            .antMatchers("/api/observers/sendOtp").permitAll()
             .antMatchers("/api/observers/verify-otp1").permitAll()
 
             .antMatchers("/api/observers/imageFetch/{imageName}").permitAll()

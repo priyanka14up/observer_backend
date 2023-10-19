@@ -38,7 +38,10 @@ public class Obs_Allot {
 	    private String distNo;
 	    private String stName;
 	    private String distNameEn;
-	    
+	 
+	   // private String email;
+	    //private long mobnum;
+	    //private String O_FAX;
 	    
 	    
 	    

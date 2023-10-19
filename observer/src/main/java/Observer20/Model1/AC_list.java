@@ -3,6 +3,8 @@ package Observer20.Model1;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import Observer20.Model.AC_LIST2;
+
 @Entity
 public class AC_list {
 	@Id
@@ -110,6 +112,10 @@ public class AC_list {
 	}
 	public void setAC_NAME_HI(String aC_NAME_HI) {
 		AC_NAME_HI = aC_NAME_HI;
+	}
+	public AC_LIST2 findByStCodeAndAcNo(String stCode, String acNo) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 

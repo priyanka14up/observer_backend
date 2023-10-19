@@ -95,13 +95,13 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 		Obs_Allot obs_Allot = new Obs_Allot();
 		obs_Allot.setObscode(obsAllotDTO.getObscode());
-		obs_Allot.setConstType(obsAllotDTO.getConstType());
-		obs_Allot.setElectionType(obsAllotDTO.getElectionType());
-		obs_Allot.setDatePoll(obsAllotDTO.getDatePoll());
+		//obs_Allot.setConstType(obsAllotDTO.getConstType());
+		//obs_Allot.setElectionType(obsAllotDTO.getElectionType());
+		//obs_Allot.setDatePoll(obsAllotDTO.getDatePoll());
 		obs_Allot.setSt_Code(obsAllotDTO.getStCode());
 		obs_Allot.setScheduleID(obsAllotDTO.getScheduleID());
-		obs_Allot.setOBFromDate(obsAllotDTO.getOBFromDate());
-		obs_Allot.setOBToDate(obsAllotDTO.getOBToDate());
+		//obs_Allot.setOBFromDate(obsAllotDTO.getOBFromDate());
+		//obs_Allot.setOBToDate(obsAllotDTO.getOBToDate());
 		obs_Allot.setAc_No(obsAllotDTO.getAcNo());
 		obs_Allot.setDIST_NAME(obsAllotDTO.getDistName());
 		
@@ -122,15 +122,15 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 		ObsAllotDTO obsAllotDTO = new ObsAllotDTO();
 		obsAllotDTO.setObscode(obs_Allot.getObscode());
-		obsAllotDTO.setConstType(obs_Allot.getConstType());
-		obsAllotDTO.setElectionType(obs_Allot.getElectionType());
-		obsAllotDTO.setDatePoll(obs_Allot.getDatePoll());
+		//obsAllotDTO.setConstType(obs_Allot.getConstType());
+		//obsAllotDTO.setElectionType(obs_Allot.getElectionType());
+		//obsAllotDTO.setDatePoll(obs_Allot.getDatePoll());
 		
 		obsAllotDTO.setStCode(obs_Allot.getSt_Code());
 		obsAllotDTO.setScheduleID(obs_Allot.getScheduleID());
 		
-		obsAllotDTO.setOBFromDate(obs_Allot.getOBFromDate());
-		obsAllotDTO.setOBToDate(obs_Allot.getOBToDate());
+		//obsAllotDTO.setOBFromDate(obs_Allot.getOBFromDate());
+		//obsAllotDTO.setOBToDate(obs_Allot.getOBToDate());
 		obsAllotDTO.setAcNo(obs_Allot.getAc_No());
 		obsAllotDTO.setDistName(obs_Allot.getDistNameEn());
 		
@@ -334,8 +334,9 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 		                // Populate ObsAllotDTO fields
 		                obsAllotDTO.setObscode(obsAllot.getObscode());
+		                obsAllotDTO.setStCode(obsAllot.getSt_Code());
 		                obsAllotDTO.setAcNo(obsAllot.getAc_No());
-		                // ... populate other fields of ObsAllotDTO ...
+		                
 
 		                // Fetch additional data and populate ObsAllotDTO
 		                String stCode1 = obsAllot.getSt_Code();
@@ -352,9 +353,9 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 
 		                    if (acNames.length() > 0) {
 		                        acNames.setLength(acNames.length() - 2);
-		                        obsAllotDTO.setAcNo(acNames.toString());
+		                        obsAllotDTO.setAcName(acNames.toString());
 		                    } else {
-		                        obsAllotDTO.setAcNo("AC Name Not Found");
+		                        obsAllotDTO.setAcName("AC Name Not Found");
 		                    }
 
 		                    // Fetch dist_no from AC_LIST2 table
@@ -364,6 +365,7 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 		                    DIST_LIST2 distList = dIST_LIST_REPO2.findByDistNoAndStCode(distNo, stCode1);
 
 		                    if (distList != null) {
+		                    	obsAllotDTO.setDistNo(distList.getDistNo());
 		                        obsAllotDTO.setDistName(distList.getDistNameEn());
 		                    } else {
 		                        obsAllotDTO.setDistName("District Name Not Found");
@@ -383,34 +385,25 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 		                // Fetch data from observerUserRepo and populate ObsAllotDTO
 		                ObserverUser observerUser1 = observerUserRepo.findByObscode(obsCode);
 		                if (observerUser1 != null) {
-		                    obsAllotDTO.setOBFromDate(observerUser1.getOBFromDate());
-		                    obsAllotDTO.setOBToDate(observerUser1.getOBToDate());
-		                    //obsAllotDTO.setOBImage(observerUser1.getOB_image());
-		                    // ... populate other fields of ObsAllotDTO from observerUser1 ...
+		                    //obsAllotDTO.setOBFromDate(observerUser1.getOBFromDate());
+		                    //obsAllotDTO.setOBToDate(observerUser1.getOBToDate());
+		                    obsAllotDTO.setObscode(observerUser1.getObscode());
+		                    obsAllotDTO.setName(observerUser1.getName());
+		                    obsAllotDTO.setEmail(observerUser1.getEmail());
+		                    obsAllotDTO.setMobnum(observerUser1.getMobnum());
+		                    obsAllotDTO.setO_FAX(observerUser1.getO_FAX());
+		                    //obsAllotDTO.setO_FAX(observerUser1.getO_FAX());
+		                    //obsAllotDTO.setO_FAX(observerUser1.getO_FAX());
+		                    //obsAllotDTO.setO_FAX(observerUser1.getO_FAX());
+		                   
 		                } else {
-		                    obsAllotDTO.setOBFromDate(null);
-		                    obsAllotDTO.setOBToDate(null);
+		                    obsAllotDTO.setObscode(null);
+		                    obsAllotDTO.setName(null);
 		                }
 
-		                // Fetch data from M_election_schedule and populate ObsAllotDTO
-		                Long scheduleId = obsAllot.getScheduleID();
-		                MElectionSchedule2 electionSchedule = mElectionScheduleREPO2.findByScheduleID(scheduleId);
-		                if (electionSchedule != null) {
-		                    obsAllotDTO.setDatePoll(electionSchedule.getDatePoll());
-		                } else {
-		                    obsAllotDTO.setDatePoll(null);
-		                }
-
-		                // Fetch data from M_election_details2 and populate ObsAllotDTO
-		                M_ELECTION_DETAILS2 electionDetails = mElectionDetailsREPO2.findByScheduleID(scheduleId);
-		                if (electionDetails != null) {
-		                    obsAllotDTO.setConstType(electionDetails.getConstType());
-		                    obsAllotDTO.setElectionType(electionDetails.getElectionType());
-		                } else {
-		                    obsAllotDTO.setConstType("Const Type Not Found");
-		                    obsAllotDTO.setElectionType("Election Type Not Found");
-		                }
-
+		                obsAllotDTO.setConstMob(null);
+		                obsAllotDTO.setConstTelNo(null);
+		                obsAllotDTO.setConstFaxNo(null);
 		                obsAllotDTOList.add(obsAllotDTO);
 		            }
 		            return obsAllotDTOList;

@@ -13,15 +13,38 @@ public class ObsAllotDTO {
     private String distName;
     private String stCode;
     private String stName;
-    private Date datePoll;
-    private String constType;
-    private String electionType;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date OBFromDate;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date OBToDate;
+   // private Date datePoll;
+   // private String constType;
+    //private String electionType;
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //private Date OBFromDate;
+    //@DateTimeFormat(pattern = "yyyy-MM-dd")
+    //private Date OBToDate;
     private Long scheduleID;
     private String obscode;
+    private String name;
+    private String email;
+    private long mobnum;
+    private String O_FAX;
+    private String constMob;
+    private String constTelNo;
+    private String constFaxNo;
+    
+    
+    public String getConstMob() {
+		return constMob;
+	}
+	public void setConstMob(String constMob) {
+		this.constMob = constMob;
+	}
+	public String getConstTelNo() {
+		return constTelNo;
+	}
+	public void setConstTelNo(String constTelNo) {
+		this.constTelNo = constTelNo;
+	}
+	
+	
     
     
     
@@ -29,6 +52,39 @@ public class ObsAllotDTO {
     
     
     
+    
+	public String getConstFaxNo() {
+		return constFaxNo;
+	}
+	public void setConstFaxNo(String constFaxNo) {
+		this.constFaxNo = constFaxNo;
+	}
+	public long getMobnum() {
+		return mobnum;
+	}
+	public void setMobnum(long mobnum) {
+		this.mobnum = mobnum;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	
+	
+	public String getO_FAX() {
+		return O_FAX;
+	}
+	public void setO_FAX(String o_FAX) {
+		O_FAX = o_FAX;
+	}
 	public String getObscode() {
 		return obscode;
 	}
@@ -77,36 +133,7 @@ public class ObsAllotDTO {
 	public void setStName(String stName) {
 		this.stName = stName;
 	}
-	public Date getDatePoll() {
-		return datePoll;
-	}
-	public void setDatePoll(Date datePoll) {
-		this.datePoll = datePoll;
-	}
-	public String getConstType() {
-		return constType;
-	}
-	public void setConstType(String constType) {
-		this.constType = constType;
-	}
-	public String getElectionType() {
-		return electionType;
-	}
-	public void setElectionType(String electionType) {
-		this.electionType = electionType;
-	}
-	public Date getOBFromDate() {
-		return OBFromDate;
-	}
-	public void setOBFromDate(Date oBFromDate) {
-		OBFromDate = oBFromDate;
-	}
-	public Date getOBToDate() {
-		return OBToDate;
-	}
-	public void setOBToDate(Date oBToDate) {
-		OBToDate = oBToDate;
-	}
+	
    
 
 }

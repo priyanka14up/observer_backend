@@ -15,6 +15,8 @@ public interface Obs_AllotREPO extends JpaRepository<Obs_Allot, Long> {
 	List<Obs_Allot> findAllByObscode(String obsCode);
 
 	List<Obs_Allot> findAllDepByObscode(String obsCode);
+
+	//Obs_Allot findByObscode(String obscode);
 	
 
 }

@@ -12,6 +12,8 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import Observer20.Exception.ApiException;
@@ -228,55 +230,46 @@ public class T_ALLOT_ServiceIMPL implements T_Allot_Group_Servcie {
 	
 	
 	@Override
-	public MElectionDetailsDataDTO getElectionData(String obsCode) {
+	public ResponseEntity<Object> getElectionData(String obsCode) {
 	    List<Object[]> electionDetailsList = mElectionDetailsREPO2.findDetailsByObsCode(obsCode);
 	    List<Object[]> datePollAndCurrentElectionList = mElectionScheduleREPO2.findDatePollAndCurrentElectionByObsCode(obsCode);
 	    ObserverUser observerUser = observerUserRepo.findDEPStatusCountingByObscode(obsCode);
-	    
+
 	    MElectionDetailsDataDTO mElectionDetailsDataDTO = new MElectionDetailsDataDTO();
 
 	    if (electionDetailsList != null && !electionDetailsList.isEmpty() &&
 	        datePollAndCurrentElectionList != null && !datePollAndCurrentElectionList.isEmpty() &&
 	        observerUser != null) {
 
-	        // Handle multiple results by iterating through the list
-	        for (Object[] electionDetails : electionDetailsList) {
+	        Object[] electionDetails = electionDetailsList.get(0); // Assuming you want the first result
+
+	        if (electionDetails.length >= 4) {
 	            mElectionDetailsDataDTO.setConstType((String) electionDetails[0]);
 	            mElectionDetailsDataDTO.setElectionType((String) electionDetails[1]);
-
-	            // Convert Object to Integer
-	            int statePhaseNo = (Integer) electionDetails[2];
-	            mElectionDetailsDataDTO.setStatePhaseNO(statePhaseNo);
- 
-	            // Convert Object to Integer
-	            int phaseNo = (Integer) electionDetails[3];
-	            mElectionDetailsDataDTO.setPhaseNo(phaseNo);
-
-	            // Extract datePoll and currentElection from the list of Object arrays
-	            Object[] datePollAndCurrentElection = datePollAndCurrentElectionList.get(0);
-
-	            // Handle Timestamp object properly (convert to Date)
-	            Timestamp timestamp = (Timestamp) datePollAndCurrentElection[0];
-	            Date datePoll = new Date(timestamp.getTime());
-	            mElectionDetailsDataDTO.setDatePoll(datePoll);
-
-	            // Assuming currentElection is a String, cast it accordingly
-	            String currentElection = (String) datePollAndCurrentElection[1];
-	            mElectionDetailsDataDTO.setCurrentElection(currentElection);
-
-	            // Get depStatusCounting from ObserverUser object
-	            String depStatusCounting = observerUser.getDEPSTATUS_COUNTING();
-	            mElectionDetailsDataDTO.setDEPSTATUS_COUNTING(depStatusCounting);
-
-	            // Break the loop after processing the first result if you only want one result
-	            break;
+	            mElectionDetailsDataDTO.setStatePhaseNO((Integer) electionDetails[2]);
+	            mElectionDetailsDataDTO.setPhaseNo((Integer) electionDetails[3]);
 	        }
-	    }
 
-	    return mElectionDetailsDataDTO;
+	        if (datePollAndCurrentElectionList.size() > 0) {
+	            Object[] datePollAndCurrentElection = datePollAndCurrentElectionList.get(0);
+	            if (datePollAndCurrentElection.length >= 2) {
+	                Timestamp timestamp = (Timestamp) datePollAndCurrentElection[0];
+	                Date datePoll = new Date(timestamp.getTime());
+	                mElectionDetailsDataDTO.setDatePoll(datePoll);
+	                mElectionDetailsDataDTO.setCurrentElection((String) datePollAndCurrentElection[1]);
+	            }
+	        }
+
+	        if (observerUser.getDEPSTATUS_COUNTING() != null) {
+	            mElectionDetailsDataDTO.setDEPSTATUS_COUNTING(observerUser.getDEPSTATUS_COUNTING());
+	        }
+
+	        return ResponseEntity.ok(mElectionDetailsDataDTO);
+	    } else {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Election data not found for obsCode: " + obsCode);
+	    }
 	}
 
-	
 		@Override
 		public Map<String, String> getDistrictAndStateNames(String obsCode, String acNameEn) {
 	        Map<String, String> resultMap = new HashMap<>();

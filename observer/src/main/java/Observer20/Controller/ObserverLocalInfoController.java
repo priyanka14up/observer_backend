@@ -97,10 +97,13 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
   	
 		
 		  @GetMapping("/electionDetails/{obsCode}")
-		  public MElectionDetailsDataDTO getElectionData(@PathVariable String obsCode) 
-		  { 
-			 
-			  return t_Allot_Group_Servcie.getElectionData(obsCode); }
+		  public ResponseEntity<Object> getElectionData(@PathVariable String obsCode,@RequestHeader("Authorization") String token) 
+		  { String obscodeFromToken = extractObscodeFromToken(token);
+
+	      // Check if the provided obscode matches the obscode from the token
+	      if (obscodeFromToken == null || !obscodeFromToken.equals(obsCode)) {
+	          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null); }
+		return t_Allot_Group_Servcie.getElectionData(obsCode);}
 		  
 		  @PostMapping("/get-district-state")
 		  public ResponseEntity<DistrictStateResponse> getDistrictAndStateNames(@RequestBody ACRequest acRequest) {

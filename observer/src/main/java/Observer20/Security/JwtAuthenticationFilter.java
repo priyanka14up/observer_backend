@@ -43,6 +43,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter{
 		try
 		{
 			username=jwtTokenHelper.getUsernameFromToken(token);
+		
+			//observerCode = jwtTokenHelper.getObserverCodeFromToken(token); // Add this method
+
 		}
 		catch(IllegalArgumentException e)
 		{

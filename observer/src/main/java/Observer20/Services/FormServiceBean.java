@@ -8,14 +8,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.Comparator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.common.collect.Table;
 
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
@@ -23,22 +30,31 @@ import Observer20.Exception.HandledException;
 import Observer20.Model.Form;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
+import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.STATE_LIST2;
 import Observer20.Model.SubForm;
 import Observer20.Repo1.STATE_LIST_REPO;
+import Observer20.Security.JwtTokenHelper;
 //import Observer20.repository.AnswerRepo;
 //import Observer20.Model.SubFormDraft;
 //import Observer20.repository.FormDetailsRepo;
 import Observer20.repository.FormServiceRepo;
 //import Observer20.repository.FormSubformResponsesRepo;
 import Observer20.repository.QuestionRepo;
+import Observer20.repository.QuestionsStaticRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.STATE_LIST2_Repo;
 import Observer20.repository.SubFormRepo;
+import io.jsonwebtoken.Claims;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.AnswerDto;
+import Observer20.Dto.AnswerStaticDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Dto.QuestionProjection;
+import Observer20.Dto.QuestionProjectionSubform;
+import Observer20.Dto.QuestionStaticArrivalDto;
+import Observer20.Dto.SubformDataDto;
 import Observer20.Dto.UpdateAnswerDto;
 import Observer20.Enum.ObsStatus;
 import Observer20.Dto.FinalAnswerDto;
@@ -54,8 +70,12 @@ import Observer20.Model.AC_LIST2;
 import Observer20.Model.DIST_LIST2;
 import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
+import Observer20.Model.DraftAnswerStatic;
 import Observer20.Model.FinalSubmitAnswer;
+import Observer20.Model.FinalSubmitAnswerStatic;
+
 import Observer20.Model.FormStatus;
+import Observer20.Model.FormStatusStatic;
 import Observer20.Model.Messages;
 import Observer20.Model.Obs_Allot;
 import Observer20.Model.ObserverUser;
@@ -71,13 +91,19 @@ import Observer20.repository.AC_LIST2_REPO2;
 import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
+import Observer20.repository.DraftAnswerStaticRepo;
 import Observer20.repository.FinalSubmitAnswerRepo;
+import Observer20.repository.FinalSubmitAnswerStaticRepo;
 import Observer20.repository.FormDatesRepo;
 import Observer20.repository.FormStatusRepo;
+import Observer20.repository.FormStatusStaticRepo;
 import Observer20.repository.MessagesRepo;
 import Observer20.repository.Obs_AllotREPO;
 import Observer20.repository.ObserverUserRepo;
-
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 
 @Service
@@ -88,6 +114,11 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	public QuestionRepo questionRepo;
+	
+	
+	@Autowired
+	public QuestionsStaticRepo questionsStaticRepo;
+	
 	
 	@Autowired
 	public SubFormRepo subFormRepo;
@@ -102,10 +133,22 @@ public class FormServiceBean implements FormService {
 	public DraftAnswerRepo draftAnswerRepo;
 	
 	@Autowired
+	public DraftAnswerStaticRepo draftAnswerStaticRepo;
+	
+	
+	@Autowired
 	public FinalSubmitAnswerRepo finalSubmitAnswerRepo;
 	
 	@Autowired
+	public FinalSubmitAnswerStaticRepo finalSubmitAnswerStaticRepo;
+	
+	
+	@Autowired
 	public FormStatusRepo formStatusRepo;
+	
+	@Autowired
+	public FormStatusStaticRepo formStatusStaticRepo;
+	
 	
 	@Autowired
 	public DownloadRepo downloadRepo;
@@ -127,6 +170,12 @@ public class FormServiceBean implements FormService {
 	
 	@Autowired
 	MessagesRepo messagesRepo;
+	
+	  @Autowired
+  	private JwtTokenHelper jwtTokenHelper;
+	  
+	  @Autowired
+  	private JwtService jwtService;
 	
 	
 	@Override
@@ -645,6 +694,8 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 			List<DraftAnswer> answers=answerDto.getDraftAnswers();
 			//HashMap<String, Object> answers=answerDto.getDraftAnswers();
+			
+			
 			Long formId=null;
 			Long sid=null;
 			boolean status=answerDto.isStatus();
@@ -676,6 +727,7 @@ ResponseMap.put("remarks",response.getRemarks());
 					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
 					formId=subFormRepo.findFormIdBySid(sid);
 					answers.get(i).setFid(formId);
+					//CustomUserDetailsService userDetails = (CustomUserDetailsService) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 					answers.get(i).setSubmittedBy(submittedBy);
 					draftAnswerRepo.save(answers.get(i));
 					resultAnswers.add(answers.get(i));
@@ -692,7 +744,6 @@ ResponseMap.put("remarks",response.getRemarks());
 					formId=subFormRepo.findFormIdBySid(sid);
 					answers.get(i).setFid(formId);
 					answers.get(i).setSubmittedBy(submittedBy);
-					// Update the existing draft answer with new data
 					
 					answer.setAnswer(answers.get(i).getAnswer());
 					
@@ -710,7 +761,6 @@ ResponseMap.put("remarks",response.getRemarks());
 					
 					
 					//answer.setRemarks(answers.get(i).getRemarks());
-			                // You can update other fields if needed
 
 			                draftAnswerRepo.save(answer);
 			                
@@ -808,8 +858,362 @@ ResponseMap.put("remarks",response.getRemarks());
 				throw new HandledException("exception in adding answer", e.getMessage());
 			}
 		
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+//			FormStatus formStatus=new FormStatus();
+//			List<DraftAnswer> resultAnswers = new ArrayList<DraftAnswer>();
+//			
+//			List<DraftAnswer> answers=answerDto.getDraftAnswers();
+//			//HashMap<String, Object> answers=answerDto.getDraftAnswers();
+//			Long formId=null;
+//			Long sid=null;
+//			boolean status=answerDto.isStatus();
+//			String submittedBy=answerDto.getSubmittedBy();
+//			
+//			try {
+//				
+//			for(int i=0;i<answers.size();i++)
+//			{
+//				
+//				DraftAnswer answer=draftAnswerRepo.findByQid(answers.get(i).getQid());
+//				if(answer==null)
+//				{
+//					Long qid=answers.get(i).getQid();
+//					answers.get(i).setQid(answers.get(i).getQid());
+//					String answerget=answers.get(i).getAnswer();
+//					answers.get(i).setAnswer(answers.get(i).getAnswer());
+//					if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+//					{
+//						answers.get(i).setRemarks(answers.get(i).getRemarks());
+//						
+//					}
+//					else
+//					{
+//						answers.get(i).setRemarks(null);
+//						
+//					}	
+//					sid=questionRepo.findSubformSidByQid(qid);
+//					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
+//					formId=subFormRepo.findFormIdBySid(sid);
+//					answers.get(i).setFid(formId);
+//					answers.get(i).setSubmittedBy(submittedBy);
+//					draftAnswerRepo.save(answers.get(i));
+//					resultAnswers.add(answers.get(i));
+//			
+//					
+//				}else if (answer != null && (!answers.get(i).getAnswer().equals(answer.getAnswer())|| !answers.get(i).getRemarks().equals(answer.getRemarks()))) {
+//			             
+//					Long qid=answers.get(i).getQid();
+//					answers.get(i).setQid(answers.get(i).getQid());
+//					String answerget=answers.get(i).getAnswer();
+//
+//					sid=questionRepo.findSubformSidByQid(qid);
+//					answers.get(i).setSid(questionRepo.findSubformSidByQid(qid));
+//					formId=subFormRepo.findFormIdBySid(sid);
+//					answers.get(i).setFid(formId);
+//					answers.get(i).setSubmittedBy(submittedBy);
+//					// Update the existing draft answer with new data
+//					
+//					answer.setAnswer(answers.get(i).getAnswer());
+//					
+//					if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
+//					{
+//						answer.setRemarks(answers.get(i).getRemarks());
+//						
+//					}
+//					else
+//					{
+//						answer.setRemarks(null);
+//						
+//					}	
+//					
+//					//answer.setRemarks(answers.get(i).getRemarks());
+//			           
+//			                draftAnswerRepo.save(answer);
+//			                
+//			                resultAnswers.add(answers.get(i));
+//				}
+//			}//end of for
+//			
+//			FormStatus existingFormStatus=formStatusRepo.findByFid(formId);
+//			List<FinalSubmitAnswer> finalSubmitAnswer=new ArrayList<FinalSubmitAnswer>();
+//			if(status==true)
+//			{
+//				List<DraftAnswer> draftAnswers=draftAnswerRepo.findAllByFid(formId);
+//				for(int i=0;i<draftAnswers.size();i++)
+//				{
+//					FinalSubmitAnswer finalAnswer = new FinalSubmitAnswer();
+//					finalAnswer.setAnswer(draftAnswers.get(i).getAnswer());
+//					finalAnswer.setFid(formId);
+//					finalAnswer.setQid(draftAnswers.get(i).getQid());
+//					finalAnswer.setRemarks(draftAnswers.get(i).getRemarks());
+//					finalAnswer.setSid(draftAnswers.get(i).getSid());
+//					finalAnswer.setSubmittedBy(submittedBy);
+//						finalSubmitAnswerRepo.save(finalAnswer);
+//						finalSubmitAnswer.add(finalAnswer);
+//					
+//				}
+//				draftAnswerRepo.deleteAll(draftAnswers);
+//				if(existingFormStatus!=null)
+//				{
+//					//List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);
+//					List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
+//					
+//					 existingFormStatus.setFid(formId);
+//					 existingFormStatus.setStatus(status);
+//					 existingFormStatus.setSubmittedBy(submittedBy);
+//					 existingFormStatus.setConstituency(consistuency);
+//					 formStatusRepo.save(existingFormStatus);
+//					return entityToDtoForFinal(existingFormStatus,savedFinalAnswers);
+//				}
+//				else
+//				{
+//				Long fid=subFormRepo.findFormIdBySid(sid);
+//				formStatus.setFid(fid);
+//				formStatus.setStatus(status);
+//				formStatus.setSubmittedBy(submittedBy);
+//				formStatus.setConstituency(consistuency);
+//				List<FinalSubmitAnswer> savedFinalAnswers=finalSubmitAnswerRepo.findAllBySid(sid);
+//				formStatusRepo.save(formStatus);
+//				return entityToDtoForFinal(formStatus,savedFinalAnswers);
+//				}					
+//				
+//			}
+//			else
+//			{
+//				if(existingFormStatus!=null)
+//				{
+//					List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);;
+//					 savedAnswers=draftAnswerRepo.findAllBySid(sid);
+//					 existingFormStatus.setFid(formId);
+//					 existingFormStatus.setStatus(status);
+//					 existingFormStatus.setSubmittedBy(submittedBy);
+//					 existingFormStatus.setConstituency(consistuency);
+//					 formStatusRepo.save(existingFormStatus);
+//					return entityToDtoForDraft(existingFormStatus,savedAnswers);
+//				}
+//				else
+//				{
+//				Long fid=subFormRepo.findFormIdBySid(sid);
+//				formStatus.setFid(fid);
+//				formStatus.setStatus(status);
+//				formStatus.setSubmittedBy(submittedBy);
+//				formStatus.setConstituency(consistuency);
+//				List<DraftAnswer> savedAnswers=draftAnswerRepo.findAllBySid(sid);
+//				formStatusRepo.save(formStatus);
+//					return entityToDtoForDraft(formStatus,savedAnswers);
+//				
+//				}			
+//			
+//	}
+//			
+//		}
+//			catch(Exception e)
+//			{
+//				throw new HandledException("exception in adding answer", e.getMessage());
+//			}
+//		
+//			
+//			
+//			
+			
+			
+			
+			
 		}
 		
+		
+		
+
+		@Override
+		public HashMap<String, Object> submitAndUpdateAnswersStatic(HttpServletRequest request,AnswerStaticDto answerStaticDto,String consistuency) throws HandledException {
+			  String submittedBy=null;
+			  String token=null;
+			
+			  FormStatusStatic formStatus=new FormStatusStatic();
+			List<DraftAnswerStatic> resultAnswers = new ArrayList<DraftAnswerStatic>();
+			List<DraftAnswerStatic> answers=answerStaticDto.getDraftAnswers();
+			//HashMap<String, Object> answers=answerDto.getDraftAnswers();
+			Long formId=answerStaticDto.getFid();
+			String requestToken=request.getHeader("Authorization");
+			token=requestToken.substring(7);
+			try
+			{
+				Claims claims = jwtService.decodeJWT(token);
+				 submittedBy = claims.get("sub", String.class);
+			
+			}
+			catch(IllegalArgumentException e)
+			{
+				System.out.println("Unable to get jwt token");
+			}
+			
+			 
+			
+			
+			boolean status=answerStaticDto.isStatus();
+
+			
+			try {
+				
+			for(int i=0;i<answers.size();i++)
+			{
+				
+				DraftAnswerStatic answer=draftAnswerStaticRepo.findByQid(answers.get(i).getQid());
+				if(answer==null)
+				{
+					Long qid=answers.get(i).getQid();
+					//formId=answers.get(i).getFid();
+					answers.get(i).setQid(answers.get(i).getQid());
+					String answerget=answers.get(i).getAnswer();
+					answers.get(i).setAnswer(answers.get(i).getAnswer());
+					//if((answers.get(i).getAnswer().equals("no"))||(answers.get(i).getAnswer().equals("NO"))||(answers.get(i).getAnswer().equals("No")))
+					//{
+						answers.get(i).setRemarks(answers.get(i).getRemarks());
+						
+					//}
+//					else
+//					{
+//						answers.get(i).setRemarks(null);
+//						
+//					}	
+				
+				answers.get(i).setFid(formId);
+					answers.get(i).setSubmittedBy(submittedBy);
+					draftAnswerStaticRepo.save(answers.get(i));
+					resultAnswers.add(answers.get(i));
+			
+					
+				}else if (answer != null && (!answers.get(i).getAnswer().equals(answer.getAnswer())|| !answers.get(i).getRemarks().equals(answer.getRemarks()))) {
+			    
+					answers.get(i).setQid(answers.get(i).getQid());
+					String answerget=answers.get(i).getAnswer();
+					answers.get(i).setFid(formId);
+					answers.get(i).setSubmittedBy(submittedBy);
+					answer.setAnswer(answers.get(i).getAnswer());
+					
+//					if((answer.getAnswer().equals("no"))||(answer.getAnswer().equals("NO"))||(answer.getAnswer().equals("No")))
+//					{
+					answer.setRemarks(answers.get(i).getRemarks());
+						
+//					}
+//					else
+//					{
+//						answer.setRemarks(null);
+//						
+//					}	
+					
+					//answer.setRemarks(answers.get(i).getRemarks());
+			                draftAnswerStaticRepo.save(answer);
+			                
+			                resultAnswers.add(answers.get(i));
+				}
+			}//end of for
+			
+			FormStatusStatic existingFormStatus=formStatusStaticRepo.findByFid(formId);
+			List<FinalSubmitAnswerStatic> finalSubmitAnswer=new ArrayList<FinalSubmitAnswerStatic>();
+			if(status==true)
+			{
+				List<DraftAnswerStatic> draftAnswers=draftAnswerStaticRepo.findByFidOrderByFid(formId);
+				for(int i=0;i<draftAnswers.size();i++)
+				{
+					FinalSubmitAnswerStatic finalAnswer = new FinalSubmitAnswerStatic();
+					finalAnswer.setAnswer(draftAnswers.get(i).getAnswer());
+					finalAnswer.setFid(formId);
+					finalAnswer.setQid(draftAnswers.get(i).getQid());
+					finalAnswer.setRemarks(draftAnswers.get(i).getRemarks());
+					finalAnswer.setSubmittedBy(submittedBy);
+						finalSubmitAnswerStaticRepo.save(finalAnswer);
+						finalSubmitAnswer.add(finalAnswer);
+					
+				}
+				draftAnswerStaticRepo.deleteAll(draftAnswers);
+				if(existingFormStatus!=null)
+				{
+					//List<DraftAnswer> savedAnswers=savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					List<FinalSubmitAnswerStatic> savedFinalAnswers=finalSubmitAnswerStaticRepo.findByFidOrderByFid(formId);
+					
+					 existingFormStatus.setFid(formId);
+					 existingFormStatus.setStatus(status);
+					 existingFormStatus.setSubmittedBy(submittedBy);
+					 existingFormStatus.setConstituency(consistuency);
+					 formStatusStaticRepo.save(existingFormStatus);
+					 
+					 //Collections.sort(savedFinalAnswers, new FinalAnswerComparator());
+					 
+					return entityToDtoForFinalStatic(existingFormStatus,savedFinalAnswers);
+				}
+				else
+				{
+				//Long fid=subFormRepo.findFormIdBySid(sid);
+				
+				List<FinalSubmitAnswerStatic> savedFinalAnswers=finalSubmitAnswerStaticRepo.findByFidOrderByFid(formId);
+				formStatus.setFid(formId);
+				formStatus.setStatus(status);
+				formStatus.setSubmittedBy(submittedBy);
+				formStatus.setConstituency(consistuency);
+				formStatusStaticRepo.save(formStatus);
+				
+				
+				 //Collections.sort(savedFinalAnswers, new FinalAnswerComparator());
+				return entityToDtoForFinalStatic(formStatus,savedFinalAnswers);
+				}					
+				
+			}
+			else
+			{
+				if(existingFormStatus!=null)
+				{
+					List<DraftAnswerStatic> savedAnswers=draftAnswerStaticRepo.findByFidOrderByFid(formId);
+					// savedAnswers=draftAnswerRepo.findAllBySid(sid);
+					 existingFormStatus.setFid(formId);
+					 existingFormStatus.setStatus(status);
+					 existingFormStatus.setSubmittedBy(submittedBy);
+					 existingFormStatus.setConstituency(consistuency);
+					 formStatusStaticRepo.save(existingFormStatus);
+					 
+					 //Collections.sort(savedAnswers, new DraftAnswerComparator());
+					 
+					return entityToDtoForDraftStatic(existingFormStatus,savedAnswers);
+				}
+				else
+				{
+				
+				
+				List<DraftAnswerStatic> savedAnswers=draftAnswerStaticRepo.findByFidOrderByFid(formId);
+				formStatus.setFid(formId);
+				formStatus.setStatus(status);
+				formStatus.setSubmittedBy(submittedBy);
+				formStatus.setConstituency(consistuency);
+				formStatusStaticRepo.save(formStatus);
+				
+				
+				// Collections.sort(savedAnswers, new DraftAnswerComparator());
+					return entityToDtoForDraftStatic(formStatus,savedAnswers);
+				
+				}			
+			
+	}
+			
+		}
+			catch(Exception e)
+			{
+				throw new HandledException("exception in adding answer", e.getMessage());
+			}
+		
+		}
 		
 		@Override
 		public HashMap<String, Object> updateAnswer(HttpServletRequest request,AnswerDto answerDto,Long fid1,Long sid11)throws HandledException {
@@ -864,6 +1268,22 @@ ResponseMap.put("remarks",response.getRemarks());
 
 		}
 		
+		
+		public HashMap<String, Object> entityToDtoForFinalStatic(FormStatusStatic formStatus,List<FinalSubmitAnswerStatic> finalSubmitAnswers) {
+
+			AnswerStaticDto Dto = new AnswerStaticDto();
+			Dto.setId(formStatus.getStid());
+			Dto.setFinalSubmitAnswer(finalSubmitAnswers);
+			
+			Dto.setStatus(formStatus.isStatus());
+			Dto.setFid(formStatus.getFid());
+			//Dto.setSubmittedBy(formStatus.getSubmittedBy());
+			
+			
+			return customResponseFinalAnswerStaticDto(Dto);
+
+		}
+		
 		public HashMap<String, Object> entityToDtoForDraft(FormStatus formStatus,List<DraftAnswer> draftAnswers) {
 
 			AnswerDto Dto = new AnswerDto();
@@ -873,6 +1293,20 @@ ResponseMap.put("remarks",response.getRemarks());
 			Dto.setStatus(formStatus.isStatus());
 			Dto.setSubmittedBy(formStatus.getSubmittedBy());
 			return customResponseDraftAnswerDto(Dto);
+
+		}
+		
+		public HashMap<String, Object> entityToDtoForDraftStatic(FormStatusStatic formStatus,List<DraftAnswerStatic> draftAnswers) {
+
+			AnswerStaticDto Dto = new AnswerStaticDto();
+			Dto.setId(formStatus.getStid());
+			
+			Dto.setDraftAnswers(draftAnswers);
+			Dto.setStatus(formStatus.isStatus());
+			Dto.setFid(formStatus.getFid());
+			
+			//Dto.setSubmittedBy(formStatus.getSubmittedBy());
+			return customResponseDraftAnswerDtoStatic(Dto);
 
 		}
 		
@@ -1042,7 +1476,7 @@ ResponseMap.put("remarks",response.getRemarks());
 			
 			//msgMap.put("finalAnswers",dto.getFinalSubmitAnswer());
 			
-			msgMap.put("finalAnswers",customResponseFinalAnswers(dto.getFinalSubmitAnswer()));
+			msgMap.put("finalAnswers",customResponseFinalAnswers1(dto.getFinalSubmitAnswer()));
 			
 			msgMap.put("formStatus",dto.isStatus());
 			
@@ -1051,6 +1485,28 @@ ResponseMap.put("remarks",response.getRemarks());
 			return msgMap;
 			
 		}
+		
+private HashMap<String, Object> customResponseFinalAnswerStaticDto( AnswerStaticDto dto) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("id",dto.getId());
+			
+			//msgMap.put("finalAnswers",dto.getFinalSubmitAnswer());
+			
+			msgMap.put("finalAnswers",customResponseFinalAnswersStatic(dto.getFinalSubmitAnswer()));
+			
+			msgMap.put("formStatus",dto.isStatus());
+			
+			msgMap.put("fid",dto.getFid());
+			
+			//msgMap.put("submittedBy",dto.getSubmittedBy());
+			
+			return msgMap;
+			
+}
+
+
 		
 		
 		private HashMap<String, Object> customResponseDraftAnswerDto( AnswerDto dto) {
@@ -1068,6 +1524,26 @@ ResponseMap.put("remarks",response.getRemarks());
 			return msgMap;
 			
 		}
+		
+private HashMap<String, Object> customResponseDraftAnswerDtoStatic( AnswerStaticDto dto) {
+			
+			HashMap<String, Object> msgMap =  new HashMap<>();
+			
+			msgMap.put("id",dto.getId());
+			
+			msgMap.put("draftAnswers",customResponseDraftAnswersStatic(dto.getDraftAnswers()));
+			
+			msgMap.put("FormStatus",dto.isStatus());
+			
+			msgMap.put("fid",dto.getFid());
+			
+			//msgMap.put("SubmittedBy",dto.getSubmittedBy());
+			
+			return msgMap;
+			
+		}
+		
+		
 		
 		private HashMap<String, Object> customResponseDraftAnswerDtoUpdate( UpdateAnswerDto dto) {
 			
@@ -1102,7 +1578,7 @@ ResponseMap.put("remarks",response.getRemarks());
 		{
 				msgMap.put("subformHeading",dtos.get(i).getSubform_heading());
 				
-				msgMap.put("finalSubmitAnswer",customResponseFinalAnswers(dtos.get(i).getFinalSubmitAnswers()));
+				msgMap.put("finalSubmitAnswer",customResponseFinalAnswers1(dtos.get(i).getFinalSubmitAnswers()));
 				
 				
 				listOfMsgMaps.add(msgMap);
@@ -1140,34 +1616,83 @@ ResponseMap.put("remarks",response.getRemarks());
 			return listOfMaps;
 			
 		}
-		
-		private List<HashMap<String, Object>> customResponseFinalAnswers( List<FinalSubmitAnswer> finalSubmitAnswer) {
+private List<HashMap<String, Object>> customResponseDraftAnswersStatic( List<DraftAnswerStatic> draftAnswers) {
 			
-			HashMap<String, Object> msgMap =  new HashMap<>();
+			//HashMap<String, Object> msgMap =  new HashMap<>();
 			List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
 			
-			for(int i=0;i<finalSubmitAnswer.size();i++)
-			{
-				msgMap.put("id",finalSubmitAnswer.get(i).getFsid());
+			 for (DraftAnswerStatic answer : draftAnswers) {
 				
-				msgMap.put("formId",finalSubmitAnswer.get(i).getFid());
-				
-				msgMap.put("questionId",finalSubmitAnswer.get(i).getQid());
-				
-				msgMap.put("subFormId",finalSubmitAnswer.get(i).getSid());
-				
-				msgMap.put("answer",finalSubmitAnswer.get(i).getAnswer());
-				
-				msgMap.put("remarks",finalSubmitAnswer.get(i).getRemarks());
-				
-				msgMap.put("submittedBy",finalSubmitAnswer.get(i).getSubmittedBy());
-				
-				listOfMaps.add(msgMap);
-				
-			}
-
+			        HashMap<String, Object> msgMap = new HashMap<>();
+			       //msgMap.put("id", answer.getId());
+			        msgMap.put("fid", answer.getFid());
+			        msgMap.put("qid", answer.getQid());
+			       Long qid=answer.getQid();
+			        //QuestionStatic question=questionsStaticRepo.findById(answer.getQid());
+			        QuestionStatic question=questionsStaticRepo.findByQid(answer.getQid());
+		        msgMap.put("qtext",question.getQtext());
+		         msgMap.put("inputType",question.getType());
+			        msgMap.put("answer", answer.getAnswer());
+			        msgMap.put("remarks", answer.getRemarks());
+			        msgMap.put("submittedBy", answer.getSubmittedBy());
+			    
+			        
+			        listOfMaps.add(msgMap);
+				 }
+			    
+			
 			return listOfMaps;
+			
 		}
+//		private List<HashMap<String, Object>> customResponseFinalAnswers( List<FinalSubmitAnswer> finalSubmitAnswer) {
+//			
+//			HashMap<String, Object> msgMap =  new HashMap<>();
+//			List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
+//			
+//			for(int i=0;i<finalSubmitAnswer.size();i++)
+//			{
+//				msgMap.put("id",finalSubmitAnswer.get(i).getFsid());
+//				
+//				msgMap.put("formId",finalSubmitAnswer.get(i).getFid());
+//				
+//				msgMap.put("questionId",finalSubmitAnswer.get(i).getQid());
+//				
+//				msgMap.put("subFormId",finalSubmitAnswer.get(i).getSid());
+//				
+//				msgMap.put("answer",finalSubmitAnswer.get(i).getAnswer());
+//				
+//				msgMap.put("remarks",finalSubmitAnswer.get(i).getRemarks());
+//				
+//				msgMap.put("submittedBy",finalSubmitAnswer.get(i).getSubmittedBy());
+//				
+//				listOfMaps.add(msgMap);
+//				
+//			}
+//
+//			return listOfMaps;
+//		}
+		
+private List<HashMap<String, Object>> customResponseFinalAnswersStatic( List<FinalSubmitAnswerStatic> finalSubmitAnswer) {
+			
+	 List<HashMap<String, Object>> listOfMaps = new ArrayList<>();
+	    
+	    for (FinalSubmitAnswerStatic answer : finalSubmitAnswer) {
+	        HashMap<String, Object> msgMap = new HashMap<>();
+	        msgMap.put("fid", answer.getFid());
+	        msgMap.put("qid", answer.getQid());
+	        Long qid=answer.getQid();
+	       QuestionStatic question=questionsStaticRepo.findByQid(answer.getQid());
+      msgMap.put("qtext",question.getQtext());
+      msgMap.put("inputType",question.getType());
+	        msgMap.put("answer", answer.getAnswer());
+	        msgMap.put("remarks", answer.getRemarks());
+	        msgMap.put("submittedBy", answer.getSubmittedBy());
+	        listOfMaps.add(msgMap);
+	    }
+
+	    return listOfMaps;
+		}
+
 
 		@Override
 		public List<HashMap<String, Object>> allFormsByConsistuency(String obsType,String constituency,String userId) throws HandledException 
@@ -1747,6 +2272,94 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 		}
 
 		
+		@Override
+		//Map<String, Map<String, List<QuestionStatic>>>
+		public Map<Object, List<Object>> getQuestionStatic(Long fid) throws HandledException
+		//public List<Map<String, List<QuestionStatic>>> getQuestionStatic(Long fid) throws HandledException
 		
+		//public List<QuestionStatic> getQuestionStatic(Long fid) throws HandledException
+		//public Map<String, List<QuestionStatic>> getQuestionStatic(Long fid) throws HandledException
+		{
+			List<QuestionStatic> questions=new ArrayList<>();
+			
+			
+			
+			
+		
+//			 Map<String, List<QuestionStatic>> groupedData = questionsList.stream()
+//				        .filter(question -> question.gettName() != null) // Exclude objects with null tName
+//				        .collect(Collectors.groupingBy(QuestionStatic::gettName)); 
+			 
+				//return groupedData;
+				
+				
+				//List<Map<String, List<QuestionStatic>>> tables=new  ArrayList<>();
+				
+				//Map<String, Map<String, List<QuestionStatic>>> mapOfMaps = new HashMap<>();
+				Map<Object, List<Object>> map = new HashMap<>();
+				//Map<String, List<QuestionStatic>> table1 = new HashMap<>();
+				//Map<String, List<QuestionStatic>> table2 = new HashMap<>();
+				List<Object> table1=new ArrayList<>();
+				List<Object> table2=new ArrayList<>();
+				
+				if(fid==43) {
+					List<QuestionProjection> table1List=new ArrayList<>();
+					List<QuestionProjection> table2List=new ArrayList<>();
+			 table1List=questionsStaticRepo.findRecordsWithQidUpTo10(fid);
+			 
+			
+			 for (QuestionProjection question : table1List) {
+				 table1.add(question);
+			 }
+				 
+			 table2List=questionsStaticRepo.findRecordsWithQidGreater10(fid);
+				 
+			 for (QuestionProjection question : table2List) {
+				 table2.add(question);
+			 }
+				 
+				 
+				map.put("table1", table1);
+				map.put("table2", table2);
+				return map;
+				}
+				else
+				{
+					List<QuestionProjection> table1List=new ArrayList<>();
+					//List<QuestionProjectionSubform> table2List=new ArrayList<>();
+					
+					 table1List=questionsStaticRepo.findRecordsWithQidUpTo4(fid);
+					
+					 for (QuestionProjection question : table1List) {
+						 table1.add(question);
+					 }
+						
+					 
+					 
+					List<QuestionProjectionSubform> questionsList=questionsStaticRepo.findAllByFid(fid);
+					List<List<QuestionProjectionSubform>> table2List = questionsList.stream()
+							.filter(question->question.getSid()!=null)
+							.collect(Collectors.groupingBy(QuestionProjectionSubform::getSid))
+							.values()
+							.stream()
+							.collect(Collectors.toList());
+							
+				//List<List<QuestionProjectionSubform>> table2List = new ArrayList<>(groupedData.values());
+					
+//					table2List = questionsList.stream()
+//					        .collect(Collectors.groupingBy(QuestionProjectionSubform::getSid));
+					 
+					 for (List<QuestionProjectionSubform> question : table2List) {
+						 table2.add(question);
+					 }
+					 
+					 map.put("table1", table1);
+						map.put("table2", table2);
+						return map;
+				}
+				 
 
+		}
+
+		
 }

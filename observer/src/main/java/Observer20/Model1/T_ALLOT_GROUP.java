@@ -8,7 +8,7 @@ import javax.persistence.Id;
 import Observer20.Model.ObserverUser;
 
   
-  @Entity
+@Entity
   public class T_ALLOT_GROUP
   {
 	  private String ST_CODE; 

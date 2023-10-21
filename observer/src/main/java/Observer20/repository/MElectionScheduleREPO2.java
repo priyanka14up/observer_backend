@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import Observer20.Model.MElectionSchedule2;
 
+
 public interface MElectionScheduleREPO2 extends JpaRepository<MElectionSchedule2, Long> {
 	/*
 	 * @Query("SELECT s.datePoll FROM MElectionSchedule2 s JOIN Obs_Allot o ON s.scheduleID = o.scheduleID WHERE o.obscode = :obsCode"
@@ -22,6 +23,10 @@ public interface MElectionScheduleREPO2 extends JpaRepository<MElectionSchedule2
 	
 	  @Query("SELECT s.datePoll, s.currentElection FROM MElectionSchedule2 s JOIN Obs_Allot o ON s.scheduleID = o.scheduleID WHERE o.obscode = :obsCode"
 	  ) List<Object[]> findDatePollAndCurrentElectionByObsCode(String obsCode);
+
+	MElectionSchedule2 findByScheduleID(Long scheduleId);
+
+	
 	 
 }
 

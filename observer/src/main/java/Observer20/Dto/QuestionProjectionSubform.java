@@ -28,8 +28,6 @@ public class QuestionProjectionSubform {
 		this.qtext = qtext;
 	}
 
-	
-	
 	public String getType() {
 		return type;
 	}

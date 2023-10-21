@@ -1,5 +1,6 @@
 
 package Observer20.Controller;
+import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -15,6 +16,7 @@ import com.twilio.rest.api.v2010.account.Message;
 
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.AnswerStaticDto;
+import Observer20.Dto.EciObserverResponse;
 //import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
@@ -52,6 +54,9 @@ public class FormController {
 	@Autowired 
 	public SubFormRepo subFormRepo;
 
+	// controller    @Autowired
+			//private EciObserverService eciObserverService;
+	
 	@GetMapping("/form")
 	public ResponseEntity<Object> getAllForms() throws HandledException {
 
@@ -756,6 +761,15 @@ public class FormController {
 		}
 
 	}
+	
+	
+
+		 @GetMapping("/getListOfEciObserver")
+		    public ResponseEntity<Map<Object, List<EciObserverResponse>>> getEciObserverObservations(@RequestParam("formId") Integer formId,@RequestParam("sId") Integer sId) throws IOException {
+		        Map<Object, List<EciObserverResponse>> response = formService.getListOfEciObserver(formId,sId);
+		        return new ResponseEntity<>(response, HttpStatus.OK);
+		    }
+	
 	
 	
 	

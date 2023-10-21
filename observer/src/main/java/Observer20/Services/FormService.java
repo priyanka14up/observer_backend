@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.AnswerStaticDto;
+import Observer20.Dto.EciObserverResponse;
 import Observer20.Dto.QuestionProjection;
 import Observer20.Dto.QuestionStaticArrivalDto;
 import Observer20.Dto.UpdateAnswerDto;
@@ -23,6 +24,8 @@ import Observer20.Model.Question;
 import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+
+import java.io.IOException;
 //import Observer20.Dto.AnswerDto;
 import java.util.*;
 //import Observer20.Model.SubFormDraft;
@@ -92,4 +95,5 @@ public interface FormService {
 	public List<FormStatus> allFormsStatus() throws HandledException;
 	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
 	HashMap<String, Object> submitAndUpdateAnswersStatic(HttpServletRequest request, AnswerStaticDto answerStaticDto,String consistuency) throws HandledException;
+   	Map<Object, List<EciObserverResponse>> getListOfEciObserver(Integer formId, Integer sId) throws IOException;
 }

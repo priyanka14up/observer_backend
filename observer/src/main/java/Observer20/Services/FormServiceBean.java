@@ -1,4 +1,5 @@
 package Observer20.Services;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -50,6 +51,7 @@ import io.jsonwebtoken.Claims;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.AnswerDto;
 import Observer20.Dto.AnswerStaticDto;
+import Observer20.Dto.EciObserverResponse;
 import Observer20.Dto.GetAnswerDto;
 import Observer20.Dto.QuestionProjection;
 import Observer20.Dto.QuestionProjectionSubform;
@@ -71,6 +73,7 @@ import Observer20.Model.DIST_LIST2;
 import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.DraftAnswerStatic;
+import Observer20.Model.EciObserverEntity;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FinalSubmitAnswerStatic;
 
@@ -92,6 +95,7 @@ import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.DraftAnswerStaticRepo;
+import Observer20.repository.EciObserverRepository;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerStaticRepo;
 import Observer20.repository.FormDatesRepo;
@@ -2360,6 +2364,55 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 				 
 
 		}
+
+
+		//  serviceImpl 
+		@Autowired
+			private EciObserverRepository eciObserverRepository;
+
+
+			@Override
+			public Map<Object, List<EciObserverResponse>> getListOfEciObserver(Integer formId, Integer sId) throws IOException {
+			    Map<Object, List<EciObserverResponse>> response = new HashMap<>();
+			    System.out.println("formId  " + formId);
+			    System.out.println("sId  " + sId);
+			    Optional<List<EciObserverEntity>> table1Questions = Optional.empty();
+
+			    if (sId != 0) {
+			        table1Questions = eciObserverRepository.getListOfEciObserver(formId, sId);
+			    } else {
+			        table1Questions = eciObserverRepository.getListOfEciObserverByFormId(formId);
+			    }
+			    System.out.println("table1Questions  " + table1Questions);
+
+			    if (table1Questions.isPresent()) {
+			        List<EciObserverEntity> eciObserverEntities = table1Questions.get();
+			        System.out.println("eciObserverEntities  " + eciObserverEntities);
+
+			        Map<Object, List<EciObserverResponse>> responseMap = new HashMap<>();
+
+			        for (EciObserverEntity eciObserverEntity : eciObserverEntities) {
+			            EciObserverResponse response1 = new EciObserverResponse();
+			            if (eciObserverEntity.getsId() != null) {
+			                response1.setFormId(eciObserverEntity.getFormId());
+			            } 
+			            response1.setQuesText(eciObserverEntity.getQuesText());
+			            response1.setType(eciObserverEntity.getType());
+			            response1.setqId(eciObserverEntity.getqId());
+
+			            Object key = eciObserverEntity.getsId() != null ? eciObserverEntity.getFormId() : eciObserverEntity.getTableName();
+
+			            responseMap.computeIfAbsent(key, k -> new ArrayList<>()).add(response1);
+			        }
+
+			        response.putAll(responseMap);
+			    } else {
+			        response.put("Error", new ArrayList<>());
+			    }
+
+			    return response;
+			}
+		
 
 		
 }

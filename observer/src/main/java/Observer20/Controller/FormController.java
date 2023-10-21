@@ -1,5 +1,6 @@
 
 package Observer20.Controller;
+import java.io.IOException;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
@@ -14,10 +15,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twilio.rest.api.v2010.account.Message;
 
 import Observer20.Dto.AnswerDto;
+import Observer20.Dto.AnswerStaticDto;
+import Observer20.Dto.EciObserverResponse;
 //import Observer20.Dto.AnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.GetAnswerDto;
+import Observer20.Dto.QuestionProjection;
 import Observer20.Dto.UpdateAnswerDto;
+import Observer20.Dto.QuestionStaticArrivalDto;
 import Observer20.Exception.HandledException;
 //import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
@@ -28,6 +33,7 @@ import Observer20.Model.FormStatus;
 import Observer20.Model.Messages;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
+import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
 //import Observer20.Model.SubFormDraft;
@@ -48,6 +54,9 @@ public class FormController {
 	@Autowired 
 	public SubFormRepo subFormRepo;
 
+	// controller    @Autowired
+			//private EciObserverService eciObserverService;
+	
 	@GetMapping("/form")
 	public ResponseEntity<Object> getAllForms() throws HandledException {
 
@@ -438,6 +447,19 @@ public class FormController {
 		}
 	}
 	 
+
+	 @PutMapping("/submitAndUpdateAnswersStatic/{consistuency}")
+		public ResponseEntity<Object> submitAndUpdateAnswersStatic(HttpServletRequest request,@Valid @RequestBody AnswerStaticDto answerStaticDto,@PathVariable("consistuency")String consistuency) throws HandledException {
+			
+		try {
+			HashMap<String, Object> result=formService.submitAndUpdateAnswersStatic(request,answerStaticDto,consistuency);
+			return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+
+		} catch (HandledException e) {
+
+			return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+		}
+	}
 	 
 	 
 	
@@ -699,5 +721,59 @@ public class FormController {
 		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
 	}
 }
+	
+	
+//	@PostMapping("/saveQuestionsStatic")
+//	public ResponseEntity<Object> saveQuestionsStatic(HttpServletRequest request,@Valid @RequestBody QuestionStatic questionStatic) throws HandledException {
+//		
+//	try {
+//		HashMap<String, Object> result=formService.saveQuestionsStatic(request,questionStatic);
+//		return ResponseHandler.generateResponse("success", HttpStatus.OK,result);
+//
+//	} catch (HandledException e) {
+//
+//		return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+//	}
+//}
+	
+	@GetMapping("/questionsStatic/{fid}")
+	public ResponseEntity<Object> getQuestionStatic(@PathVariable("fid") Long fid) throws HandledException {
+
+		try {
+
+			//List formData = (List) formService.getQuestionStatic(fid);
+			//Map<String, List<QuestionStatic>> formData=formService.getQuestionStatic(fid);
+			//Map<String,List<QuestionStatic>> lists=formService.getQuestionStatic(fid);
+			//List<Map<String, List<QuestionStatic>>> lists=formService.getQuestionStatic(fid);
+			Map<Object, List<Object>> lists=formService.getQuestionStatic(fid);
+			
+			
+			//Map<String, Map<String, List<QuestionStatic>>>
+			
+			//List<QuestionStatic> formData=formService.getQuestionStatic(fid);
+			//return formData;
+			//return ResponseHandler.generateResponse("success", HttpStatus.OK, formData);
+			return ResponseEntity.ok(lists);
+		} catch (HandledException e) {
+			 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+			//return ResponseHandler.generateResponse(e.getMessage(), HttpStatus.BAD_REQUEST, null);
+
+		}
+
+	}
+	
+	
+
+		 @GetMapping("/getListOfEciObserver")
+		    public ResponseEntity<Map<Object, List<EciObserverResponse>>> getEciObserverObservations(@RequestParam("formId") Integer formId,@RequestParam("sId") Integer sId) throws IOException {
+		        Map<Object, List<EciObserverResponse>> response = formService.getListOfEciObserver(formId,sId);
+		        return new ResponseEntity<>(response, HttpStatus.OK);
+		    }
+	
+	
+	
+	
+	
+	
 	
 }

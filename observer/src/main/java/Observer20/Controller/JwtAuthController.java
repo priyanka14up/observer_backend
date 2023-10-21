@@ -66,7 +66,8 @@ public class JwtAuthController {
             throw new ApiException("User not found");
         }
 
-        if (!user.getDISPLAY().equalsIgnoreCase("yes")) {
+        String display = user.getDISPLAY();
+        if (display == null || !display.equalsIgnoreCase("yes")) {
             throw new ApiException("User is not allowed to log in");
         }
 
@@ -78,4 +79,5 @@ public class JwtAuthController {
             throw new ApiException("Invalid username or password");
         }
     }
+
 }

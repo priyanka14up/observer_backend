@@ -138,7 +138,9 @@ public class ObserverUser implements UserDetails, Serializable{
     private String O_TEL_PBX;
     private String O_TEL_EXT;
     private String OB_image;
-   
+    
+    private String token;
+    
     
     
    
@@ -148,6 +150,14 @@ public class ObserverUser implements UserDetails, Serializable{
 	
 
 	
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
 
 	public String getOB_image() {
 		return OB_image;

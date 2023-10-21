@@ -31,8 +31,66 @@ public class Obs_Allot {
 	    private String SCHEDULENO;
 	    private String AdjournedPoll;
 	    private String OB_image;
+	    private Date datePoll;
+	    private String constType;
+	    private String electionType;
+	    private String acNameEn;
+	    private String distNo;
+	    private String stName;
+	    private String distNameEn;
+	 
+	   // private String email;
+	    //private long mobnum;
+	    //private String O_FAX;
 	    
 	    
+	    
+	    
+		
+		
+		
+		public String getDistNameEn() {
+			return distNameEn;
+		}
+		public void setDistNameEn(String distNameEn) {
+			this.distNameEn = distNameEn;
+		}
+		public String getAcNameEn() {
+			return acNameEn;
+		}
+		public void setAcNameEn(String acNameEn) {
+			this.acNameEn = acNameEn;
+		}
+		public String getDistNo() {
+			return distNo;
+		}
+		public void setDistNo(String distNo) {
+			this.distNo = distNo;
+		}
+		public String getStName() {
+			return stName;
+		}
+		public void setStName(String stName) {
+			this.stName = stName;
+		}
+		public String getConstType() {
+			return constType;
+		}
+		public void setConstType(String constType) {
+			this.constType = constType;
+		}
+		public String getElectionType() {
+			return electionType;
+		}
+		public void setElectionType(String electionType) {
+			this.electionType = electionType;
+		}
+		public Date getDatePoll() {
+			return datePoll;
+		}
+		public void setDatePoll(Date datePoll) {
+			this.datePoll = datePoll;
+		}
 		public String getOB_image() {
 			return OB_image;
 		}

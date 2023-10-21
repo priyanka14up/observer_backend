@@ -3,27 +3,41 @@ package Observer20.Security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+
+import Observer20.Model.AC_LIST2;
+import Observer20.Model.Obs_Allot;
+import Observer20.Model.ObserverUser;
+import Observer20.repository.AC_LIST2_REPO2;
+import Observer20.repository.Obs_AllotREPO;
+import Observer20.repository.ObserverUserRepo;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
 @Component
 public class JwtTokenHelper {
 
-
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60; // 5 hours
     private String secret = "JwtTokenKey"; // Replace this with your secret key
 
-    // Retrieve username from JWT token
+    @Autowired
+    private ObserverUserRepo observerUserRepo;
+    @Autowired
+    Obs_AllotREPO obs_AllotREPO; 
+    @Autowired
+    AC_LIST2_REPO2 aC_LIST2_REPO2;
+
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }
-    
-    // Retrieve expiration date from JWT token
+
     public Date getExpirationDateFromToken(String token) {
         return getClaimFromToken(token, Claims::getExpiration);
     }
@@ -43,9 +57,51 @@ public class JwtTokenHelper {
     }
 
     public String generateToken(UserDetails userDetails) {
+        ObserverUser observerUser = observerUserRepo.findByObscode(userDetails.getUsername());
+
+        List<Obs_Allot> obsAllotList = obs_AllotREPO.findAllByObscode(observerUser.getObscode());
+        if (obsAllotList == null || obsAllotList.isEmpty()) {
+            throw new RuntimeException("Obs_allot entries not found for obscode: " + observerUser.getObscode());
+        }
+
+        List<String> acNamesList = new ArrayList<>();
+        List<String> acNoList = new ArrayList<>(); // New list to store ac_no values
+
+        for (Obs_Allot obsAllot : obsAllotList) {
+            String stCode = obsAllot.getSt_Code();
+            String acNo = obsAllot.getAc_No();
+            String obsCode = obsAllot.getObscode();
+            List<AC_LIST2> acList = aC_LIST2_REPO2.findAllByStCodeAndAcNo(stCode, acNo);
+
+            StringBuilder acNames = new StringBuilder();
+            if (acList != null && !acList.isEmpty()) {
+                for (AC_LIST2 ac : acList) {
+                    acNames.append(ac.getAcNameEn()).append(", ");
+                }
+
+                if (acNames.length() > 0) {
+                    acNames.setLength(acNames.length() - 2);
+                } else {
+                    acNames.append("AC Name Not Found");
+                }
+            } else {
+                acNames.append("AC Name Not Found");
+            }
+
+            acNamesList.add(acNames.toString());
+            acNoList.add(acNo); // Add ac_no to the list
+        }
+
         Map<String, Object> claims = new HashMap<>();
+        claims.put("obscode", observerUser.getObscode());
+        claims.put("profileStatus", observerUser.getProfileStatus());
+        claims.put("ac_no", acNoList);
+        claims.put("constituencies", acNamesList);
+      //  claims.put("ac_no", acNoList); // Add ac_no list to claims
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
+
 
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -57,9 +113,13 @@ public class JwtTokenHelper {
                 .compact();
     }
 
-    // Validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        return (username.contentEquals(userDetails.getUsername()) && !isTokenExpired(token));
+        System.out.println("Extracted username from token: " + username);
+        System.out.println("Username from userDetails: " + userDetails.getUsername());
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
+
+    
+    
 }

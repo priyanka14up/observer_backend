@@ -39,4 +39,6 @@ public interface ObserverUserRepo extends JpaRepository<ObserverUser, Integer>{
 	ObserverUser findDEPStatusCountingByObscode(@Param("obscode") String obscode);
 
 	ObserverUser getObserverUserByMobnum(long phoneNumber);
+
+	ObserverUser getObserverUserByToken(String token);
 }

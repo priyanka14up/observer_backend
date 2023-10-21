@@ -4,7 +4,7 @@
   import javax.persistence.Column;
 import javax.persistence.Entity; import javax.persistence.Id;
   
-  @Entity 
+@Entity
   public class M_ELECTION_DETAILS {
   
   @Id 

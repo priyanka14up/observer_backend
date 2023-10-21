@@ -13,7 +13,9 @@ import Observer20.Model.Question;
 public interface QuestionRepo extends JpaRepository<Question, Long>{
 	 @Query("SELECT q FROM Question q JOIN q.subform s WHERE s.sid = :subformId ORDER BY q.qid")
 	List<Question> findQuestionsBySubformSidAndOrderByQid(@Param("subformId")Long sid);
+	 
 	 @Query("SELECT q.subform.sid FROM Question q WHERE q.qid = :qid")
 	    Long findSubformSidByQid(@Param("qid") Long qid);
+	 
 	 Question findByQid(Long qid);
 }

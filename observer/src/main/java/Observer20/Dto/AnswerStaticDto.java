@@ -1,3 +1,4 @@
+
 package Observer20.Dto;
 
 import java.util.HashMap;
@@ -9,24 +10,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 //import Observer20.Model.Answer;
 import Observer20.Model.DraftAnswer;
+import Observer20.Model.DraftAnswerStatic;
 import Observer20.Model.FinalSubmitAnswer;
 //import Observer20.repository.AnswerRepo;
+import Observer20.Model.FinalSubmitAnswerStatic;
 
-public class AnswerDto {
+public class AnswerStaticDto {
 	
 	private Long id;
 	 
 	 //@NotBlank(message = "answers to be filled")
-	 private List<DraftAnswer> draftAnswers;
+	 private List<DraftAnswerStatic> draftAnswers;
 	 
 	//private List<HashMap<String,DraftAnswer>> draftAnswer;
 		
-	 private List<FinalSubmitAnswer> finalSubmitAnswer;
+	 private List<FinalSubmitAnswerStatic> finalSubmitAnswer;
 	 //@NotBlank(message = "File Location is mandatory")
 	 
 	 private  boolean status;
 	 
-	private String submittedBy;
+	private Long fid;
 	 
 	
 
@@ -47,34 +50,37 @@ public class AnswerDto {
 	}
 	
 
-	public String getSubmittedBy() {
-		return submittedBy;
-	}
-
-	public void setSubmittedBy(String submittedBy) {
-		this.submittedBy = submittedBy;
-	}
 	
-	public List<FinalSubmitAnswer> getFinalSubmitAnswer() {
-		return finalSubmitAnswer;
+	
+	
+	public Long getFid() {
+		return fid;
 	}
 
-	public void setFinalSubmitAnswer(List<FinalSubmitAnswer> finalSubmitAnswer) {
-		this.finalSubmitAnswer = finalSubmitAnswer;
+	public void setFid(Long fid) {
+		this.fid = fid;
 	}
 
-	public List<DraftAnswer> getDraftAnswers() {
+	public List<DraftAnswerStatic> getDraftAnswers() {
 		return draftAnswers;
 	}
 
-	public void setDraftAnswers(List<DraftAnswer> draftAnswers) {
+	public void setDraftAnswers(List<DraftAnswerStatic> draftAnswers) {
 		this.draftAnswers = draftAnswers;
+	}
+
+	public List<FinalSubmitAnswerStatic> getFinalSubmitAnswer() {
+		return finalSubmitAnswer;
+	}
+
+	public void setFinalSubmitAnswer(List<FinalSubmitAnswerStatic> finalSubmitAnswer) {
+		this.finalSubmitAnswer = finalSubmitAnswer;
 	}
 
 	@Override
 	public String toString() {
-		return "AnswerDto [id=" + id + ", draftAnswers=" + draftAnswers + ", finalSubmitAnswer=" + finalSubmitAnswer
-				+ ", status=" + status + ", submittedBy=" + submittedBy + "]";
+		return "AnswerStaticDto [id=" + id + ", draftAnswers=" + draftAnswers + ", finalSubmitAnswer="
+				+ finalSubmitAnswer + ", status=" + status + ", fid=" + fid + "]";
 	}
 
 	

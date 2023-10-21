@@ -7,6 +7,10 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import Observer20.Dto.AnswerDto;
+import Observer20.Dto.AnswerStaticDto;
+import Observer20.Dto.EciObserverResponse;
+import Observer20.Dto.QuestionProjection;
+import Observer20.Dto.QuestionStaticArrivalDto;
 import Observer20.Dto.UpdateAnswerDto;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Exception.HandledException;
@@ -17,8 +21,11 @@ import Observer20.Model.FormStatus;
 import Observer20.Model.Messages;
 //import Observer20.Model.FormSubformResponse;
 import Observer20.Model.Question;
+import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+
+import java.io.IOException;
 //import Observer20.Dto.AnswerDto;
 import java.util.*;
 //import Observer20.Model.SubFormDraft;
@@ -73,8 +80,20 @@ public interface FormService {
 	//for submitting messages
 	HashMap<String, Object> submitMessages(HttpServletRequest request,Messages messages) throws HandledException;
 	
+	//for submitting questions static
+	//HashMap<String, Object> saveQuestionsStatic(HttpServletRequest request,QuestionStatic questionStatic) throws HandledException;
 	
+	//for fetching questions static
+	//public List<QuestionStatic> getQuestionStatic(Long fid)throws HandledException;
+	//List<Map<String, List<QuestionStatic>>>
+	//public Map<String, List<QuestionStatic>> getQuestionStatic(Long fid)throws HandledException;
+	//public List<Map<String, List<QuestionStatic>>> getQuestionStatic(Long fid)throws HandledException;
+	//Map<String, List<QuestionProjection>> getQuestionStatic(Long fid)throws HandledException;
+	Map<Object, List<Object>> getQuestionStatic(Long fid)throws HandledException;
+	
+	//Map<String, Map<String, List<QuestionStatic>>>
 	public List<FormStatus> allFormsStatus() throws HandledException;
 	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
-
+	HashMap<String, Object> submitAndUpdateAnswersStatic(HttpServletRequest request, AnswerStaticDto answerStaticDto,String consistuency) throws HandledException;
+   	Map<Object, List<EciObserverResponse>> getListOfEciObserver(Integer formId, Integer sId) throws IOException;
 }

@@ -110,7 +110,7 @@ public class ForgotController {
 
 	    // Check if the provided obscode matches the obscode from the token
 	    if (!obscodeFromToken.equals(request.getObscode())) {
-	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid obscode.");
+	        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized User.");
 	    }
 
 	    // Fetch the user based on the provided obscode
@@ -162,20 +162,28 @@ public class ForgotController {
 
 
 	
-	@PostMapping("/forget-password1")
-	public String changePassword1(@Valid @RequestBody ChangePasswordRequest1 request1, HttpSession session) {
-	    // Update the password for the provided obscode
+	@PostMapping("/forgetPassword1")
+	public ResponseEntity<String> changePassword1(@Valid @RequestBody ChangePasswordRequest1 request1, HttpSession session,@RequestHeader("Authorization") String token) {
+	   
+		  String obscodeFromToken = extractObscodeFromToken(token);
+
+		    // Check if the provided obscode matches the obscode from the token
+		    if (!obscodeFromToken.equals(request1.getObscode())) {
+		        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized User");
+		    }
+
+		// Update the password for the provided obscode
 	    ObserverUser observerUser = observerUserRepo.getObserverUserByobscode(request1.getObscode());
 
 	    if (observerUser == null) {
-	        return "User does not exist.";
+	    	 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("User not found.");
 	    }
 
 	    // Update the password to the new password without checking the old password
 	    observerUser.setPassword(DigestUtils.md5DigestAsHex(request1.getNewpassword().getBytes()));
 	    observerUserRepo.save(observerUser);
 
-	    return "Password changed successfully.";
+	    return ResponseEntity.ok("Password changed successfully.");
 	}
 
 	

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,12 +26,14 @@ import Observer20.Model.ObserverLocalInfoRequest;
 import Observer20.Model.ObserverUser;
 import Observer20.Response.ApiResponse;
 import Observer20.Response.DistrictStateResponse;
+import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.ObserverLocalInfoService;
 import Observer20.Services.ObserverService;
 import Observer20.Services.T_Allot_Group_Servcie;
 import Observer20.payloads.ACRequest;
 import Observer20.payloads.MElectionDetailsDataDTO;
 import Observer20.payloads.ObsAllotDTO;
+import Observer20.payloads.ObsAllotDTO1;
 import Observer20.payloads.ObserverLocalInfoDTO;
 import Observer20.payloads.ObserverUserDto;
 import Observer20.payloads.ObserverUserDtoUpdation;
@@ -81,17 +84,23 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
 		}
   		//@PreAuthorize("hasRole('ADMIN')")
   		@GetMapping("/allot/{ObsCode}")
-  		public ResponseEntity<List<Obs_Allot>> getSingleObsAllot(@PathVariable String ObsCode)
-  		{
-  			return ResponseEntity.ok(t_Allot_Group_Servcie.getObsAllotByObscode(ObsCode));
+  		public ResponseEntity<List<ObsAllotDTO1>> getSingleObsAllot(@PathVariable String ObsCode,@RequestHeader("Authorization") String token)
+  		{String obscodeFromToken = extractObscodeFromToken(token);
+  		 // Check if the provided obscode matches the obscode from the token
+	      if (obscodeFromToken == null || !obscodeFromToken.equals(ObsCode)) {
+	          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+	      }
+  			return ResponseEntity.ok(t_Allot_Group_Servcie.getObsAllotByObscode2(ObsCode));
   			
   		}
   		
   	
 		
-		  @GetMapping("/electionDetails/{obsCode}") public MElectionDetailsDataDTO
-		  getElectionData(@PathVariable String obsCode) { return
-		  t_Allot_Group_Servcie.getElectionData(obsCode); }
+		  @GetMapping("/electionDetails/{obsCode}")
+		  public MElectionDetailsDataDTO getElectionData(@PathVariable String obsCode) 
+		  { 
+			 
+			  return t_Allot_Group_Servcie.getElectionData(obsCode); }
 		  
 		  @PostMapping("/get-district-state")
 		  public ResponseEntity<DistrictStateResponse> getDistrictAndStateNames(@RequestBody ACRequest acRequest) {
@@ -113,12 +122,42 @@ T_Allot_Group_Servcie t_Allot_Group_Servcie;
 		          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
 		      }
 		  }
+
+			
+			
+			 
 		  @GetMapping("DeployStatus/{obsCode}")
-		    public ResponseEntity<List<ObsAllotDTO>> getObsAllotByObscode1(@PathVariable String obsCode) {
-		       
-		            List<ObsAllotDTO> obsAllotList = t_Allot_Group_Servcie.getObsAllotByObscode1(obsCode);
-		            return ResponseEntity.ok(obsAllotList);
-		        }
+		  public ResponseEntity<List<ObsAllotDTO>> getObsAllotByObscode1(@PathVariable String obsCode, @RequestHeader("Authorization") String token) {
+		      String obscodeFromToken = extractObscodeFromToken(token);
+
+		      // Check if the provided obscode matches the obscode from the token
+		      if (obscodeFromToken == null || !obscodeFromToken.equals(obsCode)) {
+		          return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+		      }
+
+		      List<ObsAllotDTO> obsAllotList = t_Allot_Group_Servcie.getObsAllotByObscode1(obsCode);
+		      return ResponseEntity.ok(obsAllotList);
+		  }
+
+		  private String extractObscodeFromToken(String token) {
+		      // Remove the "Bearer " prefix from the token if present
+		      if (token != null && token.startsWith("Bearer ")) {
+		          token = token.substring(7);
+		      }
+
+		      // Extract obscode from the token using JwtTokenHelper
+		      try {
+		          JwtTokenHelper jwtTokenHelper = new JwtTokenHelper();
+		          return jwtTokenHelper.getUsernameFromToken(token);
+		      } catch (Exception e) {
+		          // Handle any exceptions that might occur during token extraction
+		          // For example, if the token is invalid or expired
+		          return null; // Or throw an exception based on your error handling requirements
+		      }
+		  }
+			
+
+		 
 		  
 }
 		

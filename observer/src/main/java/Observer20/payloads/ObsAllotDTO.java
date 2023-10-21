@@ -29,9 +29,28 @@ public class ObsAllotDTO {
     private String constMob;
     private String constTelNo;
     private String constFaxNo;
+    private String LocalAdress;
+    private String LocalMobile;
+    private String whetherObName;
+    private String localAdressMobile;
     
     
-    public String getConstMob() {
+    
+  
+	public String getLocalAdressMobile() {
+		return localAdressMobile;
+	}
+	public void setLocalAdressMobile(String localAdressMobile) {
+		this.localAdressMobile = localAdressMobile;
+	}
+	
+	public String getWhetherObName() {
+		return whetherObName;
+	}
+	public void setWhetherObName(String whetherObName) {
+		this.whetherObName = whetherObName;
+	}
+	public String getConstMob() {
 		return constMob;
 	}
 	public void setConstMob(String constMob) {

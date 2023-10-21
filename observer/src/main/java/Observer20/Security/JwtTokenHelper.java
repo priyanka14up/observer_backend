@@ -65,6 +65,8 @@ public class JwtTokenHelper {
         }
 
         List<String> acNamesList = new ArrayList<>();
+        List<String> acNoList = new ArrayList<>(); // New list to store ac_no values
+
         for (Obs_Allot obsAllot : obsAllotList) {
             String stCode = obsAllot.getSt_Code();
             String acNo = obsAllot.getAc_No();
@@ -87,12 +89,15 @@ public class JwtTokenHelper {
             }
 
             acNamesList.add(acNames.toString());
+            acNoList.add(acNo); // Add ac_no to the list
         }
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("obscode", observerUser.getObscode());
         claims.put("profileStatus", observerUser.getProfileStatus());
+        claims.put("ac_no", acNoList);
         claims.put("constituencies", acNamesList);
+      //  claims.put("ac_no", acNoList); // Add ac_no list to claims
 
         return doGenerateToken(claims, userDetails.getUsername());
     }
@@ -110,6 +115,8 @@ public class JwtTokenHelper {
 
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
+        System.out.println("Extracted username from token: " + username);
+        System.out.println("Username from userDetails: " + userDetails.getUsername());
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 

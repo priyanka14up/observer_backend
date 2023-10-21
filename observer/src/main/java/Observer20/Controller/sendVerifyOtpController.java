@@ -1,8 +1,10 @@
 package Observer20.Controller;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import javax.servlet.http.HttpSession;
 import Observer20.Model.ObserverUser;
+import Observer20.Security.JwtTokenHelper;
 import Observer20.Services.EmailService;
 import Observer20.payloads.OtpInfo;
 import Observer20.repository.ObserverUserRepo;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
@@ -23,6 +26,8 @@ public class sendVerifyOtpController {
 
     @Autowired
     private EmailService emailService;
+    @Autowired
+    private JwtTokenHelper jwtTokenHelper;
 
     @Value("${gupshup.api.userid}")
     private String gupshupUserId;
@@ -71,7 +76,7 @@ public class sendVerifyOtpController {
         
         boolean gupshupApiSuccess = sendOtpViaGupshupApi(Long.parseLong(mobnum), smsMessage);
         //boolean emailServiceSuccess = sendOtpViaEmail(email, "Your OTP Code", smsMessage);
-        // Send OTP via email or mobile (implement your sending logic here)
+       
         boolean emailServiceSuccess = sendOtpViaEmail(observerUser.getEmail(), "Your OTP Code", String.valueOf(otp));
 
 
@@ -94,35 +99,57 @@ public class sendVerifyOtpController {
         }
     }
 
-	/*
-	 * @PostMapping("/verify-otp1") public ResponseEntity<String>
-	 * verifyotp1(@RequestParam("otp") int otp, HttpSession session) { String
-	 * obscode = (String) session.getAttribute("obscode"); OtpInfo attempt =
-	 * OtpInfo.get(obscode);
-	 * 
-	 * if (attempt == null || (attempt.getAttempts() >= MAX_OTP_ATTEMPTS &&
-	 * System.currentTimeMillis() - attempt.getLastAttemptTime() <
-	 * OTP_ATTEMPT_TIMEOUT)) { return
-	 * ResponseEntity.status(HttpStatus.UNAUTHORIZED).
-	 * body("Invalid OTP or exceeded maximum attempts."); }
-	 * 
-	 * Integer emailOtp = (Integer) session.getAttribute("emailOtp"); Integer
-	 * mobileOtp = (Integer) session.getAttribute("mobileOtp"); String email =
-	 * (String) session.getAttribute("email"); Long phoneNumber = (Long)
-	 * session.getAttribute("mobnum");
-	 * 
-	 * if (otp == emailOtp || otp == mobileOtp) { ObserverUser observerUser =
-	 * observerUserRepo.getObserverUserByEmail(email); if (observerUser == null) {
-	 * session.setAttribute("message", "User does not exist with this email id");
-	 * return
-	 * ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exist"); }
-	 * else { return ResponseEntity.ok("OTP is valid"); } } else { boolean
-	 * isMobileOtpValid = verifyMobileOtpWithGupshup(String.valueOf(phoneNumber),
-	 * otp); if (isMobileOtpValid) { return ResponseEntity.ok("OTP is valid"); }
-	 * else { session.setAttribute("message", "You have entered the wrong OTP");
-	 * return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OTP"); }
-	 * } }
-	 */
+    
+
+    
+    @PostMapping("/verifyOtp1")
+    public ResponseEntity<?> verifyotp1(@RequestBody Map<String, Integer> otpRequest, HttpSession session) {
+        Integer emailOtp = (Integer) session.getAttribute("emailOtp");
+        Integer mobileOtp = (Integer) session.getAttribute("mobileOtp");
+        String email = (String) session.getAttribute("email");
+        Long phoneNumber = (Long) session.getAttribute("mobnum");
+        Integer otp = otpRequest.get("otp");
+
+        // Log statements for debugging
+        System.out.println("Entered OTP: " + otp);
+        System.out.println("Email OTP from session: " + emailOtp);
+        System.out.println("Mobile OTP from session: " + mobileOtp);
+        System.out.println("Email from session: " + email);
+        System.out.println("Mobile number from session: " + phoneNumber);
+
+    
+
+        if (otp == null || emailOtp == null || mobileOtp == null || phoneNumber == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid request body");
+        }
+
+        // Check if the entered OTP matches stored OTPs
+        if (otp.equals(emailOtp) || otp.equals(mobileOtp)) {
+            ObserverUser observerUser = observerUserRepo.getObserverUserByEmail(email);
+            if (observerUser == null) {
+                session.setAttribute("emailOtp", otp);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User does not exist");
+            } else {
+                // Generate JWT token
+                String token = jwtTokenHelper.generateToken(new User(observerUser.getObscode(), "", new ArrayList<>()));
+                // You can add more claims to the token if needed
+
+                // Return the token as a response
+                Map<String, String> response = new HashMap<>();
+                response.put("token", token);
+
+                return ResponseEntity.status(HttpStatus.OK).body(response);
+            }
+        }  else {
+            boolean isMobileOtpValid = verifyMobileOtpWithGupshup(String.valueOf(phoneNumber), otp);
+            if (isMobileOtpValid) {
+                return ResponseEntity.status(HttpStatus.OK).body("OTP is valid");
+            } else {
+                session.setAttribute("message", "You have entered the wrong OTP");
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid OTP");
+            }
+        }
+    }
 
     private boolean sendOtpViaGupshupApi(long mobnum, String smsMessage) {
     	  try {

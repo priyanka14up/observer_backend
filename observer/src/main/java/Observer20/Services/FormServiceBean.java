@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +38,8 @@ import Observer20.Model.Response;
 import Observer20.Model.STATE_LIST2;
 import Observer20.Model.SubForm;
 import Observer20.Repo1.STATE_LIST_REPO;
+import Observer20.Response.EciObserverArravalResponse;
+import Observer20.Response.EciObserverArrivalRequest;
 import Observer20.Security.JwtTokenHelper;
 //import Observer20.repository.AnswerRepo;
 //import Observer20.Model.SubFormDraft;
@@ -47,6 +51,7 @@ import Observer20.repository.QuestionsStaticRepo;
 import Observer20.repository.ResponseRepo;
 import Observer20.repository.STATE_LIST2_Repo;
 import Observer20.repository.SubFormRepo;
+import Observer20.responseHandler.ResponseHandler;
 import io.jsonwebtoken.Claims;
 //import Observer20.Dto.FormSubformResponseDto;
 import Observer20.Dto.AnswerDto;
@@ -73,6 +78,8 @@ import Observer20.Model.DIST_LIST2;
 import Observer20.Model.DownloadPdf;
 import Observer20.Model.DraftAnswer;
 import Observer20.Model.DraftAnswerStatic;
+import Observer20.Model.EciObserverArrivalEntity;
+import Observer20.Model.EciObserverArrivalPKId;
 import Observer20.Model.EciObserverEntity;
 import Observer20.Model.FinalSubmitAnswer;
 import Observer20.Model.FinalSubmitAnswerStatic;
@@ -95,6 +102,7 @@ import Observer20.repository.DIST_LIST_REPO2;
 import Observer20.repository.DownloadRepo;
 import Observer20.repository.DraftAnswerRepo;
 import Observer20.repository.DraftAnswerStaticRepo;
+import Observer20.repository.EciObserverArrivalRepository;
 import Observer20.repository.EciObserverRepository;
 import Observer20.repository.FinalSubmitAnswerRepo;
 import Observer20.repository.FinalSubmitAnswerStaticRepo;
@@ -180,8 +188,10 @@ public class FormServiceBean implements FormService {
 	  
 	  @Autowired
   	private JwtService jwtService;
+	  
 	
-	
+	  @Autowired
+		private EciObserverArrivalRepository eciObserverArrivalRepository;
 	@Override
 	public List allForms() throws HandledException {
 		// TODO Auto-generated method stub
@@ -2412,7 +2422,91 @@ public HashMap<String, Object> getArrivalDepartureData(String userid,String cons
 
 			    return response;
 			}
-		
+
+			
+			@Override
+			public ResponseEntity<Object> saveArrival(EciObserverArrivalRequest eciObserverArrivalRequest) throws IOException {
+
+				EciObserverArrivalPKId observerPk = new EciObserverArrivalPKId();
+
+				observerPk.setUserId(eciObserverArrivalRequest.getUserId());
+				observerPk.setFormId(eciObserverArrivalRequest.getFormId());
+				observerPk.setConstituencyId(eciObserverArrivalRequest.getConstituencyId());
+				observerPk.setObserverId(eciObserverArrivalRequest.getObserverId());
+
+				EciObserverArrivalEntity eci = new EciObserverArrivalEntity();
+
+				eci.setEciObserverArrivalPKId(observerPk);
+				eci.setQuesId(eciObserverArrivalRequest.getQuesId());
+
+				eci.setAnswer(eciObserverArrivalRequest.getAnswer());
+				eci.setRemark(eciObserverArrivalRequest.getRemark());
+				eciObserverArrivalRepository.save(eci);
+
+				// ResponseEntity<Object> httpResponse = new ResponseEntity<>("Success Detail
+				// Saved", HttpStatus.OK);
+
+				return ResponseHandler.generateResponse("Success Detail Saved", HttpStatus.OK, "", eciObserverArrivalRequest);
+			}
+
+			@Override
+			public Map<String, List<EciObserverArravalResponse>> getListOfEciObserverArrival(Integer formId) throws IOException {
+			    List<Object[]> results = eciObserverArrivalRepository.getByFromId(formId);
+
+			    List<EciObserverArravalResponse> responses = results.stream().map(row -> {
+			        EciObserverArravalResponse response1 = new EciObserverArravalResponse();
+			        response1.setConstituencyId((String) row[0]);
+			        response1.setFormId((Integer) row[1]);
+			        response1.setObserverId((String) row[2]);
+			        response1.setUserId((Integer) row[3]);
+			        response1.setAnswer((String) row[4]);
+			        response1.setQuesId((Integer) row[5]);
+			        response1.setRemark((String) row[6]);
+			        return response1;
+			    }).collect(Collectors.toList());
+
+			    Map<String, List<EciObserverArravalResponse>> response = new HashMap<>();
+			    response.put("Arrival", responses);
+
+			    return response;
+			}
+
+			/*
+			 * @Override public Map<String, List<EciObserverArravalResponse>>
+			 * getListOfEciObserverArrival(Integer formId) throws IOException { Map<String,
+			 * List<EciObserverArravalResponse>> response = new HashMap<>();
+			 * System.out.println("formId  " + formId);
+			 * 
+			 * Optional<List<EciObserverArrivalEntity>> table1Questions =
+			 * EciObserverRepository.getByFromId(formId);
+			 * System.out.println("table1Questions  " + table1Questions);
+			 * 
+			 * if (table1Questions.isPresent()) { List<EciObserverArrivalEntity>
+			 * eciObserverEntities = table1Questions.get();
+			 * System.out.println("eciObserverEntities  " + eciObserverEntities);
+			 * 
+			 * List<EciObserverArravalResponse> responses = new ArrayList<>();
+			 * 
+			 * for (EciObserverArrivalEntity eciObserverEntity : eciObserverEntities) {
+			 * EciObserverArravalResponse response1 = new EciObserverArravalResponse();
+			 * 
+			 * 
+			 * EciObserverArrivalPKId compositeKey =
+			 * eciObserverEntity.getEciObserverArrivalPKId();
+			 * response1.setConstituencyId(compositeKey.getConstituencyId());
+			 * response1.setFormId(compositeKey.getFormId());
+			 * response1.setObserverId(compositeKey.getObserverId());
+			 * response1.setUserId(compositeKey.getUserId());
+			 * response1.setAnswer(eciObserverEntity.getAnswer());
+			 * response1.setQuesId(eciObserverEntity.getQuesId());
+			 * response1.setRemark(eciObserverEntity.getRemark()); responses.add(response1);
+			 * }
+			 * 
+			 * response.put("Arrival", responses); } else { response.put("Error", new
+			 * ArrayList<>()); }
+			 * 
+			 * return response; }
+			 */
 
 		
 }

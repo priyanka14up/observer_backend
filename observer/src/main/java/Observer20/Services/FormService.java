@@ -4,6 +4,7 @@ package Observer20.Services;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import Observer20.Dto.AnswerDto;
@@ -24,6 +25,8 @@ import Observer20.Model.Question;
 import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.Response.EciObserverArravalResponse;
+import Observer20.Response.EciObserverArrivalRequest;
 
 import java.io.IOException;
 //import Observer20.Dto.AnswerDto;
@@ -96,4 +99,6 @@ public interface FormService {
 	public List<FormStatus> allFormsStatusByState(String statecode) throws HandledException; ;
 	HashMap<String, Object> submitAndUpdateAnswersStatic(HttpServletRequest request, AnswerStaticDto answerStaticDto,String consistuency) throws HandledException;
    	Map<Object, List<EciObserverResponse>> getListOfEciObserver(Integer formId, Integer sId) throws IOException;
+   	ResponseEntity<Object> saveArrival(EciObserverArrivalRequest eciObserverArrivalRequest) throws IOException;
+   	Map<String, List<EciObserverArravalResponse>> getListOfEciObserverArrival(Integer formId) throws IOException;
 }

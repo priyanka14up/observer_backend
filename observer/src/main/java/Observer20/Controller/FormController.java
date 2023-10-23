@@ -36,6 +36,8 @@ import Observer20.Model.Question;
 import Observer20.Model.QuestionStatic;
 import Observer20.Model.Response;
 import Observer20.Model.SubForm;
+import Observer20.Response.EciObserverArravalResponse;
+import Observer20.Response.EciObserverArrivalRequest;
 //import Observer20.Model.SubFormDraft;
 import Observer20.Services.FormService;
 import Observer20.errors.ResponseHandler;
@@ -769,11 +771,30 @@ public class FormController {
 		        Map<Object, List<EciObserverResponse>> response = formService.getListOfEciObserver(formId,sId);
 		        return new ResponseEntity<>(response, HttpStatus.OK);
 		    }
+		 @PostMapping("/saveArrrivalDetails")
+			public ResponseEntity<Object> saveComplainaintRespondent(
+					@RequestBody EciObserverArrivalRequest eciObserverArrivalRequest, HttpServletRequest request)
+					throws IOException {
+				if (Objects.isNull(eciObserverArrivalRequest.getFormId())) {
+
+					return ResponseHandler.generateResponse("formId is Null", HttpStatus.BAD_REQUEST, null);
+				}
+
+				ResponseEntity<Object> response = formService.saveArrival(eciObserverArrivalRequest);
+				return response;
+
+			}
+		 @GetMapping("/getListOfEciObserverArrival")
+		    public ResponseEntity<Map<String, List<EciObserverArravalResponse>>>
+		            getListOfEciObserverArrival(@RequestParam("formId") Integer formId) throws IOException {
+		        Map<String, List<EciObserverArravalResponse>> response = formService.getListOfEciObserverArrival(formId);
+		        return ResponseEntity.ok(response);
+		    }
+			}
+		
+			
 	
 	
 	
 	
 	
-	
-	
-}
